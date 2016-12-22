@@ -1,0 +1,27 @@
+body {
+  margin:0;
+}
+
+.reflex-element {
+  background-color: rgba(1, 210, 248, 0.06);
+}
+
+.reflex-element.resizing {
+  background-color: rgba(255, 0, 0, 0.20);
+}
+
+.pane-content {
+  text-align: center;
+  position: relative;
+  user-select: none;
+  top: 30%;
+}
+
+.header {
+  background-color: rgba(1, 210, 248, 0.51);
+}
+
+.footer {
+  background-color: rgba(1, 210, 248, 0.51);
+  text-align: center;
+}

@@ -139,6 +139,10 @@ export default class ReflexContainer extends React.Component {
           document.body.style.cursor = 'col-resize'
           break
       }
+
+      const idx = data.splitter.props.index
+
+      this.fireEvent(idx, 'onStartResize')
     }
   }
 
@@ -150,7 +154,11 @@ export default class ReflexContainer extends React.Component {
 
     if (data.splitter.props.containerId === this.state.id) {
 
+      const idx = data.splitter.props.index
+
       document.body.style.cursor = 'auto'
+
+      this.fireEvent(idx, 'onStopResize')
     }
   }
 
@@ -211,7 +219,40 @@ export default class ReflexContainer extends React.Component {
         this.setState(Object.assign({}, this.state, {
           flexData: this.state.flexData
         }))
+
+        this.fireEvent(idx, 'onResize')
       }
+    }
+  }
+
+  /////////////////////////////////////////////////////////
+  //
+  //
+  /////////////////////////////////////////////////////////
+  fireEvent (idx, event) {
+
+    const child1 = this.children[idx - 1]
+
+    if (child1 && child1.props[event]) {
+
+      const ref = this.refs[child1.ref]
+
+      child1.props[event]({
+        domElement: ReactDOM.findDOMNode(ref),
+        component: child1
+      })
+    }
+
+    const child2 = this.children[idx + 1]
+
+    if (child2 && child2.props[event]) {
+
+      const ref = this.refs[child2.ref]
+
+      child2.props[event]({
+        domElement: ReactDOM.findDOMNode(ref),
+        component: child2
+      })
     }
   }
 
@@ -292,7 +333,16 @@ export default class ReflexContainer extends React.Component {
 
     let nbElements = 0
 
-    const flexValues = this.props.children.map((child) => {
+    if (!this.props.children) {
+
+      return []
+    }
+
+    const children = Array.isArray(this.props.children) ?
+      this.props.children :
+      [this.props.children]
+
+    const flexValues = children.map((child) => {
 
       if (child.type === ReflexElement) {
 
@@ -302,7 +352,7 @@ export default class ReflexContainer extends React.Component {
         }
       }
 
-      return child.props.flex || 0
+      return child.props ? (child.props.flex || 0) : 0
     })
 
     let remainingFlex = 1
@@ -312,7 +362,7 @@ export default class ReflexContainer extends React.Component {
       remainingFlex -= flex
     })
 
-    return this.props.children.map((child, idx) => {
+    return children.map((child, idx) => {
 
       if (child.type === ReflexElement) {
 
@@ -340,7 +390,7 @@ export default class ReflexContainer extends React.Component {
       this.props.orientation
     ]
 
-    const children = React.Children.map(
+    this.children = React.Children.map(
       this.props.children, (child, idx) => {
 
         const flexData = this.state.flexData[idx]
@@ -357,7 +407,7 @@ export default class ReflexContainer extends React.Component {
 
     return (
       <div className={classNames.join(' ')}>
-        { children }
+        { this.children }
       </div>
     )
   }
