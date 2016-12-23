@@ -1,23 +1,56 @@
 # reflex
 
-Get the AMD module located at `reflex.js` and include it in your project.
 
-Here is a sample integration:
+
+Here is a basic demo:
 
 ```js
-require.config({
-  paths: {
-    'react': 'vendor/bower_components/react/react',
-    'Reflex': 'reflex'
+import ReactDOM from 'react-dom'
+import React from 'react'
+
+import {
+  ReflexContainer,
+  ReflexSplitter,
+  ReflexElement
+} from 're-flex'
+
+import './demo.scss'
+
+
+class ReflexBasicDemo extends React.Component {
+
+  /////////////////////////////////////////////////////////
+  // Basic vertical re-flex layout non-resizable
+  //
+  /////////////////////////////////////////////////////////
+  render () {
+
+    return (
+      <ReflexContainer orientation="vertical">
+
+        <ReflexElement className="left-pane">
+          <div className="pane-content">
+            Left Pane (fixed)
+          </div>
+        </ReflexElement>
+
+        <ReflexElement className="right-pane">
+          <div className="pane-content">
+            Right Pane (fixed)
+          </div>
+        </ReflexElement>
+
+      </ReflexContainer>
+    )
   }
-});
+}
 
-require(['react', 'Reflex'], function(React, Reflex) {
-
-  React.render(React.createElement(Reflex), document.getElementById('widget-container'));
-
-});
+ReactDOM.render(
+  <ReflexBasicDemo/>,
+  document.getElementById('demo-basic'))
 ```
+
+(Documentation and Samples ...)[https://leefsmp.github.io/Re-Flex/index.html]
 
 ## Development
 
