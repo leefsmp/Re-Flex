@@ -50,7 +50,7 @@ ReactDOM.render(
   document.getElementById('demo-basic'))
 ```
 
-(Documentation and Samples ...)[https://leefsmp.github.io/Re-Flex/index.html]
+[Documentation and Samples ...](https://leefsmp.github.io/Re-Flex/index.html)
 
 ## Development
 
