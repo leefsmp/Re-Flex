@@ -7,7 +7,7 @@ module.exports = {
   context: path.join(__dirname, '../..'),
 
   entry: {
-    bundle: [
+    'bundle.min': [
       'babel-polyfill',
       './src/demo/index.js'
     ]
@@ -43,7 +43,11 @@ module.exports = {
       },
       minimize: true,
       mangle: true
-    })
+    }),
+
+    new webpack.DefinePlugin({
+      'process.env.NODE_ENV': '"production"'
+    }),
   ],
 
   resolve: {
