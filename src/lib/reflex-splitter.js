@@ -1,8 +1,15 @@
+///////////////////////////////////////////////////////////
+// ReflexSplitter
+// By Philippe Leefsma
+// December 2016
+//
+///////////////////////////////////////////////////////////
 import FlexEvents from './reflex-events'
 import ReactDOM from 'react-dom'
 import React from 'react'
 
-export default class ReflexSplitter extends React.Component {
+export default class ReflexSplitter
+  extends React.Component {
 
   /////////////////////////////////////////////////////////
   //
@@ -10,9 +17,10 @@ export default class ReflexSplitter extends React.Component {
   /////////////////////////////////////////////////////////
   static propTypes = {
     onStartResize:React.PropTypes.func,
+    className: React.PropTypes.string,
     onEndResize:React.PropTypes.func,
-    onResize:React.PropTypes.func,
-    className: React.PropTypes.string
+    propagate: React.PropTypes.bool,
+    onResize:React.PropTypes.func
   }
 
   /////////////////////////////////////////////////////////
@@ -20,6 +28,10 @@ export default class ReflexSplitter extends React.Component {
   //
   /////////////////////////////////////////////////////////
   static defaultProps = {
+    onStartResize: null,
+    onEndResize: null,
+    propagate: false,
+    onResize:null,
     className: '',
     document
   }
@@ -36,11 +48,11 @@ export default class ReflexSplitter extends React.Component {
       active: false
     }
 
-    this.document = props.document
-
     this.onMouseMove = this.onMouseMove.bind(this)
     this.onMouseDown = this.onMouseDown.bind(this)
     this.onMouseUp   = this.onMouseUp.bind(this)
+
+    this.document = props.document
   }
 
   /////////////////////////////////////////////////////////
@@ -81,16 +93,18 @@ export default class ReflexSplitter extends React.Component {
 
     if (this.state.active) {
 
-      if (this.props.onResize) {
 
-        this.props.onResize()
-      }
 
       FlexEvents.emit(
         'splitter.resize', {
           splitter: this,
           event
         })
+
+      if (this.props.onResize) {
+
+        this.props.onResize()
+      }
 
       event.stopPropagation()
       event.preventDefault()
@@ -109,7 +123,16 @@ export default class ReflexSplitter extends React.Component {
 
     if (this.props.onStartResize) {
 
-      this.props.onStartResize(event)
+      // cancels resize from controller
+      // if needed by returning true
+      // to onStartResize
+      if (this.props.onStartResize(event)) {
+
+        event.stopPropagation()
+        event.preventDefault()
+
+        return
+      }
     }
 
     FlexEvents.emit('splitter.startResize', {

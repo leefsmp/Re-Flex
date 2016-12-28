@@ -22,34 +22,13 @@ module.exports = {
 
   plugins: [
 
-    new clean(['dist/demo'], {
-      root: __dirname + '/..',
-      verbose: true,
-      dry: false
-    }),
-
     new webpack.NoErrorsPlugin(),
     new webpack.optimize.DedupePlugin(),
     new webpack.optimize.OccurenceOrderPlugin(),
 
     new webpack.optimize.MinChunkSizePlugin({
       minChunkSize: 51200
-    }),
-
-    //new webpack.optimize.UglifyJsPlugin({
-    //  output: {
-    //    comments: false
-    //  },
-    //  compress: {
-    //    warnings: false
-    //  },
-    //  minimize: true,
-    //  mangle: true
-    //}),
-
-    //new webpack.DefinePlugin({
-    //  'process.env.NODE_ENV': '"production"'
-    //})
+    })
   ],
 
   resolve: {
@@ -58,7 +37,31 @@ module.exports = {
 
   module: {
 
-    loaders: [
+    rules: [
+      {
+        test: /\.jsx?$/,
+        exclude: /node_modules/,
+        use: [{
+          loader: "babel-loader",
+          options: {
+            presets: ['react', 'es2015', 'stage-0']
+          }
+        }]
+      },
+      {
+        test: /\.css$/,
+        use: [
+          "style-loader",
+          { loader: "css-loader", options: { modules: true } }
+        ]
+      },
+      {
+        test: /\.(sass|scss)$/,
+        use: [ "style-loader", "css-loader", "sass-loader"]
+      }
+    ],
+
+      loaders: [
       {
         test: /\.jsx?$/,
         exclude: /node_modules/,

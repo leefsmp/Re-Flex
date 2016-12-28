@@ -1,6 +1,8 @@
-# reflex
+# About Re-Flex
 
+Re-Flex is a flex-based React layout component library which I created because none of the components I found out there could address my exact needs.
 
+It intends to be powerful and address the needs of advanced React Web applications that requires resizable layouts
 
 Here is a basic demo:
 
@@ -50,7 +52,9 @@ ReactDOM.render(
   document.getElementById('demo-basic'))
 ```
 
-[Documentation and Samples ...](https://leefsmp.github.io/Re-Flex/index.html)
+## Documentation & Samples
+
+[Click here and try the live samples ...](https://leefsmp.github.io/Re-Flex/index.html)
 
 ## Development
 

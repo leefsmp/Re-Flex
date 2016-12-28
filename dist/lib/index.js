@@ -68,7 +68,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	
 	var _reflexElement2 = _interopRequireDefault(_reflexElement);
 	
-	__webpack_require__(11);
+	__webpack_require__(10);
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
@@ -187,7 +187,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 /***/ },
 /* 4 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ function(module, exports) {
 
 	'use strict';
 	
@@ -195,13 +195,102 @@ return /******/ (function(modules) { // webpackBootstrap
 	  value: true
 	});
 	
-	var _events = __webpack_require__(9);
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 	
-	var _events2 = _interopRequireDefault(_events);
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 	
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	var EventsEmitter = function () {
 	
-	var events = new _events2.default.EventEmitter();
+	  ///////////////////////////////////////////////////////////////////
+	  //
+	  //
+	  ///////////////////////////////////////////////////////////////////
+	  function EventsEmitter() {
+	    _classCallCheck(this, EventsEmitter);
+	
+	    this._events = {};
+	  }
+	
+	  ///////////////////////////////////////////////////////////////////
+	  // Supports multiple events space-separated
+	  //
+	  ///////////////////////////////////////////////////////////////////
+	
+	
+	  _createClass(EventsEmitter, [{
+	    key: 'on',
+	    value: function on(events, fct) {
+	      var _this = this;
+	
+	      events.split(' ').forEach(function (event) {
+	
+	        _this._events[event] = _this._events[event] || [];
+	        _this._events[event].push(fct);
+	      });
+	
+	      return this;
+	    }
+	
+	    ///////////////////////////////////////////////////////////////////
+	    // Supports multiple events space-separated
+	    //
+	    ///////////////////////////////////////////////////////////////////
+	
+	  }, {
+	    key: 'off',
+	    value: function off(events, fct) {
+	      var _this2 = this;
+	
+	      if (events == undefined) {
+	        this._events = {};
+	        return;
+	      }
+	
+	      events.split(' ').forEach(function (event) {
+	
+	        if (event in _this2._events === false) return;
+	
+	        if (fct) {
+	
+	          _this2._events[event].splice(_this2._events[event].indexOf(fct), 1);
+	        } else {
+	
+	          _this2._events[event] = [];
+	        }
+	      });
+	
+	      return this;
+	    }
+	
+	    ///////////////////////////////////////////////////////////////////
+	    //
+	    //
+	    ///////////////////////////////////////////////////////////////////
+	
+	  }, {
+	    key: 'emit',
+	    value: function emit(event /* , args... */) {
+	
+	      if (this._events[event] === undefined) return;
+	
+	      var tmpArray = this._events[event].slice();
+	
+	      for (var i = 0; i < tmpArray.length; ++i) {
+	
+	        var result = tmpArray[i].apply(this, Array.prototype.slice.call(arguments, 1));
+	
+	        if (result !== undefined) return result;
+	      }
+	
+	      return undefined;
+	    }
+	  }]);
+	
+	  return EventsEmitter;
+	}();
+	
+	var events = new EventsEmitter();
+	
 	exports.default = events;
 
 /***/ },
@@ -311,11 +400,11 @@ return /******/ (function(modules) { // webpackBootstrap
 	
 	      window.removeEventListener('resize', this.onResize);
 	
-	      _reflexEvents2.default.removeListener('splitter.startResize', this.onSplitterStartResize);
+	      _reflexEvents2.default.off('splitter.startResize', this.onSplitterStartResize);
 	
-	      _reflexEvents2.default.removeListener('splitter.stopResize', this.onSplitterStopResize);
+	      _reflexEvents2.default.off('splitter.stopResize', this.onSplitterStopResize);
 	
-	      _reflexEvents2.default.removeListener('splitter.resize', this.onSplitterResize);
+	      _reflexEvents2.default.off('splitter.resize', this.onSplitterResize);
 	    }
 	
 	    /////////////////////////////////////////////////////////
@@ -324,17 +413,24 @@ return /******/ (function(modules) { // webpackBootstrap
 	    /////////////////////////////////////////////////////////
 	
 	  }, {
-	    key: 'getSizeAt',
-	    value: function getSizeAt(idx) {
+	    key: 'getSize',
+	    value: function getSize(element) {
 	
-	      var ref = this.refs[this.state.flexData[idx].guid];
+	      var ref = this.refs[element.ref];
 	
 	      var domElement = _reactDom2.default.findDOMNode(ref);
 	
-	      return {
-	        x: domElement.offsetWidth,
-	        y: domElement.offsetHeight
-	      };
+	      switch (this.props.orientation) {
+	
+	        case 'horizontal':
+	          return domElement.offsetHeight;
+	
+	        case 'vertical':
+	          return domElement.offsetWidth;
+	
+	        default:
+	          return 0;
+	      }
 	    }
 	
 	    ///////////////////////////////////////////////////////////////////
@@ -358,29 +454,28 @@ return /******/ (function(modules) { // webpackBootstrap
 	    key: 'onSplitterStartResize',
 	    value: function onSplitterStartResize(data) {
 	
-	      if (data.splitter.props.containerId === this.state.id) {
+	      var containerId = data.splitter.props.containerId;
 	
-	        this.previousPos = {
-	          x: data.event.pageX,
-	          y: data.event.pageY
-	        };
+	      if (containerId === this.state.id) {
 	
 	        switch (this.props.orientation) {
 	
 	          case 'horizontal':
-	
 	            document.body.style.cursor = 'row-resize';
+	            this.previousPos = data.event.pageY;
 	            break;
 	
 	          case 'vertical':
-	
 	            document.body.style.cursor = 'col-resize';
+	            this.previousPos = data.event.pageX;
 	            break;
 	        }
 	
 	        var idx = data.splitter.props.index;
 	
-	        this.fireEvent(idx, 'onStartResize');
+	        var elements = [this.children[idx - 1], this.children[idx + 1]];
+	
+	        this.fireEvent(elements, 'onStartResize');
 	      }
 	    }
 	
@@ -393,13 +488,36 @@ return /******/ (function(modules) { // webpackBootstrap
 	    key: 'onSplitterStopResize',
 	    value: function onSplitterStopResize(data) {
 	
-	      if (data.splitter.props.containerId === this.state.id) {
+	      var containerId = data.splitter.props.containerId;
 	
-	        var idx = data.splitter.props.index;
+	      if (containerId === this.state.id) {
 	
 	        document.body.style.cursor = 'auto';
 	
-	        this.fireEvent(idx, 'onStopResize');
+	        var idx = data.splitter.props.index;
+	
+	        var elements = [this.children[idx - 1], this.children[idx + 1]];
+	
+	        this.fireEvent(elements, 'onStopResize');
+	      }
+	    }
+	
+	    /////////////////////////////////////////////////////////
+	    //
+	    //
+	    /////////////////////////////////////////////////////////
+	
+	  }, {
+	    key: 'getOffset',
+	    value: function getOffset(event) {
+	
+	      switch (this.props.orientation) {
+	
+	        case 'horizontal':
+	          return event.pageY - this.previousPos;
+	
+	        case 'vertical':
+	          return event.pageX - this.previousPos;
 	      }
 	    }
 	
@@ -412,53 +530,42 @@ return /******/ (function(modules) { // webpackBootstrap
 	    key: 'onSplitterResize',
 	    value: function onSplitterResize(data) {
 	
-	      if (data.splitter.props.containerId === this.state.id) {
+	      var containerId = data.splitter.props.containerId;
+	
+	      if (containerId === this.state.id) {
 	
 	        var idx = data.splitter.props.index;
 	
-	        var size1 = this.getSizeAt(idx - 1);
+	        var offset = this.getOffset(data.event);
 	
-	        var offset = {
-	          x: data.event.pageX - this.previousPos.x,
-	          y: data.event.pageY - this.previousPos.y
-	        };
+	        console.log('page: ' + data.event.pageY);
+	        console.log('Offset: ' + offset);
 	
-	        this.previousPos = {
-	          x: data.event.pageX,
-	          y: data.event.pageY
-	        };
+	        var availableOffset = this.computeAvailableOffset(idx, offset);
 	
-	        var newSize1 = {
-	          x: Math.max(size1.x + offset.x, 1),
-	          y: Math.max(size1.y + offset.y, 1)
-	        };
+	        console.log('AOffset: ' + availableOffset);
 	
-	        var size2 = this.getSizeAt(idx - 1);
+	        if (availableOffset !== 0) {
 	
-	        var newSize2 = {
-	          x: Math.max(size2.x - offset.x, 1),
-	          y: Math.max(size2.y - offset.y, 1)
-	        };
+	          switch (this.props.orientation) {
 	
-	        if (this.validateSizeAt(idx - 1, newSize1) && this.validateSizeAt(idx + 1, newSize2)) {
+	            case 'horizontal':
+	              this.previousPos = data.event.pageY;
+	              console.log('pos: ' + this.previousPos);
 	
-	          var flex = this.state.flexData[idx - 1].flex;
+	            case 'vertical':
+	              this.previousPos = data.event.pageX;
+	          }
 	
-	          var newFlex = this.computeNewFlex(this.state.flexData[idx - 1].flex, size1, newSize1);
+	          var elements = this.dispatchOffset(idx, availableOffset);
 	
-	          this.state.flexData[idx - 1] = Object.assign({}, this.state.flexData[idx - 1], {
-	            flex: newFlex
+	          this.state.flexData.forEach(function (d) {
+	            //console.log(d.flex)
 	          });
 	
-	          this.state.flexData[idx + 1] = Object.assign({}, this.state.flexData[idx + 1], {
-	            flex: this.state.flexData[idx + 1].flex - (newFlex - flex)
-	          });
+	          this.setState(this.state);
 	
-	          this.setState(Object.assign({}, this.state, {
-	            flexData: this.state.flexData
-	          }));
-	
-	          this.fireEvent(idx, 'onResize');
+	          this.fireEvent(elements, 'onResize');
 	        }
 	      }
 	    }
@@ -469,32 +576,120 @@ return /******/ (function(modules) { // webpackBootstrap
 	    /////////////////////////////////////////////////////////
 	
 	  }, {
+	    key: 'computeAvailableOffset',
+	    value: function computeAvailableOffset(idx, offset) {
+	
+	      var stretch = this.computeAvailableStretch(idx, offset);
+	
+	      var shrink = this.computeAvailableShrink(idx, offset);
+	
+	      var availableOffset = Math.min(stretch, shrink) * Math.sign(offset);
+	
+	      return availableOffset;
+	    }
+	
+	    /////////////////////////////////////////////////////////
+	    //
+	    //
+	    /////////////////////////////////////////////////////////
+	
+	  }, {
+	    key: 'computeAvailableStretch',
+	    value: function computeAvailableStretch(idx, offset) {
+	
+	      var childIdx = offset < 0 ? idx + 1 : idx - 1;
+	
+	      var child = this.children[childIdx];
+	
+	      var size = this.getSize(child);
+	
+	      var maxSize = child.props.maxSize || size + Math.abs(offset);
+	
+	      var availableStretch = maxSize - size;
+	
+	      return availableStretch;
+	    }
+	
+	    /////////////////////////////////////////////////////////
+	    //
+	    //
+	    /////////////////////////////////////////////////////////
+	
+	  }, {
+	    key: 'computeAvailableShrink',
+	    value: function computeAvailableShrink(idx, offset) {
+	
+	      var childIdx = offset > 0 ? idx + 1 : idx - 1;
+	
+	      var child = this.children[childIdx];
+	
+	      var size = this.getSize(child);
+	
+	      var minSize = child.props.minSize || size - Math.abs(offset);
+	
+	      var availableShrink = size - minSize;
+	
+	      return availableShrink;
+	    }
+	
+	    /////////////////////////////////////////////////////////
+	    //
+	    //
+	    /////////////////////////////////////////////////////////
+	
+	  }, {
+	    key: 'dispatchOffsetAt',
+	    value: function dispatchOffsetAt(idx, offset) {
+	
+	      var child = this.children[idx];
+	
+	      var size = this.getSize(child);
+	
+	      var newSize = size + offset;
+	
+	      var newFlex = this.computeNewFlex(child.props.flex, size, newSize);
+	
+	      this.state.flexData[idx].flex = newFlex;
+	
+	      return child;
+	    }
+	
+	    /////////////////////////////////////////////////////////
+	    //
+	    //
+	    /////////////////////////////////////////////////////////
+	
+	  }, {
+	    key: 'dispatchOffset',
+	    value: function dispatchOffset(idx, offset) {
+	
+	      return [this.dispatchOffsetAt(idx - 1, offset), this.dispatchOffsetAt(idx + 1, -1 * offset)];
+	    }
+	
+	    /////////////////////////////////////////////////////////
+	    //
+	    //
+	    /////////////////////////////////////////////////////////
+	
+	  }, {
 	    key: 'fireEvent',
-	    value: function fireEvent(idx, event) {
+	    value: function fireEvent(elements, event) {
+	      var _this2 = this;
 	
-	      var child1 = this.children[idx - 1];
+	      var elementsArray = Array.isArray(elements) ? elements : [elements];
 	
-	      if (child1 && child1.props[event]) {
+	      elementsArray.forEach(function (element) {
 	
-	        var ref = this.refs[child1.ref];
+	        if (element.props[event]) {
 	
-	        child1.props[event]({
-	          domElement: _reactDom2.default.findDOMNode(ref),
-	          component: child1
-	        });
-	      }
+	          var ref = _this2.refs[element.ref];
 	
-	      var child2 = this.children[idx + 1];
-	
-	      if (child2 && child2.props[event]) {
-	
-	        var _ref = this.refs[child2.ref];
-	
-	        child2.props[event]({
-	          domElement: _reactDom2.default.findDOMNode(_ref),
-	          component: child2
-	        });
-	      }
+	          element.props[event]({
+	            domElement: _reactDom2.default.findDOMNode(ref),
+	            component: element
+	          });
+	        }
+	      });
 	    }
 	
 	    /////////////////////////////////////////////////////////
@@ -506,66 +701,12 @@ return /******/ (function(modules) { // webpackBootstrap
 	    key: 'computeNewFlex',
 	    value: function computeNewFlex(flex, size, newSize) {
 	
-	      switch (this.props.orientation) {
+	      if (size === 0) {
 	
-	        case 'horizontal':
-	
-	          return newSize.y * flex / size.y;
-	
-	        case 'vertical':
-	
-	          if (size.x === 0) {
-	
-	            return 0;
-	          }
-	
-	          return newSize.x * flex / size.x;
-	
-	        default:
-	
-	          return 0;
-	      }
-	    }
-	
-	    /////////////////////////////////////////////////////////
-	    //
-	    //
-	    /////////////////////////////////////////////////////////
-	
-	  }, {
-	    key: 'validateSizeAt',
-	    value: function validateSizeAt(idx, size) {
-	
-	      var child = this.props.children[idx];
-	
-	      switch (this.props.orientation) {
-	
-	        case 'horizontal':
-	
-	          if (child.props.minSize && size.y < child.props.minSize) {
-	
-	            return false;
-	          }
-	
-	          if (child.props.maxSize && size.y > child.props.maxSize) {
-	
-	            return false;
-	          }
-	
-	        case 'vertical':
-	
-	          if (child.props.minSize && size.x < child.props.minSize) {
-	
-	            return false;
-	          }
-	
-	          if (child.props.maxSize && size.x > child.props.maxSize) {
-	
-	            return false;
-	          }
+	        return 0;
 	      }
 	
-	      return true;
+	      return newSize * flex / size;
 	    }
 	
 	    /////////////////////////////////////////////////////////
@@ -576,7 +717,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	  }, {
 	    key: 'getInitialFlexData',
 	    value: function getInitialFlexData() {
-	      var _this2 = this;
+	      var _this3 = this;
 	
 	      var nbElements = 0;
 	
@@ -612,7 +753,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	        if (child.type === _reflexElement2.default) {
 	
 	          return {
-	            guid: _this2.guid(),
+	            guid: _this3.guid(),
 	            flex: flexValues[idx] || remainingFlex / nbElements
 	          };
 	        }
@@ -629,16 +770,16 @@ return /******/ (function(modules) { // webpackBootstrap
 	  }, {
 	    key: 'render',
 	    value: function render() {
-	      var _this3 = this;
+	      var _this4 = this;
 	
 	      var classNames = [].concat(_toConsumableArray(this.props.className.split(' ')), ['reflex-layout', 'reflex-container', this.props.orientation]);
 	
 	      this.children = _react2.default.Children.map(this.props.children, function (child, idx) {
 	
-	        var flexData = _this3.state.flexData[idx];
+	        var flexData = _this4.state.flexData[idx];
 	
 	        var newProps = Object.assign({}, child.props, {
-	          containerId: _this3.state.id,
+	          containerId: _this4.state.id,
 	          flex: flexData.flex,
 	          ref: flexData.guid,
 	          index: idx
@@ -798,15 +939,15 @@ return /******/ (function(modules) { // webpackBootstrap
 	
 	      if (this.state.active) {
 	
-	        if (this.props.onResize) {
-	
-	          this.props.onResize();
-	        }
-	
 	        _reflexEvents2.default.emit('splitter.resize', {
 	          splitter: this,
 	          event: event
 	        });
+	
+	        if (this.props.onResize) {
+	
+	          this.props.onResize();
+	        }
 	
 	        event.stopPropagation();
 	        event.preventDefault();
@@ -828,7 +969,16 @@ return /******/ (function(modules) { // webpackBootstrap
 	
 	      if (this.props.onStartResize) {
 	
-	        this.props.onStartResize(event);
+	        // cancels resize from controller
+	        // if needed by returning true
+	        // to onStartResize
+	        if (this.props.onStartResize(event)) {
+	
+	          event.stopPropagation();
+	          event.preventDefault();
+	
+	          return;
+	        }
 	      }
 	
 	      _reflexEvents2.default.emit('splitter.startResize', {
@@ -970,314 +1120,6 @@ return /******/ (function(modules) { // webpackBootstrap
 
 /***/ },
 /* 9 */
-/***/ function(module, exports) {
-
-	// Copyright Joyent, Inc. and other Node contributors.
-	//
-	// Permission is hereby granted, free of charge, to any person obtaining a
-	// copy of this software and associated documentation files (the
-	// "Software"), to deal in the Software without restriction, including
-	// without limitation the rights to use, copy, modify, merge, publish,
-	// distribute, sublicense, and/or sell copies of the Software, and to permit
-	// persons to whom the Software is furnished to do so, subject to the
-	// following conditions:
-	//
-	// The above copyright notice and this permission notice shall be included
-	// in all copies or substantial portions of the Software.
-	//
-	// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
-	// OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
-	// MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN
-	// NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM,
-	// DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR
-	// OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
-	// USE OR OTHER DEALINGS IN THE SOFTWARE.
-	
-	function EventEmitter() {
-	  this._events = this._events || {};
-	  this._maxListeners = this._maxListeners || undefined;
-	}
-	module.exports = EventEmitter;
-	
-	// Backwards-compat with node 0.10.x
-	EventEmitter.EventEmitter = EventEmitter;
-	
-	EventEmitter.prototype._events = undefined;
-	EventEmitter.prototype._maxListeners = undefined;
-	
-	// By default EventEmitters will print a warning if more than 10 listeners are
-	// added to it. This is a useful default which helps finding memory leaks.
-	EventEmitter.defaultMaxListeners = 10;
-	
-	// Obviously not all Emitters should be limited to 10. This function allows
-	// that to be increased. Set to zero for unlimited.
-	EventEmitter.prototype.setMaxListeners = function(n) {
-	  if (!isNumber(n) || n < 0 || isNaN(n))
-	    throw TypeError('n must be a positive number');
-	  this._maxListeners = n;
-	  return this;
-	};
-	
-	EventEmitter.prototype.emit = function(type) {
-	  var er, handler, len, args, i, listeners;
-	
-	  if (!this._events)
-	    this._events = {};
-	
-	  // If there is no 'error' event listener then throw.
-	  if (type === 'error') {
-	    if (!this._events.error ||
-	        (isObject(this._events.error) && !this._events.error.length)) {
-	      er = arguments[1];
-	      if (er instanceof Error) {
-	        throw er; // Unhandled 'error' event
-	      } else {
-	        // At least give some kind of context to the user
-	        var err = new Error('Uncaught, unspecified "error" event. (' + er + ')');
-	        err.context = er;
-	        throw err;
-	      }
-	    }
-	  }
-	
-	  handler = this._events[type];
-	
-	  if (isUndefined(handler))
-	    return false;
-	
-	  if (isFunction(handler)) {
-	    switch (arguments.length) {
-	      // fast cases
-	      case 1:
-	        handler.call(this);
-	        break;
-	      case 2:
-	        handler.call(this, arguments[1]);
-	        break;
-	      case 3:
-	        handler.call(this, arguments[1], arguments[2]);
-	        break;
-	      // slower
-	      default:
-	        args = Array.prototype.slice.call(arguments, 1);
-	        handler.apply(this, args);
-	    }
-	  } else if (isObject(handler)) {
-	    args = Array.prototype.slice.call(arguments, 1);
-	    listeners = handler.slice();
-	    len = listeners.length;
-	    for (i = 0; i < len; i++)
-	      listeners[i].apply(this, args);
-	  }
-	
-	  return true;
-	};
-	
-	EventEmitter.prototype.addListener = function(type, listener) {
-	  var m;
-	
-	  if (!isFunction(listener))
-	    throw TypeError('listener must be a function');
-	
-	  if (!this._events)
-	    this._events = {};
-	
-	  // To avoid recursion in the case that type === "newListener"! Before
-	  // adding it to the listeners, first emit "newListener".
-	  if (this._events.newListener)
-	    this.emit('newListener', type,
-	              isFunction(listener.listener) ?
-	              listener.listener : listener);
-	
-	  if (!this._events[type])
-	    // Optimize the case of one listener. Don't need the extra array object.
-	    this._events[type] = listener;
-	  else if (isObject(this._events[type]))
-	    // If we've already got an array, just append.
-	    this._events[type].push(listener);
-	  else
-	    // Adding the second element, need to change to array.
-	    this._events[type] = [this._events[type], listener];
-	
-	  // Check for listener leak
-	  if (isObject(this._events[type]) && !this._events[type].warned) {
-	    if (!isUndefined(this._maxListeners)) {
-	      m = this._maxListeners;
-	    } else {
-	      m = EventEmitter.defaultMaxListeners;
-	    }
-	
-	    if (m && m > 0 && this._events[type].length > m) {
-	      this._events[type].warned = true;
-	      console.error('(node) warning: possible EventEmitter memory ' +
-	                    'leak detected. %d listeners added. ' +
-	                    'Use emitter.setMaxListeners() to increase limit.',
-	                    this._events[type].length);
-	      if (typeof console.trace === 'function') {
-	        // not supported in IE 10
-	        console.trace();
-	      }
-	    }
-	  }
-	
-	  return this;
-	};
-	
-	EventEmitter.prototype.on = EventEmitter.prototype.addListener;
-	
-	EventEmitter.prototype.once = function(type, listener) {
-	  if (!isFunction(listener))
-	    throw TypeError('listener must be a function');
-	
-	  var fired = false;
-	
-	  function g() {
-	    this.removeListener(type, g);
-	
-	    if (!fired) {
-	      fired = true;
-	      listener.apply(this, arguments);
-	    }
-	  }
-	
-	  g.listener = listener;
-	  this.on(type, g);
-	
-	  return this;
-	};
-	
-	// emits a 'removeListener' event iff the listener was removed
-	EventEmitter.prototype.removeListener = function(type, listener) {
-	  var list, position, length, i;
-	
-	  if (!isFunction(listener))
-	    throw TypeError('listener must be a function');
-	
-	  if (!this._events || !this._events[type])
-	    return this;
-	
-	  list = this._events[type];
-	  length = list.length;
-	  position = -1;
-	
-	  if (list === listener ||
-	      (isFunction(list.listener) && list.listener === listener)) {
-	    delete this._events[type];
-	    if (this._events.removeListener)
-	      this.emit('removeListener', type, listener);
-	
-	  } else if (isObject(list)) {
-	    for (i = length; i-- > 0;) {
-	      if (list[i] === listener ||
-	          (list[i].listener && list[i].listener === listener)) {
-	        position = i;
-	        break;
-	      }
-	    }
-	
-	    if (position < 0)
-	      return this;
-	
-	    if (list.length === 1) {
-	      list.length = 0;
-	      delete this._events[type];
-	    } else {
-	      list.splice(position, 1);
-	    }
-	
-	    if (this._events.removeListener)
-	      this.emit('removeListener', type, listener);
-	  }
-	
-	  return this;
-	};
-	
-	EventEmitter.prototype.removeAllListeners = function(type) {
-	  var key, listeners;
-	
-	  if (!this._events)
-	    return this;
-	
-	  // not listening for removeListener, no need to emit
-	  if (!this._events.removeListener) {
-	    if (arguments.length === 0)
-	      this._events = {};
-	    else if (this._events[type])
-	      delete this._events[type];
-	    return this;
-	  }
-	
-	  // emit removeListener for all listeners on all events
-	  if (arguments.length === 0) {
-	    for (key in this._events) {
-	      if (key === 'removeListener') continue;
-	      this.removeAllListeners(key);
-	    }
-	    this.removeAllListeners('removeListener');
-	    this._events = {};
-	    return this;
-	  }
-	
-	  listeners = this._events[type];
-	
-	  if (isFunction(listeners)) {
-	    this.removeListener(type, listeners);
-	  } else if (listeners) {
-	    // LIFO order
-	    while (listeners.length)
-	      this.removeListener(type, listeners[listeners.length - 1]);
-	  }
-	  delete this._events[type];
-	
-	  return this;
-	};
-	
-	EventEmitter.prototype.listeners = function(type) {
-	  var ret;
-	  if (!this._events || !this._events[type])
-	    ret = [];
-	  else if (isFunction(this._events[type]))
-	    ret = [this._events[type]];
-	  else
-	    ret = this._events[type].slice();
-	  return ret;
-	};
-	
-	EventEmitter.prototype.listenerCount = function(type) {
-	  if (this._events) {
-	    var evlistener = this._events[type];
-	
-	    if (isFunction(evlistener))
-	      return 1;
-	    else if (evlistener)
-	      return evlistener.length;
-	  }
-	  return 0;
-	};
-	
-	EventEmitter.listenerCount = function(emitter, type) {
-	  return emitter.listenerCount(type);
-	};
-	
-	function isFunction(arg) {
-	  return typeof arg === 'function';
-	}
-	
-	function isNumber(arg) {
-	  return typeof arg === 'number';
-	}
-	
-	function isObject(arg) {
-	  return typeof arg === 'object' && arg !== null;
-	}
-	
-	function isUndefined(arg) {
-	  return arg === void 0;
-	}
-
-
-/***/ },
-/* 10 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/*
@@ -1502,7 +1344,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 11 */
+/* 10 */
 /***/ function(module, exports, __webpack_require__) {
 
 	// style-loader: Adds some css to the DOM by adding a <style> tag
@@ -1511,7 +1353,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	var content = __webpack_require__(7);
 	if(typeof content === 'string') content = [[module.id, content, '']];
 	// add the styles to the DOM
-	var update = __webpack_require__(10)(content, {});
+	var update = __webpack_require__(9)(content, {});
 	if(content.locals) module.exports = content.locals;
 	// Hot Module Replacement
 	if(false) {

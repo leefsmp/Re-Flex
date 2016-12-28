@@ -5,17 +5,17 @@ import {
   ReflexContainer,
   ReflexSplitter,
   ReflexElement
-} from '../../dist/lib'
+} from '../../src/lib' //'../../dist/lib'
 
 import './demo.scss'
 
+/////////////////////////////////////////////////////////
+// Basic vertical re-flex layout non-resizable
+//
+/////////////////////////////////////////////////////////
+class ReflexBasicDemo
+  extends React.Component {
 
-class ReflexBasicDemo extends React.Component {
-
-  /////////////////////////////////////////////////////////
-  // Basic vertical re-flex layout non-resizable
-  //
-  /////////////////////////////////////////////////////////
   render () {
 
     return (
@@ -43,13 +43,13 @@ ReactDOM.render(
   document.getElementById('demo-basic'))
 
 
+/////////////////////////////////////////////////////////
+// Basic vertical re-flex layout with resizable splitter
+//
+/////////////////////////////////////////////////////////
+class ReflexBasicSplitterDemo
+  extends React.Component {
 
-class ReflexBasicSplitterDemo extends React.Component {
-
-  /////////////////////////////////////////////////////////
-  // Basic vertical re-flex layout with resizable splitter
-  //
-  /////////////////////////////////////////////////////////
   render () {
 
     return (
@@ -63,9 +63,9 @@ class ReflexBasicSplitterDemo extends React.Component {
 
         <ReflexSplitter/>
 
-        <ReflexElement className="left-pane">
+        <ReflexElement className="right-pane" minSize="200" maxSize="800">
           <div className="pane-content">
-            Right Pane (resizable)
+            Right Pane (resizable with minSize=200px / maxSize=800px)
           </div>
         </ReflexElement>
 
@@ -79,10 +79,58 @@ ReactDOM.render(
   document.getElementById('demo-basic-splitter'))
 
 
+/////////////////////////////////////////////////////////
+// vertical re-flex layout with double
+// resizable splitter propagation
+//
+/////////////////////////////////////////////////////////
+class ReflexSplitterPropagationDemo
+  extends React.Component {
+
+  render () {
+
+    return (
+      <ReflexContainer orientation="vertical">
+
+        <ReflexElement className="left-pane">
+          <div className="pane-content">
+          Left Pane (resizable)
+          </div>
+        </ReflexElement>
+
+        <ReflexSplitter propagate={true}/>
+
+        <ReflexElement className="middle-pane">
+          <div className="pane-content">
+          Middle Pane (resizable)
+          </div>
+        </ReflexElement>
+
+        <ReflexSplitter propagate={true}/>
+
+        <ReflexElement className="right-pane">
+          <div className="pane-content">
+          Right Pane (resizable)
+          </div>
+        </ReflexElement>
+
+      </ReflexContainer>
+    )
+  }
+}
+
+ReactDOM.render(
+  <ReflexSplitterPropagationDemo/>,
+  document.getElementById('demo-splitter-propagation'))
 
 
-
-class ReflexAdvancedDemo extends React.Component {
+/////////////////////////////////////////////////////////
+// Advanced re-flex multi-nested resizable layout
+// with event listeners
+//
+/////////////////////////////////////////////////////////
+class ReflexAdvancedDemo
+  extends React.Component {
 
   constructor () {
 
@@ -104,11 +152,6 @@ class ReflexAdvancedDemo extends React.Component {
     e.domElement.classList.remove('resizing')
   }
 
-  /////////////////////////////////////////////////////////
-  // Advanced re-flex multi-nested resizable layout
-  // with event listeners
-  //
-  /////////////////////////////////////////////////////////
   render () {
 
     return (

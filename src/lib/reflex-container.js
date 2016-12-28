@@ -1,15 +1,24 @@
+///////////////////////////////////////////////////////////
+// ReflexContainer
+// By Philippe Leefsma
+// December 2016
+//
+///////////////////////////////////////////////////////////
+import ReflexSplitter from './reflex-splitter'
 import ReflexElement from './reflex-element'
 import ReflexEvents from './reflex-events'
 import ReactDOM from 'react-dom'
 import React from 'react'
 
-export default class ReflexContainer extends React.Component {
+export default class ReflexContainer
+  extends React.Component {
 
   /////////////////////////////////////////////////////////
   //
   //
   /////////////////////////////////////////////////////////
   static propTypes = {
+    updateOnWindowResize: React.PropTypes.bool,
     orientation: React.PropTypes.string,
     className: React.PropTypes.string
   }
@@ -19,6 +28,7 @@ export default class ReflexContainer extends React.Component {
   //
   /////////////////////////////////////////////////////////
   static defaultProps = {
+    updateOnWindowResize: false,
     orientation: 'horizontal',
     className: ''
   }
@@ -76,15 +86,15 @@ export default class ReflexContainer extends React.Component {
     window.removeEventListener(
       'resize', this.onResize)
 
-    ReflexEvents.removeListener(
+    ReflexEvents.off(
       'splitter.startResize',
       this.onSplitterStartResize)
 
-    ReflexEvents.removeListener(
+    ReflexEvents.off(
       'splitter.stopResize',
       this.onSplitterStopResize)
 
-    ReflexEvents.removeListener(
+    ReflexEvents.off(
       'splitter.resize',
       this.onSplitterResize)
   }
@@ -93,25 +103,34 @@ export default class ReflexContainer extends React.Component {
   //
   //
   /////////////////////////////////////////////////////////
-  getSizeAt (idx) {
+  getSize (element) {
 
-    const ref = this.refs[ this.state.flexData[ idx ].guid ]
+    const ref = this.refs[element.ref]
 
     const domElement = ReactDOM.findDOMNode(ref)
 
-    return {
-      x: domElement.offsetWidth,
-      y: domElement.offsetHeight
+    switch (this.props.orientation) {
+
+      case 'horizontal':
+        return domElement.offsetHeight
+
+      case 'vertical':
+        return domElement.offsetWidth
+
+      default:
+        return 0
     }
   }
 
-  ///////////////////////////////////////////////////////////////////
+  /////////////////////////////////////////////////////////
   //
   //
-  ///////////////////////////////////////////////////////////////////
+  /////////////////////////////////////////////////////////
   onResize () {
 
-    this.forceUpdate()
+    if (this.props.updateOnWindowResize) {
+      this.forceUpdate()
+    }
   }
 
   /////////////////////////////////////////////////////////
@@ -120,29 +139,31 @@ export default class ReflexContainer extends React.Component {
   /////////////////////////////////////////////////////////
   onSplitterStartResize (data) {
 
-    if (data.splitter.props.containerId === this.state.id) {
+    const containerId = data.splitter.props.containerId
 
-      this.previousPos = {
-        x: data.event.pageX,
-        y: data.event.pageY
-      }
+    if (containerId === this.state.id) {
 
       switch (this.props.orientation) {
 
         case 'horizontal':
-
           document.body.style.cursor = 'row-resize'
+          this.previousPos = data.event.pageY
           break
 
         case 'vertical':
-
           document.body.style.cursor = 'col-resize'
+          this.previousPos = data.event.pageX
           break
       }
 
       const idx = data.splitter.props.index
 
-      this.fireEvent(idx, 'onStartResize')
+      const elements = [
+        this.children[idx - 1],
+        this.children[idx + 1]
+      ]
+
+      this.fireEvent(elements, 'onStartResize')
     }
   }
 
@@ -152,13 +173,36 @@ export default class ReflexContainer extends React.Component {
   /////////////////////////////////////////////////////////
   onSplitterStopResize (data) {
 
-    if (data.splitter.props.containerId === this.state.id) {
+    const containerId = data.splitter.props.containerId
 
-      const idx = data.splitter.props.index
+    if (containerId === this.state.id) {
 
       document.body.style.cursor = 'auto'
 
-      this.fireEvent(idx, 'onStopResize')
+      const idx = data.splitter.props.index
+
+      const elements = [
+        this.children[idx - 1],
+        this.children[idx + 1]
+      ]
+
+      this.fireEvent(elements, 'onStopResize')
+    }
+  }
+
+  /////////////////////////////////////////////////////////
+  //
+  //
+  /////////////////////////////////////////////////////////
+  getOffset (event) {
+
+    switch (this.props.orientation) {
+
+      case 'horizontal':
+        return event.pageY - this.previousPos
+
+      case 'vertical':
+        return event.pageX - this.previousPos
     }
   }
 
@@ -168,59 +212,37 @@ export default class ReflexContainer extends React.Component {
   /////////////////////////////////////////////////////////
   onSplitterResize (data) {
 
-    if (data.splitter.props.containerId === this.state.id) {
+    const containerId = data.splitter.props.containerId
+
+    if (containerId === this.state.id) {
 
       const idx = data.splitter.props.index
 
-      const size1 = this.getSizeAt(idx - 1)
+      const offset = this.getOffset(data.event)
 
-      const offset = {
-        x: data.event.pageX - this.previousPos.x,
-        y: data.event.pageY - this.previousPos.y
-      }
+      const availableOffset =
+        this.computeAvailableOffset(
+          idx, offset)
 
-      this.previousPos = {
-        x: data.event.pageX,
-        y: data.event.pageY
-      }
+      if (availableOffset !== 0) {
 
-      const newSize1 = {
-        x: Math.max(size1.x + offset.x, 1),
-        y: Math.max(size1.y + offset.y, 1)
-      }
+        switch (this.props.orientation) {
 
-      const size2 = this.getSizeAt(idx - 1)
+          case 'horizontal':
+            this.previousPos = data.event.pageY
+            break
 
-      const newSize2 = {
-        x: Math.max(size2.x - offset.x, 1),
-        y: Math.max(size2.y - offset.y, 1)
-      }
+          case 'vertical':
+            this.previousPos = data.event.pageX
+            break
+        }
 
-      if (this.validateSizeAt(idx - 1, newSize1) &&
-          this.validateSizeAt(idx + 1, newSize2)) {
+        const elements = this.dispatchOffset(
+          idx, availableOffset)
 
-        const flex = this.state.flexData[ idx - 1 ].flex
+        this.setState(this.state)
 
-        const newFlex = this.computeNewFlex(
-          this.state.flexData[ idx - 1 ].flex,
-          size1, newSize1)
-
-        this.state.flexData[ idx - 1 ] = Object.assign({},
-          this.state.flexData[ idx - 1 ], {
-            flex: newFlex
-          })
-
-        this.state.flexData[ idx + 1 ] = Object.assign({},
-          this.state.flexData[ idx + 1 ], {
-            flex: this.state.flexData[ idx + 1 ].flex -
-            (newFlex - flex)
-          })
-
-        this.setState(Object.assign({}, this.state, {
-          flexData: this.state.flexData
-        }))
-
-        this.fireEvent(idx, 'onResize')
+        this.fireEvent(elements, 'onResize')
       }
     }
   }
@@ -229,31 +251,210 @@ export default class ReflexContainer extends React.Component {
   //
   //
   /////////////////////////////////////////////////////////
-  fireEvent (idx, event) {
+  computeAvailableOffset (idx, offset) {
 
-    const child1 = this.children[idx - 1]
+    const stretch = this.computeAvailableStretch(
+      idx, offset)
 
-    if (child1 && child1.props[event]) {
+    const shrink = this.computeAvailableShrink(
+      idx, offset)
 
-      const ref = this.refs[child1.ref]
+    console.log('stretch: ' + stretch)
+    console.log('shrink: ' + shrink)
+    console.log('offset: ' + offset)
 
-      child1.props[event]({
-        domElement: ReactDOM.findDOMNode(ref),
-        component: child1
-      })
+    const availableOffset =
+      Math.min(stretch, shrink) *
+      Math.sign(offset)
+
+    return availableOffset
+  }
+
+  /////////////////////////////////////////////////////////
+  //
+  //
+  /////////////////////////////////////////////////////////
+  checkPropagate (idx, direction) {
+
+    if (direction > 0) {
+
+      if (idx < this.children.length - 2) {
+
+        const child = this.children[idx + 2]
+
+        const typeCheck = (child.type === ReflexSplitter)
+
+        return typeCheck && child.props.propagate
+      }
+
+    } else {
+
+      if (idx > 2) {
+
+        const child = this.children[idx - 2]
+
+        const typeCheck = (child.type === ReflexSplitter)
+
+        return typeCheck && child.props.propagate
+      }
     }
 
-    const child2 = this.children[idx + 1]
+    return false
+  }
 
-    if (child2 && child2.props[event]) {
+  /////////////////////////////////////////////////////////
+  //
+  //
+  /////////////////////////////////////////////////////////
+  computeAvailableStretch (idx, offset) {
 
-      const ref = this.refs[child2.ref]
+    const childIdx = offset < 0 ? idx + 1 : idx - 1
 
-      child2.props[event]({
-        domElement: ReactDOM.findDOMNode(ref),
-        component: child2
-      })
+    const child = this.children[childIdx]
+
+    const size = this.getSize(child)
+
+    const maxSize = child.props.maxSize ||
+      (size + Math.abs(offset))
+
+    const availableStretch = maxSize - size
+
+    if (availableStretch < Math.abs(offset)) {
+
+      if (this.checkPropagate(idx, -1 * offset)) {
+
+        const nextOffset = Math.sign(offset) *
+          (Math.abs(offset) - availableStretch)
+
+        return availableStretch +
+          this.computeAvailableStretch(
+            offset < 0 ? idx + 2 : idx - 2,
+            nextOffset)
+      }
     }
+
+    return Math.min(availableStretch, Math.abs(offset))
+  }
+
+  /////////////////////////////////////////////////////////
+  //
+  //
+  /////////////////////////////////////////////////////////
+  computeAvailableShrink (idx, offset) {
+
+    const childIdx = offset > 0 ? idx + 1 : idx -1
+
+    const child = this.children[childIdx]
+
+    const size = this.getSize(child)
+
+    const minSize = child.props.minSize || 1
+
+    const availableShrink = size - minSize
+
+    if (availableShrink < Math.abs(offset)) {
+
+      if (this.checkPropagate(idx, offset)) {
+
+        const nextOffset = Math.sign(offset) *
+          (Math.abs(offset) - availableShrink)
+
+        return availableShrink +
+          this.computeAvailableShrink(
+            offset > 0 ? idx + 2 : idx - 2,
+            nextOffset)
+      }
+    }
+
+    return Math.min(availableShrink, Math.abs(offset))
+  }
+
+  /////////////////////////////////////////////////////////
+  //
+  //
+  /////////////////////////////////////////////////////////
+  addOffsetAt (idx, offset) {
+
+    const child = this.children[idx]
+
+    const size = this.getSize(child)
+
+    const newSize = size + offset
+
+    const newFlex = this.computeNewFlex (
+      child.props.flex,
+      size, newSize)
+
+    this.state.flexData[idx].flex = newFlex
+
+    return child
+  }
+
+  /////////////////////////////////////////////////////////
+  //
+  //
+  /////////////////////////////////////////////////////////
+  dispatchStretch (idx, offset) {
+
+    const childIdx = offset < 0 ? idx + 1 : idx - 1
+
+    const child = this.children[childIdx]
+
+    const size = this.getSize(child)
+
+    const maxSize = child.props.maxSize ||
+      (size + Math.abs(offset))
+
+    const availableStretch = maxSize - size
+  }
+
+  /////////////////////////////////////////////////////////
+  //
+  //
+  /////////////////////////////////////////////////////////
+  dispatchShrink (idx, offset) {
+
+
+  }
+
+  /////////////////////////////////////////////////////////
+  //
+  //
+  /////////////////////////////////////////////////////////
+  dispatchOffset (idx, offset) {
+
+    return [
+      ...this.dispatchStretch(idx, offset),
+      ...this.dispatchShrink(idx, offset)
+    ]
+
+    //return [
+    //  this.addOffsetAt(idx - 1, offset),
+    //  this.addOffsetAt(idx + 1, -1 * offset)
+    //]
+  }
+
+  /////////////////////////////////////////////////////////
+  //
+  //
+  /////////////////////////////////////////////////////////
+  fireEvent (elements, event) {
+
+    const elementsArray = Array.isArray(elements) ?
+      elements : [elements]
+
+    elementsArray.forEach((element) => {
+
+      if (element.props[event]) {
+
+        const ref = this.refs[element.ref]
+
+        element.props[event]({
+          domElement: ReactDOM.findDOMNode(ref),
+          component: element
+        })
+      }
+    })
   }
 
   /////////////////////////////////////////////////////////
@@ -262,67 +463,12 @@ export default class ReflexContainer extends React.Component {
   /////////////////////////////////////////////////////////
   computeNewFlex (flex, size, newSize) {
 
-    switch (this.props.orientation) {
+    if (size === 0) {
 
-      case 'horizontal':
-
-        return newSize.y * flex / size.y
-
-      case 'vertical':
-
-        if (size.x === 0) {
-
-          return 0
-        }
-
-        return newSize.x * flex / size.x
-
-      default:
-
-        return 0
-    }
-  }
-
-  /////////////////////////////////////////////////////////
-  //
-  //
-  /////////////////////////////////////////////////////////
-  validateSizeAt (idx, size) {
-
-    const child = this.props.children[idx]
-
-    switch (this.props.orientation) {
-
-      case 'horizontal':
-
-        if (child.props.minSize &&
-           (size.y < child.props.minSize)) {
-
-          return false
-        }
-
-        if (child.props.maxSize &&
-           (size.y > child.props.maxSize)) {
-
-          return false
-        }
-
-      case 'vertical':
-
-        if (child.props.minSize &&
-           (size.x < child.props.minSize)) {
-
-          return false
-        }
-
-        if (child.props.maxSize &&
-           (size.x > child.props.maxSize)) {
-
-          return false
-        }
+      return 0
     }
 
-    return true
+    return newSize * flex / size
   }
 
   /////////////////////////////////////////////////////////
@@ -416,7 +562,7 @@ export default class ReflexContainer extends React.Component {
   //
   //
   /////////////////////////////////////////////////////////
-  guid (format='xxxxxxxxxxxx') {
+  guid (format = 'xxxxxxxxxxxx') {
 
     let d = new Date().getTime()
 

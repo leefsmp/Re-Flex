@@ -1,7 +1,14 @@
+///////////////////////////////////////////////////////////
+// ReflexElement
+// By Philippe Leefsma
+// December 2016
+//
+///////////////////////////////////////////////////////////
 import ReactDOM from 'react-dom'
 import React from 'react'
 
-export default class ReflexElement extends React.Component {
+export default class ReflexElement
+  extends React.Component {
 
   /////////////////////////////////////////////////////////
   //
@@ -37,10 +44,14 @@ export default class ReflexElement extends React.Component {
       })
 
     const style = Object.assign({}, this.props.style, {
-      WebkitBoxFlex: this.props.flex, /* OLD - iOS 6-, Safari 3.1-6 */
-      MozBoxFlex: this.props.flex,    /* OLD - Firefox 19- */
-      WebkitFlex: this.props.flex,    /* Chrome */
-      FlexElement: this.props.flex,   /* IE 10 */
+      /* OLD - iOS 6-, Safari 3.1-6 */
+      WebkitBoxFlex: this.props.flex,
+      /* OLD - Firefox 19- */
+      MozBoxFlex: this.props.flex,
+      /* Chrome */
+      WebkitFlex: this.props.flex,
+      /* IE 10 */
+      FlexElement: this.props.flex,
       flex: this.props.flex
     })
 

@@ -7,7 +7,7 @@ module.exports = {
   context: path.join(__dirname, '../..'),
 
   entry: {
-    'bundle.min': [
+    bundle: [
       'babel-polyfill',
       './src/demo/index.js'
     ]
