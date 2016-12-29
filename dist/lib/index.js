@@ -279,9 +279,13 @@ var ReflexSplitter = function (_React$Component) {
     key: 'componentDidMount',
     value: function componentDidMount() {
 
+      this.document.addEventListener('touchend', this.onMouseUp);
+
       this.document.addEventListener('mouseup', this.onMouseUp);
 
       this.document.addEventListener('mousemove', this.onMouseMove);
+
+      this.document.addEventListener('touchmove', this.onMouseMove);
     }
 
     /////////////////////////////////////////////////////////
@@ -295,7 +299,11 @@ var ReflexSplitter = function (_React$Component) {
 
       this.document.removeEventListener('mouseup', this.onMouseUp);
 
+      this.document.removeEventListener('touchend', this.onMouseUp);
+
       this.document.removeEventListener('mousemove', this.onMouseMove);
+
+      this.document.removeEventListener('touchmove', this.onMouseMove);
     }
 
     /////////////////////////////////////////////////////////
@@ -332,6 +340,8 @@ var ReflexSplitter = function (_React$Component) {
   }, {
     key: 'onMouseDown',
     value: function onMouseDown(event) {
+
+      console.log(event);
 
       this.setState({
         active: true
@@ -399,6 +409,7 @@ var ReflexSplitter = function (_React$Component) {
       var classNames = [].concat(_toConsumableArray(this.props.className.split(' ')), ['reflex-splitter']);
 
       return _react2.default.createElement('div', { className: classNames.join(' '),
+        onTouchStart: this.onMouseDown,
         onMouseDown: this.onMouseDown });
     }
   }]);

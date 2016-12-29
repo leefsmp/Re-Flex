@@ -144,16 +144,20 @@ export default class ReflexContainer
 
     if (containerId === this.state.id) {
 
+      const pos = data.event.changedTouches ?
+        data.event.changedTouches[0] :
+        data.event
+
       switch (this.props.orientation) {
 
         case 'horizontal':
           document.body.style.cursor = 'row-resize'
-          this.previousPos = data.event.pageY
+          this.previousPos = pos.pageY
           break
 
         case 'vertical':
           document.body.style.cursor = 'col-resize'
-          this.previousPos = data.event.pageX
+          this.previousPos = pos.pageX
           break
       }
 
@@ -190,13 +194,17 @@ export default class ReflexContainer
   /////////////////////////////////////////////////////////
   getOffset (event) {
 
+    const pos = event.changedTouches ?
+      event.changedTouches[0] :
+      event
+
     switch (this.props.orientation) {
 
       case 'horizontal':
-        return event.pageY - this.previousPos
+        return pos.pageY - this.previousPos
 
       case 'vertical':
-        return event.pageX - this.previousPos
+        return pos.pageX - this.previousPos
     }
   }
 
@@ -220,14 +228,18 @@ export default class ReflexContainer
 
       if (availableOffset !== 0) {
 
+        const pos = data.event.changedTouches ?
+          data.event.changedTouches[0] :
+          data.event
+
         switch (this.props.orientation) {
 
           case 'horizontal':
-            this.previousPos = data.event.pageY
+            this.previousPos = pos.pageY
             break
 
           case 'vertical':
-            this.previousPos = data.event.pageX
+            this.previousPos = pos.pageX
             break
         }
 

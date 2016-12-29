@@ -5,7 +5,7 @@ import {
   ReflexContainer,
   ReflexSplitter,
   ReflexElement
-} from '../../dist/lib'
+} from '../../src/lib'
 
 
 /////////////////////////////////////////////////////////

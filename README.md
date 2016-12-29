@@ -1,4 +1,4 @@
-![re-flex](./re-f%7Cex-banner.png)
+![re-flex](./resources/img/re-f%7Cex-banner.png)
 
 # About Re-F|ex
 

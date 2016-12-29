@@ -62,11 +62,19 @@ export default class ReflexSplitter
   componentDidMount () {
 
     this.document.addEventListener(
+      'touchend',
+      this.onMouseUp)
+
+    this.document.addEventListener(
       'mouseup',
       this.onMouseUp)
 
     this.document.addEventListener(
       'mousemove',
+      this.onMouseMove)
+
+    this.document.addEventListener(
+      'touchmove',
       this.onMouseMove)
   }
 
@@ -81,7 +89,15 @@ export default class ReflexSplitter
       this.onMouseUp)
 
     this.document.removeEventListener(
+      'touchend',
+      this.onMouseUp)
+
+    this.document.removeEventListener(
       'mousemove',
+      this.onMouseMove)
+
+    this.document.removeEventListener(
+      'touchmove',
       this.onMouseMove)
   }
 
@@ -92,8 +108,6 @@ export default class ReflexSplitter
   onMouseMove (event) {
 
     if (this.state.active) {
-
-
 
       FlexEvents.emit(
         'splitter.resize', {
@@ -181,6 +195,7 @@ export default class ReflexSplitter
 
     return (
       <div className={classNames.join(' ')}
+        onTouchStart={this.onMouseDown}
         onMouseDown={this.onMouseDown}>
       </div>
     )
