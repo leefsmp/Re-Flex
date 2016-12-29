@@ -1,3 +1,5 @@
+![re-flex](./re-f%7Cex-banner.png)
+
 # About Re-Flex
 
 Re-Flex is a flex-based React layout component library which I created because none of the components I found out there could address my exact needs.
