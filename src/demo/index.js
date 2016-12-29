@@ -63,9 +63,16 @@ class ReflexBasicSplitterDemo
 
         <ReflexSplitter/>
 
-        <ReflexElement className="right-pane" minSize="200" maxSize="800">
+        <ReflexElement className="right-pane"
+          minSize="200"
+          maxSize="800">
           <div className="pane-content">
-            Right Pane (resizable with minSize=200px / maxSize=800px)
+            Right Pane (resizable)
+            <br/>
+            <br/>
+            minSize = 200px
+            <br/>
+            maxSize = 800px
           </div>
         </ReflexElement>
 
@@ -100,9 +107,16 @@ class ReflexSplitterPropagationDemo
 
         <ReflexSplitter propagate={true}/>
 
-        <ReflexElement className="middle-pane">
+        <ReflexElement className="middle-pane"
+          minSize="200"
+          maxSize="800">
           <div className="pane-content">
-          Middle Pane (resizable)
+            Middle Pane (resizable)
+            <br/>
+            <br/>
+            minSize = 200px
+            <br/>
+            maxSize = 400px
           </div>
         </ReflexElement>
 
@@ -168,18 +182,24 @@ class ReflexAdvancedDemo
                 <ReflexElement {...this.elementProps}>
                   <div className="pane-content">
                     Left Pane Top
+                    <br/>
+                    (splitter propagation)
                   </div>
                 </ReflexElement>
-                <ReflexSplitter/>
+                <ReflexSplitter propagate={true}/>
                 <ReflexElement {...this.elementProps}>
                   <div className="pane-content">
                     Left Pane Middle
+                    <br/>
+                   (splitter propagation)
                   </div>
                 </ReflexElement>
-                <ReflexSplitter/>
+                <ReflexSplitter propagate={true}/>
                 <ReflexElement {...this.elementProps}>
                   <div className="pane-content">
                     Left Pane Bottom
+                    <br/>
+                    (splitter propagation)
                   </div>
                 </ReflexElement>
               </ReflexContainer>

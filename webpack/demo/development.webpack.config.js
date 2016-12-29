@@ -22,17 +22,17 @@ module.exports = {
 
   plugins: [
 
-    new webpack.NoErrorsPlugin(),
-    new webpack.optimize.DedupePlugin(),
-    new webpack.optimize.OccurenceOrderPlugin(),
-
-    new webpack.optimize.MinChunkSizePlugin({
-      minChunkSize: 51200
-    })
+    //new webpack.NoErrorsPlugin(),
+    //new webpack.optimize.DedupePlugin(),
+    //new webpack.optimize.OccurenceOrderPlugin(),
+    //
+    //new webpack.optimize.MinChunkSizePlugin({
+    //  minChunkSize: 51200
+    //})
   ],
 
   resolve: {
-    extensions: ['', '.js', '.jsx', '.json']
+    extensions: ['.js', '.jsx', '.json']
   },
 
   module: {
@@ -44,7 +44,7 @@ module.exports = {
         use: [{
           loader: "babel-loader",
           options: {
-            presets: ['react', 'es2015', 'stage-0']
+            presets: ['react', 'es2015', 'stage-0'] // { "modules": false }
           }
         }]
       },

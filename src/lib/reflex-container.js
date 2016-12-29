@@ -64,9 +64,6 @@ export default class ReflexContainer
   /////////////////////////////////////////////////////////
   componentDidMount () {
 
-    window.addEventListener(
-      'resize', this.onResize)
-
     ReflexEvents.on('splitter.startResize',
       this.onSplitterStartResize)
 
@@ -75,6 +72,9 @@ export default class ReflexContainer
 
     ReflexEvents.on('splitter.resize',
       this.onSplitterResize)
+
+    window.addEventListener(
+      'resize', this.onResize)
   }
 
   /////////////////////////////////////////////////////////
@@ -129,6 +129,7 @@ export default class ReflexContainer
   onResize () {
 
     if (this.props.updateOnWindowResize) {
+
       this.forceUpdate()
     }
   }
@@ -179,14 +180,7 @@ export default class ReflexContainer
 
       document.body.style.cursor = 'auto'
 
-      const idx = data.splitter.props.index
-
-      const elements = [
-        this.children[idx - 1],
-        this.children[idx + 1]
-      ]
-
-      this.fireEvent(elements, 'onStopResize')
+      this.fireEvent(this.children, 'onStopResize')
     }
   }
 
@@ -259,10 +253,6 @@ export default class ReflexContainer
     const shrink = this.computeAvailableShrink(
       idx, offset)
 
-    console.log('stretch: ' + stretch)
-    console.log('shrink: ' + shrink)
-    console.log('offset: ' + offset)
-
     const availableOffset =
       Math.min(stretch, shrink) *
       Math.sign(offset)
@@ -314,8 +304,7 @@ export default class ReflexContainer
 
     const size = this.getSize(child)
 
-    const maxSize = child.props.maxSize ||
-      (size + Math.abs(offset))
+    const maxSize = child.props.maxSize
 
     const availableStretch = maxSize - size
 
@@ -348,7 +337,7 @@ export default class ReflexContainer
 
     const size = this.getSize(child)
 
-    const minSize = child.props.minSize || 1
+    const minSize = child.props.minSize
 
     const availableShrink = size - minSize
 
@@ -373,21 +362,19 @@ export default class ReflexContainer
   //
   //
   /////////////////////////////////////////////////////////
-  addOffsetAt (idx, offset) {
+  addOffset (element, offset) {
 
-    const child = this.children[idx]
-
-    const size = this.getSize(child)
+    const size = this.getSize(element)
 
     const newSize = size + offset
 
     const newFlex = this.computeNewFlex (
-      child.props.flex,
+      element.props.flex,
       size, newSize)
 
-    this.state.flexData[idx].flex = newFlex
+    const idx = element.props.index
 
-    return child
+    this.state.flexData[idx].flex = newFlex
   }
 
   /////////////////////////////////////////////////////////
@@ -402,10 +389,28 @@ export default class ReflexContainer
 
     const size = this.getSize(child)
 
-    const maxSize = child.props.maxSize ||
-      (size + Math.abs(offset))
+    const newSize = Math.min(
+      child.props.maxSize,
+      size + Math.abs(offset))
 
-    const availableStretch = maxSize - size
+    const dispatchedStretch = newSize - size
+
+    this.addOffset(child, dispatchedStretch)
+
+    if (dispatchedStretch < Math.abs(offset)) {
+
+      const nextIdx = idx - Math.sign(offset) * 2
+
+      const nextOffset = Math.sign(offset) *
+        (Math.abs(offset) - dispatchedStretch)
+
+      return [
+        child,
+        ...this.dispatchStretch(nextIdx, nextOffset)
+      ]
+    }
+
+    return [child]
   }
 
   /////////////////////////////////////////////////////////
@@ -414,7 +419,34 @@ export default class ReflexContainer
   /////////////////////////////////////////////////////////
   dispatchShrink (idx, offset) {
 
+    const childIdx = offset > 0 ? idx + 1 : idx - 1
 
+    const child = this.children[childIdx]
+
+    const size = this.getSize(child)
+
+    const newSize = Math.max(
+      child.props.minSize,
+      size - Math.abs(offset))
+
+    const dispatchedShrink = newSize - size
+
+    this.addOffset(child, dispatchedShrink)
+
+    if (Math.abs(dispatchedShrink) < Math.abs(offset)) {
+
+      const nextIdx = idx + Math.sign(offset) * 2
+
+      const nextOffset = Math.sign(offset) *
+        (Math.abs(offset) + dispatchedShrink)
+
+      return [
+        child,
+        ...this.dispatchShrink(nextIdx, nextOffset)
+      ]
+    }
+
+    return [child]
   }
 
   /////////////////////////////////////////////////////////
@@ -427,11 +459,6 @@ export default class ReflexContainer
       ...this.dispatchStretch(idx, offset),
       ...this.dispatchShrink(idx, offset)
     ]
-
-    //return [
-    //  this.addOffsetAt(idx - 1, offset),
-    //  this.addOffsetAt(idx + 1, -1 * offset)
-    //]
   }
 
   /////////////////////////////////////////////////////////
@@ -542,6 +569,8 @@ export default class ReflexContainer
         const flexData = this.state.flexData[idx]
 
         const newProps = Object.assign({}, child.props, {
+          maxSize: child.props.maxSize || Number.MAX_VALUE,
+          minSize: child.props.minSize || 1,
           containerId: this.state.id,
           flex: flexData.flex,
           ref: flexData.guid,
