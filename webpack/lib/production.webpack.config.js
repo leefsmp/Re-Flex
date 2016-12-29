@@ -25,13 +25,11 @@ module.exports = {
       dry: false
     }),
 
-    new webpack.NoErrorsPlugin(),
-    new webpack.optimize.DedupePlugin(),
-    new webpack.optimize.OccurenceOrderPlugin(),
-
     new webpack.optimize.MinChunkSizePlugin({
       minChunkSize: 51200
     }),
+
+    new webpack.optimize.DedupePlugin(),
 
     new webpack.optimize.UglifyJsPlugin({
       output: {
@@ -42,26 +40,43 @@ module.exports = {
       },
       minimize: true,
       mangle: true
-    })
+    }),
+
+    new webpack.DefinePlugin({
+      'process.env.NODE_ENV': '"production"'
+    }),
+
+    new webpack.NoErrorsPlugin()
   ],
 
   resolve: {
-    extensions: ['', '.js', '.jsx', '.json']
+    extensions: ['.js', '.jsx', '.json']
   },
 
   module: {
 
-    loaders: [
+    rules: [
       {
         test: /\.jsx?$/,
         exclude: /node_modules/,
-        loader: 'babel',
-        query: {
-          cacheDirectory: true,
-          presets: ['react', 'es2015', 'stage-0']
-        }
+        use: [{
+          loader: "babel-loader",
+          options: {
+            presets: ['react', 'es2015', 'stage-0'] // { "modules": false }
+          }
+        }]
       },
-      { test: /\.scss$/, loaders: ["style", "css", "sass"] }
+      {
+        test: /\.css$/,
+        use: [
+          "style-loader",
+          { loader: "css-loader", options: { modules: true } }
+        ]
+      },
+      {
+        test: /\.(sass|scss)$/,
+        use: [ "style-loader", "css-loader", "sass-loader"]
+      }
     ]
   },
 

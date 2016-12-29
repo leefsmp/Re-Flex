@@ -1,4 +1,3 @@
-var clean = require('clean-webpack-plugin')
 var webpack = require('webpack')
 var path = require('path')
 
@@ -20,16 +19,7 @@ module.exports = {
     filename: "[name].js"
   },
 
-  plugins: [
-
-    //new webpack.NoErrorsPlugin(),
-    //new webpack.optimize.DedupePlugin(),
-    //new webpack.optimize.OccurenceOrderPlugin(),
-    //
-    //new webpack.optimize.MinChunkSizePlugin({
-    //  minChunkSize: 51200
-    //})
-  ],
+  plugins: [],
 
   resolve: {
     extensions: ['.js', '.jsx', '.json']
@@ -59,19 +49,6 @@ module.exports = {
         test: /\.(sass|scss)$/,
         use: [ "style-loader", "css-loader", "sass-loader"]
       }
-    ],
-
-      loaders: [
-      {
-        test: /\.jsx?$/,
-        exclude: /node_modules/,
-        loader: 'babel',
-        query: {
-          cacheDirectory: true,
-          presets: ['react', 'es2015', 'stage-0']
-        }
-      },
-      { test: /\.scss$/, loaders: ["style", "css", "sass"] }
     ]
   }
 }
