@@ -30,6 +30,19 @@ export default class ReflexElement
   //
   //
   /////////////////////////////////////////////////////////
+  constructor (props) {
+
+    super (props)
+
+    this.state = {
+      style: {}
+    }
+  }
+
+  /////////////////////////////////////////////////////////
+  //
+  //
+  /////////////////////////////////////////////////////////
   render () {
 
     const classNames = [
@@ -37,27 +50,17 @@ export default class ReflexElement
       'reflex-element'
     ]
 
-    const children = React.Children.map(
-      this.props.children, (child) => {
-
-        return child
-      })
-
-    const style = Object.assign({}, this.props.style, {
-      /* OLD - iOS 6-, Safari 3.1-6 */
-      WebkitBoxFlex: this.props.flex,
-      /* OLD - Firefox 19- */
-      MozBoxFlex: this.props.flex,
-      /* Chrome */
-      WebkitFlex: this.props.flex,
-      /* IE 10 */
-      FlexElement: this.props.flex,
-      flex: this.props.flex
-    })
+    const style = Object.assign({}, {
+        WebkitBoxFlex: this.props.flex,
+        FlexElement: this.props.flex,
+        MozBoxFlex: this.props.flex,
+        WebkitFlex: this.props.flex,
+        flex: this.props.flex
+      }, this.props.style)
 
     return (
       <div className={classNames.join(' ')} style={style}>
-        { children }
+        { this.props.children }
       </div>
     )
   }

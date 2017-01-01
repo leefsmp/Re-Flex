@@ -54,6 +54,10 @@ ReactDOM.render(
   document.getElementById('demo-basic'))
 ```
 
+## Installation
+
+* npm install react-reflex
+
 ## Documentation & Samples
 
 Re-F|ex is the most powerful React library out there ... Don't just trust me, try it!
@@ -62,7 +66,8 @@ Re-F|ex is the most powerful React library out there ... Don't just trust me, tr
 
 ## Development
 
-* Development server `npm start`.
-* Continuously run tests on file changes `npm run watch-test`;
-* Run tests: `npm test`;
-* Build `npm run build`;
+* Development server `npm start`
+* Run tests: `npm test`
+* Continuously run tests on file changes `npm run watch-test`
+* Build `npm run build-lib` | 'npm run build-lib-dev' (dev mode non-minified with source-map)
+* Build demo `npm run build-demo` | 'npm run build-demo-dev' (dev mode non-minified with source-map + watch)

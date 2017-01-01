@@ -4,7 +4,8 @@ import React from 'react'
 import {
   ReflexContainer,
   ReflexSplitter,
-  ReflexElement
+  ReflexElement,
+  ReflexResizer
 } from '../../src/lib'
 
 
@@ -22,13 +23,17 @@ class ReflexBasicDemo
 
         <ReflexElement className="left-pane">
           <div className="pane-content">
-            Left Pane (fixed)
+            <label>
+              Left Pane (fixed)
+            </label>
           </div>
         </ReflexElement>
 
         <ReflexElement className="right-pane">
           <div className="pane-content">
-            Right Pane (fixed)
+            <label>
+              Right Pane (fixed)
+            </label>
           </div>
         </ReflexElement>
 
@@ -56,7 +61,9 @@ class ReflexBasicSplitterDemo
 
         <ReflexElement className="left-pane">
           <div className="pane-content">
-            Left Pane (resizable)
+            <label>
+              Left Pane (resizable)
+            </label>
           </div>
         </ReflexElement>
 
@@ -66,12 +73,14 @@ class ReflexBasicSplitterDemo
           minSize="200"
           maxSize="800">
           <div className="pane-content">
-            Right Pane (resizable)
-            <br/>
-            <br/>
-            minSize = 200px
-            <br/>
-            maxSize = 800px
+            <label>
+              Right Pane (resizable)
+              <br/>
+              <br/>
+              minSize = 200px
+              <br/>
+              maxSize = 800px
+            </label>
           </div>
         </ReflexElement>
 
@@ -100,7 +109,9 @@ class ReflexSplitterPropagationDemo
 
         <ReflexElement className="left-pane">
           <div className="pane-content">
-          Left Pane (resizable)
+            <label>
+              Left Pane (resizable)
+            </label>
           </div>
         </ReflexElement>
 
@@ -110,12 +121,14 @@ class ReflexSplitterPropagationDemo
           minSize="200"
           maxSize="800">
           <div className="pane-content">
-            Middle Pane (resizable)
-            <br/>
-            <br/>
-            minSize = 200px
-            <br/>
-            maxSize = 400px
+            <label>
+              Middle Pane (resizable)
+              <br/>
+              <br/>
+              minSize = 200px
+              <br/>
+              maxSize = 400px
+            </label>
           </div>
         </ReflexElement>
 
@@ -123,7 +136,9 @@ class ReflexSplitterPropagationDemo
 
         <ReflexElement className="right-pane">
           <div className="pane-content">
-          Right Pane (resizable)
+            <label>
+              Right Pane (resizable)
+            </label>
           </div>
         </ReflexElement>
 
@@ -151,18 +166,28 @@ class ReflexAdvancedDemo
 
     this.elementProps = {
       onStopResize: this.onStopResizeElement.bind(this),
-      onResize: this.onResizeElement.bind(this)
+      onResize: this.onResizeElement.bind(this),
+      forceResize: true
     }
+  }
+
+  componentDidMount () {
+
+    this.forceUpdate()
   }
 
   onResizeElement (e) {
 
     e.domElement.classList.add('resizing')
+
+    this.forceUpdate()
   }
 
   onStopResizeElement (e) {
 
     e.domElement.classList.remove('resizing')
+
+    this.forceUpdate()
   }
 
   render () {
@@ -170,77 +195,101 @@ class ReflexAdvancedDemo
     return (
       <ReflexContainer orientation="horizontal">
         <ReflexElement className="header" flex={0.1}>
-          <div className="pane-content">
-            Header (fixed)
-          </div>
+          <ReflexResizer className="pane-content">
+            <label>
+              Header (fixed)
+            </label>
+          </ReflexResizer>
         </ReflexElement>
         <ReflexElement>
-          <ReflexContainer orientation="vertical">
-            <ReflexElement {...this.elementProps}>
-              <ReflexContainer orientation="horizontal">
-                <ReflexElement {...this.elementProps}>
-                  <div className="pane-content">
-                    Left Pane Top
-                    <br/>
-                    (splitter propagation)
-                  </div>
-                </ReflexElement>
-                <ReflexSplitter propagate={true}/>
-                <ReflexElement {...this.elementProps}>
-                  <div className="pane-content">
-                    Left Pane Middle
-                    <br/>
-                   (splitter propagation)
-                  </div>
-                </ReflexElement>
-                <ReflexSplitter propagate={true}/>
-                <ReflexElement {...this.elementProps}>
-                  <div className="pane-content">
-                    Left Pane Bottom
-                    <br/>
-                    (splitter propagation)
-                  </div>
-                </ReflexElement>
-              </ReflexContainer>
-            </ReflexElement>
-            <ReflexSplitter/>
-            <ReflexElement flex={0.5} {...this.elementProps}>
-              <div className="pane-content">
-                Middle Pane
-              </div>
-            </ReflexElement>
-            <ReflexSplitter/>
-            <ReflexElement {...this.elementProps}>
-              <ReflexContainer orientation="horizontal">
-                <ReflexElement {...this.elementProps}>
-                  <ReflexContainer orientation="vertical">
+          <ReflexResizer>
+            <ReflexContainer orientation="vertical">
+              <ReflexElement {...this.elementProps}>
+                <ReflexContainer orientation="horizontal">
+                  <ReflexElement {...this.elementProps}>
+                    <ReflexResizer className="pane-content">
+                      <label>
+                        Left Pane Top
+                        <br/>
+                        (splitter propagation)
+                      </label>
+                    </ReflexResizer>
+                  </ReflexElement>
+                  <ReflexSplitter propagate={true}/>
+                  <ReflexElement {...this.elementProps}>
+                    <ReflexResizer className="pane-content">
+                      <label>
+                        Left Pane Middle
+                        <br/>
+                        (splitter propagation)
+                      </label>
+                    </ReflexResizer>
+                  </ReflexElement>
+                  <ReflexSplitter propagate={true}/>
+                  <ReflexElement {...this.elementProps}>
+                    <ReflexResizer className="pane-content">
+                      <label>
+                        Left Pane Bottom
+                        <br/>
+                      (splitter propagation)
+                      </label>
+                    </ReflexResizer>
+                  </ReflexElement>
+                </ReflexContainer>
+              </ReflexElement>
+              <ReflexSplitter/>
+              <ReflexElement flex={0.5} {...this.elementProps}>
+                <ReflexResizer className="pane-content">
+                  <label>
+                    Middle Pane
+                  </label>
+                </ReflexResizer>
+              </ReflexElement>
+              <ReflexSplitter/>
+              <ReflexElement {...this.elementProps}>
+                <ReflexResizer>
+                  <ReflexContainer orientation="horizontal">
                     <ReflexElement {...this.elementProps}>
-                      <div className="pane-content">
-                        Right Pane <br/>Upper-Left
-                      </div>
+                      <ReflexResizer>
+                        <ReflexContainer orientation="vertical">
+                          <ReflexElement {...this.elementProps}>
+                            <ReflexResizer className="pane-content">
+                              <label>
+                                Right Pane <br/> Upper-Left
+                              </label>
+                            </ReflexResizer>
+                          </ReflexElement>
+                          <ReflexSplitter/>
+                          <ReflexElement {...this.elementProps}>
+                            <ReflexResizer className="pane-content">
+                              <label>
+                                Right Pane <br/> Upper-Right
+                              </label>
+                            </ReflexResizer>
+                          </ReflexElement>
+                        </ReflexContainer>
+                      </ReflexResizer>
                     </ReflexElement>
                     <ReflexSplitter/>
                     <ReflexElement {...this.elementProps}>
-                      <div className="pane-content">
-                        Right Pane <br/>Upper-Right
-                      </div>
+                      <ReflexResizer className="pane-content">
+                        <label>
+                          Right Pane Bottom
+                        </label>
+                      </ReflexResizer>
                     </ReflexElement>
                   </ReflexContainer>
-                </ReflexElement>
-                <ReflexSplitter/>
-                <ReflexElement {...this.elementProps}>
-                  <div className="pane-content">
-                    Right Pane Bottom
-                  </div>
-                </ReflexElement>
-              </ReflexContainer>
-            </ReflexElement>
-          </ReflexContainer>
+                </ReflexResizer>
+              </ReflexElement>
+            </ReflexContainer>
+          </ReflexResizer>
         </ReflexElement>
         <ReflexElement className="footer" flex={0.1}>
-          <div className="pane-content">
-            Footer (fixed)
-          </div>
+          <ReflexResizer className="pane-content">
+            <label>
+              Footer (fixed)
+            </label>
+          </ReflexResizer>
         </ReflexElement>
       </ReflexContainer>
     )

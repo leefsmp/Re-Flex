@@ -15,7 +15,12 @@ body {
   text-align: center;
   position: relative;
   user-select: none;
-  top: 30%;
+  height: 100%;
+}
+
+.pane-content > label {
+  position: relative;
+  top:30%;
 }
 
 .header {
