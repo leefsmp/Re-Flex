@@ -25,46 +25,91 @@ body {
 
 .header {
   background-color: rgba(1, 210, 248, 0.30);
+  border-bottom: 1px solid #c6c6c6;
 }
 
 .footer {
   background-color: rgba(1, 210, 248, 0.30);
+  border-top: 1px solid #c6c6c6;
   text-align: center;
 }
 
-
 .left-pane {
-  background-color: rgba(255, 0, 0, 0.20);
+  background-color: rgb(34, 34, 34);
+  color: #03d8ff;
 }
 
 .middle-pane {
-  background-color: rgba(255, 255, 255, 0.0);
+  background-color: rgb(255, 255, 255);
 }
 
 .right-pane {
-  background-color: rgba(1, 210, 248, 0.06);
+  background-color: rgb(3, 216, 255);
+}
+
+.pane-control {
+  border-bottom: 1px solid #c6c6c6;
+  background-color: #b3f2fd;
+  overflow: hidden;
+  height: 25px;
+}
+
+.pane-control > label {
+  white-space: nowrap;
+  margin-left: 10px;
+  margin-top: 4px;
+  font-size: 14px;
+  float: left;
+}
+
+.pane-control > button {
+  position: relative;
+  width: 30px;
+  height: 20px;
+  top: 3px;
+}
+
+.ctrl-pane-content {
+  height: calc(100% - 25px);
+}
+
+.ctrl-pane-content > label {
+  position: relative;
+  top:30%;
 }
 
 #demo-basic {
   border: 1px solid #0c63ff;
   background-color: white;
-  height: 300px;
+  height: 250px;
 }
 
 #demo-basic-splitter {
   border: 1px solid #0c63ff;
   background-color: white;
-  height: 300px;
+  height: 250px;
 }
 
-#demo-splitter-propagation {
+#demo-splitter-propagation-2x {
   border: 1px solid #0c63ff;
   background-color: white;
-  height: 300px;
+  height: 250px;
+}
+
+#demo-splitter-propagation-3x {
+  border: 1px solid #0c63ff;
+  background-color: white;
+  height: 250px;
 }
 
 #demo-advanced {
   border: 1px solid #0c63ff;
   background-color: white;
   height: 600px;
+}
+
+#demo-controls {
+  border: 1px solid #0c63ff;
+  background-color: white;
+  height: 400px;
 }

@@ -23,8 +23,8 @@ class ReflexEvents {
 
     events.split(' ').forEach((event) => {
 
-      this._events[event] = this._events[event]	|| [];
-      this._events[event].push(fct);
+      this._events[event] = this._events[event]	|| []
+      this._events[event].push(fct)
     })
 
     return this
@@ -36,9 +36,10 @@ class ReflexEvents {
   /////////////////////////////////////////////////////////
   off (events, fct) {
 
-    if(events == undefined){
-      this._events = {};
-      return;
+    if (events == undefined) {
+
+      this._events = {}
+      return
     }
 
     events.split(' ').forEach((event) => {
@@ -69,21 +70,21 @@ class ReflexEvents {
     if(this._events[event] === undefined)
       return;
 
-    var tmpArray = this._events[event].slice();
+    var tmpArray = this._events[event].slice()
 
     for(var i = 0; i < tmpArray.length; ++i) {
 
       var result	= tmpArray[i].apply(this,
-        Array.prototype.slice.call(arguments, 1));
+        Array.prototype.slice.call(arguments, 1))
 
-      if(result !== undefined )
-        return result;
+      if(result !== undefined) {
+
+        return result
+      }
     }
 
-    return undefined;
+    return undefined
   }
 }
 
-const events = new ReflexEvents()
-
-export default events
+export default ReflexEvents

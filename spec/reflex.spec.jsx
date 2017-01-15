@@ -1,7 +1,7 @@
 import Reflex from '../lib/reflex'
 import React from 'react/addons'
 
-describe('Re-flex', function() {
+describe('Re-flex Basic Test', function() {
 
   var component;
 

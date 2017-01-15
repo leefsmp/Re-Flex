@@ -10,7 +10,7 @@ import ReflexEvents from './reflex-events'
 import ReactDOM from 'react-dom'
 import React from 'react'
 
-export default class ReflexContainer
+class ReflexContainer
   extends React.Component {
 
   /////////////////////////////////////////////////////////
@@ -18,7 +18,6 @@ export default class ReflexContainer
   //
   /////////////////////////////////////////////////////////
   static propTypes = {
-    updateOnWindowResize: React.PropTypes.bool,
     orientation: React.PropTypes.string,
     className: React.PropTypes.string
   }
@@ -28,7 +27,6 @@ export default class ReflexContainer
   //
   /////////////////////////////////////////////////////////
   static defaultProps = {
-    updateOnWindowResize: false,
     orientation: 'horizontal',
     className: ''
   }
@@ -42,11 +40,10 @@ export default class ReflexContainer
     super (props)
 
     this.state = {
-      flexData: this.getInitialFlexData(),
-      id: this.guid()
+      flexData: this.getInitialFlexData()
     }
 
-    this.onResize = this.onResize.bind(this)
+    this.events = new ReflexEvents()
 
     this.onSplitterStartResize =
       this.onSplitterStartResize.bind(this)
@@ -56,6 +53,9 @@ export default class ReflexContainer
 
     this.onSplitterResize =
       this.onSplitterResize.bind(this)
+
+    this.onElementSize =
+      this.onElementSize.bind(this)
   }
 
   /////////////////////////////////////////////////////////
@@ -64,17 +64,21 @@ export default class ReflexContainer
   /////////////////////////////////////////////////////////
   componentDidMount () {
 
-    ReflexEvents.on('splitter.startResize',
+    this.events.on(
+      'splitter.startResize',
       this.onSplitterStartResize)
 
-    ReflexEvents.on('splitter.stopResize',
+    this.events.on(
+      'splitter.stopResize',
       this.onSplitterStopResize)
 
-    ReflexEvents.on('splitter.resize',
+    this.events.on(
+      'splitter.resize',
       this.onSplitterResize)
 
-    window.addEventListener(
-      'resize', this.onResize)
+    this.events.on(
+      'element.size',
+      this.onElementSize)
   }
 
   /////////////////////////////////////////////////////////
@@ -83,20 +87,7 @@ export default class ReflexContainer
   /////////////////////////////////////////////////////////
   componentWillUnmount () {
 
-    window.removeEventListener(
-      'resize', this.onResize)
-
-    ReflexEvents.off(
-      'splitter.startResize',
-      this.onSplitterStartResize)
-
-    ReflexEvents.off(
-      'splitter.stopResize',
-      this.onSplitterStopResize)
-
-    ReflexEvents.off(
-      'splitter.resize',
-      this.onSplitterResize)
+    this.events.off()
   }
 
   /////////////////////////////////////////////////////////
@@ -126,50 +117,33 @@ export default class ReflexContainer
   //
   //
   /////////////////////////////////////////////////////////
-  onResize () {
-
-    if (this.props.updateOnWindowResize) {
-
-      this.forceUpdate()
-    }
-  }
-
-  /////////////////////////////////////////////////////////
-  //
-  //
-  /////////////////////////////////////////////////////////
   onSplitterStartResize (data) {
 
-    const containerId = data.splitter.props.containerId
+    const pos = data.event.changedTouches ?
+      data.event.changedTouches[0] :
+      data.event
 
-    if (containerId === this.state.id) {
+    switch (this.props.orientation) {
 
-      const pos = data.event.changedTouches ?
-        data.event.changedTouches[0] :
-        data.event
+      case 'horizontal':
+        document.body.style.cursor = 'row-resize'
+        this.previousPos = pos.pageY
+        break
 
-      switch (this.props.orientation) {
-
-        case 'horizontal':
-          document.body.style.cursor = 'row-resize'
-          this.previousPos = pos.pageY
-          break
-
-        case 'vertical':
-          document.body.style.cursor = 'col-resize'
-          this.previousPos = pos.pageX
-          break
-      }
-
-      const idx = data.splitter.props.index
-
-      const elements = [
-        this.children[idx - 1],
-        this.children[idx + 1]
-      ]
-
-      this.fireEvent(elements, 'onStartResize')
+      case 'vertical':
+        document.body.style.cursor = 'col-resize'
+        this.previousPos = pos.pageX
+        break
     }
+
+    const idx = data.splitter.props.index
+
+    const elements = [
+      this.children[idx - 1],
+      this.children[idx + 1]
+    ]
+
+    this.fireEvent(elements, 'onStartResize')
   }
 
   /////////////////////////////////////////////////////////
@@ -178,14 +152,9 @@ export default class ReflexContainer
   /////////////////////////////////////////////////////////
   onSplitterStopResize (data) {
 
-    const containerId = data.splitter.props.containerId
+    document.body.style.cursor = 'auto'
 
-    if (containerId === this.state.id) {
-
-      document.body.style.cursor = 'auto'
-
-      this.fireEvent(this.children, 'onStopResize')
-    }
+    this.fireEvent(this.children, 'onStopResize')
   }
 
   /////////////////////////////////////////////////////////
@@ -214,43 +183,98 @@ export default class ReflexContainer
   /////////////////////////////////////////////////////////
   onSplitterResize (data) {
 
-    const containerId = data.splitter.props.containerId
+    const idx = data.splitter.props.index
 
-    if (containerId === this.state.id) {
+    const offset = this.getOffset(data.event)
 
-      const idx = data.splitter.props.index
+    const availableOffset =
+      this.computeAvailableOffset(
+        idx, offset)
 
-      const offset = this.getOffset(data.event)
+    if (availableOffset) {
 
-      const availableOffset =
-        this.computeAvailableOffset(
-          idx, offset)
+      const pos = data.event.changedTouches ?
+        data.event.changedTouches[0] :
+        data.event
 
-      if (availableOffset !== 0) {
+      switch (this.props.orientation) {
 
-        const pos = data.event.changedTouches ?
-          data.event.changedTouches[0] :
-          data.event
+        case 'horizontal':
+          this.previousPos = pos.pageY
+          break
 
-        switch (this.props.orientation) {
-
-          case 'horizontal':
-            this.previousPos = pos.pageY
-            break
-
-          case 'vertical':
-            this.previousPos = pos.pageX
-            break
-        }
-
-        const elements = this.dispatchOffset(
-          idx, availableOffset)
-
-        this.setState(this.state)
-
-        this.fireEvent(elements, 'onResize')
+        case 'vertical':
+          this.previousPos = pos.pageX
+          break
       }
+
+      const elements = this.dispatchOffset(
+        idx, availableOffset)
+
+      this.adjustFlex (elements)
+
+      this.setState(this.state)
+
+      this.fireEvent(elements, 'onResize')
     }
+  }
+
+  /////////////////////////////////////////////////////////
+  //
+  //
+  /////////////////////////////////////////////////////////
+  onElementSize (data) {
+
+    const dir = Math.sign(data.element.props.shrinkDirection)
+
+    const idx = data.element.props.index
+
+    const size = this.getSize(this.children[idx])
+
+    const offset =  size - data.size
+
+    const splitterIdx = idx - dir
+
+    const availableOffset =
+      this.computeAvailableOffset(
+        splitterIdx, dir * offset)
+
+    if (availableOffset) {
+
+      const elements = this.dispatchOffset(
+        splitterIdx, availableOffset)
+
+      this.adjustFlex (elements)
+
+      this.setState(this.state)
+
+      this.fireEvent(elements, 'onResize')
+    }
+  }
+
+  /////////////////////////////////////////////////////////
+  //
+  //
+  /////////////////////////////////////////////////////////
+  adjustFlex (elements) {
+
+    const diffFlex = elements.reduce((sum, element) => {
+
+        const idx = element.props.index
+
+        const previousFlex = element.props.flex
+
+        const nextFlex = this.state.flexData[idx].flex
+
+        return sum +
+          (previousFlex - nextFlex) / elements.length
+
+      }, 0)
+
+    elements.forEach((element) => {
+      this.state.flexData[element.props.index].flex
+        += diffFlex
+    })
   }
 
   /////////////////////////////////////////////////////////
@@ -374,19 +398,44 @@ export default class ReflexContainer
   //
   //
   /////////////////////////////////////////////////////////
+  computePixelFlex () {
+
+    const domElement = ReactDOM.findDOMNode(this)
+
+    const parent = domElement.parentNode
+
+    switch (this.props.orientation) {
+
+      case 'horizontal':
+
+        return 1.0 / parent.offsetHeight
+
+      case 'vertical':
+
+        return 1.0 / parent.offsetWidth
+
+      default :
+
+        return 0
+    }
+  }
+
+  /////////////////////////////////////////////////////////
+  //
+  //
+  /////////////////////////////////////////////////////////
   addOffset (element, offset) {
 
     const size = this.getSize(element)
 
-    const newSize = size + offset
+    if (size) {
 
-    const newFlex = this.computeNewFlex (
-      element.props.flex,
-      size, newSize)
+      const idx = element.props.index
 
-    const idx = element.props.index
+      const newSize = size + offset
 
-    this.state.flexData[idx].flex = newFlex
+      this.state.flexData[idx].flex *= newSize / size
+    }
   }
 
   /////////////////////////////////////////////////////////
@@ -500,20 +549,6 @@ export default class ReflexContainer
   //
   //
   /////////////////////////////////////////////////////////
-  computeNewFlex (flex, size, newSize) {
-
-    if (size === 0) {
-
-      return 0
-    }
-
-    return newSize * flex / size
-  }
-
-  /////////////////////////////////////////////////////////
-  //
-  //
-  /////////////////////////////////////////////////////////
   getInitialFlexData () {
 
     let nbElements = 0
@@ -529,12 +564,10 @@ export default class ReflexContainer
 
     const flexValues = children.map((child) => {
 
-      if (child.type === ReflexElement) {
+      if (child.type !== ReflexSplitter &&
+         !child.props.flex) {
 
-        if (!child.props.flex) {
-
-          ++nbElements
-        }
+        ++nbElements
       }
 
       return child.props ? (child.props.flex || 0) : 0
@@ -549,16 +582,16 @@ export default class ReflexContainer
 
     return children.map((child, idx) => {
 
-      if (child.type === ReflexElement) {
+      if (child.type !== ReflexSplitter) {
 
         return {
-          guid: this.guid(),
+          guid: child.props.ref || this.guid(),
           flex: flexValues[idx] ||
             remainingFlex / nbElements
         }
       }
 
-      return { flex : 0}
+      return { flex : 0 }
     })
   }
 
@@ -582,8 +615,9 @@ export default class ReflexContainer
 
         const newProps = Object.assign({}, child.props, {
           maxSize: child.props.maxSize || Number.MAX_VALUE,
+          orientation: this.props.orientation,
           minSize: child.props.minSize || 1,
-          containerId: this.state.id,
+          events: this.events,
           flex: flexData.flex,
           ref: flexData.guid,
           index: idx
@@ -616,3 +650,5 @@ export default class ReflexContainer
       })
   }
 }
+
+export default ReflexContainer

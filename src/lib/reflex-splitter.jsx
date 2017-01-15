@@ -4,7 +4,6 @@
 // December 2016
 //
 ///////////////////////////////////////////////////////////
-import FlexEvents from './reflex-events'
 import ReactDOM from 'react-dom'
 import React from 'react'
 
@@ -109,7 +108,7 @@ export default class ReflexSplitter
 
     if (this.state.active) {
 
-      FlexEvents.emit(
+      this.props.events.emit(
         'splitter.resize', {
           splitter: this,
           event
@@ -149,7 +148,7 @@ export default class ReflexSplitter
       }
     }
 
-    FlexEvents.emit('splitter.startResize', {
+    this.props.events.emit('splitter.startResize', {
       splitter: this,
       event
     })
@@ -175,7 +174,7 @@ export default class ReflexSplitter
         this.props.onStopResize(event)
       }
 
-      FlexEvents.emit('splitter.stopResize', {
+      this.props.events.emit('splitter.stopResize', {
         splitter: this,
         event
       })

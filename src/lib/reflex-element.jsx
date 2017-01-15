@@ -43,6 +43,21 @@ export default class ReflexElement
   //
   //
   /////////////////////////////////////////////////////////
+  componentWillReceiveProps (props) {
+
+    if (props.size !== this.props.size) {
+
+      this.props.events.emit('element.size', {
+        size: props.size,
+        element: this
+      })
+    }
+  }
+
+  /////////////////////////////////////////////////////////
+  //
+  //
+  /////////////////////////////////////////////////////////
   render () {
 
     const classNames = [
