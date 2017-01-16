@@ -188,8 +188,8 @@ export default class ReflexSplitter
   render () {
 
     const classNames = [
-      ...this.props.className.split(' '),
-      'reflex-splitter'
+      'reflex-splitter',
+      ...this.props.className.split(' ')
     ]
 
     if (mobile.isAny()) {

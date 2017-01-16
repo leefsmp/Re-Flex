@@ -91,7 +91,7 @@ class ReflexContainer
   }
 
   /////////////////////////////////////////////////////////
-  //
+  // Returns size of a ReflexElement
   //
   /////////////////////////////////////////////////////////
   getSize (element) {
@@ -114,7 +114,27 @@ class ReflexContainer
   }
 
   /////////////////////////////////////////////////////////
+  // Computes offset from pointer position
   //
+  /////////////////////////////////////////////////////////
+  getOffset (event) {
+
+    const pos = event.changedTouches ?
+      event.changedTouches[0] :
+      event
+
+    switch (this.props.orientation) {
+
+      case 'horizontal':
+        return pos.pageY - this.previousPos
+
+      case 'vertical':
+        return pos.pageX - this.previousPos
+    }
+  }
+
+  /////////////////////////////////////////////////////////
+  // Handles splitter startResize event
   //
   /////////////////////////////////////////////////////////
   onSplitterStartResize (data) {
@@ -138,47 +158,19 @@ class ReflexContainer
 
     const idx = data.splitter.props.index
 
-    const elements = [
+    this.elements = [
       this.children[idx - 1],
       this.children[idx + 1]
     ]
 
-    this.fireEvent(elements, 'onStartResize')
+    this.emitElementsEvent(
+      this.elements, 'onStartResize')
+
+    this.emitEvent('onStartResize')
   }
 
   /////////////////////////////////////////////////////////
-  //
-  //
-  /////////////////////////////////////////////////////////
-  onSplitterStopResize (data) {
-
-    document.body.style.cursor = 'auto'
-
-    this.fireEvent(this.children, 'onStopResize')
-  }
-
-  /////////////////////////////////////////////////////////
-  //
-  //
-  /////////////////////////////////////////////////////////
-  getOffset (event) {
-
-    const pos = event.changedTouches ?
-      event.changedTouches[0] :
-      event
-
-    switch (this.props.orientation) {
-
-      case 'horizontal':
-        return pos.pageY - this.previousPos
-
-      case 'vertical':
-        return pos.pageX - this.previousPos
-    }
-  }
-
-  /////////////////////////////////////////////////////////
-  //
+  // Handles splitter resize event
   //
   /////////////////////////////////////////////////////////
   onSplitterResize (data) {
@@ -208,52 +200,89 @@ class ReflexContainer
           break
       }
 
-      const elements = this.dispatchOffset(
+      this.elements = this.dispatchOffset(
         idx, availableOffset)
 
-      this.adjustFlex (elements)
+      this.adjustFlex(this.elements)
 
-      this.setState(this.state)
+      this.setState(this.state, () => {
 
-      this.fireEvent(elements, 'onResize')
+        this.emitElementsEvent(
+          this.elements, 'onResize')
+
+        this.emitEvent('onResize')
+
+        //this.elements.forEach((element)=>{
+        //
+        //  const ref = this.refs[element.ref]
+        //
+        //  ref.forceUpdate()
+        //})
+      })
     }
   }
 
   /////////////////////////////////////////////////////////
+  // Handles splitter stopResize event
   //
+  /////////////////////////////////////////////////////////
+  onSplitterStopResize (data) {
+
+    document.body.style.cursor = 'auto'
+
+    this.emitElementsEvent(
+      this.children, 'onStopResize')
+
+    this.emitEvent('onStopResize')
+  }
+
+  /////////////////////////////////////////////////////////
+  // Handles element size modified event
   //
   /////////////////////////////////////////////////////////
   onElementSize (data) {
 
-    const dir = Math.sign(data.element.props.shrinkDirection)
+    return new Promise((resolve) => {
 
-    const idx = data.element.props.index
+      const idx = data.element.props.index
 
-    const size = this.getSize(this.children[idx])
+      const size = this.getSize(this.children[idx])
 
-    const offset =  size - data.size
+      const offset = data.size - size
 
-    const splitterIdx = idx - dir
+      const dir = data.direction
 
-    const availableOffset =
-      this.computeAvailableOffset(
-        splitterIdx, dir * offset)
+      const splitterIdx = idx + dir
 
-    if (availableOffset) {
+      const availableOffset =
+        this.computeAvailableOffset(
+          splitterIdx, dir * offset)
 
-      const elements = this.dispatchOffset(
-        splitterIdx, availableOffset)
+      this.elements = null
 
-      this.adjustFlex (elements)
+      if (availableOffset) {
 
-      this.setState(this.state)
+        this.elements = this.dispatchOffset(
+          splitterIdx, availableOffset)
 
-      this.fireEvent(elements, 'onResize')
-    }
+        this.adjustFlex(this.elements)
+      }
+
+      this.setState(this.state, () => {
+
+        this.emitElementsEvent(
+          this.elements, 'onResize')
+
+        this.emitEvent('onResize')
+
+        resolve()
+      })
+    })
   }
 
   /////////////////////////////////////////////////////////
-  //
+  // Adjusts flex after a dispatch to make sure
+  // total flex of modified elements remains the same
   //
   /////////////////////////////////////////////////////////
   adjustFlex (elements) {
@@ -278,7 +307,9 @@ class ReflexContainer
   }
 
   /////////////////////////////////////////////////////////
-  //
+  // Returns available offset for a given raw offset value
+  // This checks how much the panes can be stretched and
+  // shrink, then returns the min
   //
   /////////////////////////////////////////////////////////
   computeAvailableOffset (idx, offset) {
@@ -297,7 +328,10 @@ class ReflexContainer
   }
 
   /////////////////////////////////////////////////////////
-  //
+  // Returns true if the next splitter than the one at idx
+  // can propagate the drag. This can happen if that
+  // next element is actually a splitter and it has
+  // propagate=true property set
   //
   /////////////////////////////////////////////////////////
   checkPropagate (idx, direction) {
@@ -329,7 +363,8 @@ class ReflexContainer
   }
 
   /////////////////////////////////////////////////////////
-  //
+  // Recursively computes available stretch at splitter
+  // idx for given raw offset
   //
   /////////////////////////////////////////////////////////
   computeAvailableStretch (idx, offset) {
@@ -362,7 +397,8 @@ class ReflexContainer
   }
 
   /////////////////////////////////////////////////////////
-  //
+  // Recursively computes available shrink at splitter
+  // idx for given raw offset
   //
   /////////////////////////////////////////////////////////
   computeAvailableShrink (idx, offset) {
@@ -395,7 +431,7 @@ class ReflexContainer
   }
 
   /////////////////////////////////////////////////////////
-  //
+  // Currently not used, causes a wacky behavior ...
   //
   /////////////////////////////////////////////////////////
   computePixelFlex () {
@@ -421,7 +457,7 @@ class ReflexContainer
   }
 
   /////////////////////////////////////////////////////////
-  //
+  // Adds offset to a given ReflexElement
   //
   /////////////////////////////////////////////////////////
   addOffset (element, offset) {
@@ -439,7 +475,8 @@ class ReflexContainer
   }
 
   /////////////////////////////////////////////////////////
-  //
+  // Recursively dispatches stretch offset across
+  // children elements starting at splitter idx
   //
   /////////////////////////////////////////////////////////
   dispatchStretch (idx, offset) {
@@ -475,7 +512,8 @@ class ReflexContainer
   }
 
   /////////////////////////////////////////////////////////
-  //
+  // Recursively dispatches shrink offset across
+  // children elements starting at splitter idx
   //
   /////////////////////////////////////////////////////////
   dispatchShrink (idx, offset) {
@@ -511,7 +549,7 @@ class ReflexContainer
   }
 
   /////////////////////////////////////////////////////////
-  //
+  // Dispatch offset at splitter idx
   //
   /////////////////////////////////////////////////////////
   dispatchOffset (idx, offset) {
@@ -523,15 +561,28 @@ class ReflexContainer
   }
 
   /////////////////////////////////////////////////////////
-  //
+  // Emits given if event if present in the component props
   //
   /////////////////////////////////////////////////////////
-  fireEvent (elements, event) {
+  emitEvent (event) {
 
-    const elementsArray = Array.isArray(elements) ?
-      elements : [elements]
+    if (this.props[event]) {
 
-    elementsArray.forEach((element) => {
+      this.props[event]({
+        domElement: ReactDOM.findDOMNode(this),
+        component: this
+      })
+    }
+  }
+
+  /////////////////////////////////////////////////////////
+  // Emits given if event for each given element
+  // if present in the component props
+  //
+  /////////////////////////////////////////////////////////
+  emitElementsEvent (elements, event) {
+
+    this.toArray(elements).forEach((element) => {
 
       if (element.props[event]) {
 
@@ -546,7 +597,9 @@ class ReflexContainer
   }
 
   /////////////////////////////////////////////////////////
-  //
+  // Computes initial flex data based on provided flex
+  // properties. By default each ReflexElement gets
+  // evenly arranged within its container
   //
   /////////////////////////////////////////////////////////
   getInitialFlexData () {
@@ -558,9 +611,7 @@ class ReflexContainer
       return []
     }
 
-    const children = Array.isArray(this.props.children) ?
-      this.props.children :
-      [this.props.children]
+    const children = this.toArray(this.props.children)
 
     const flexValues = children.map((child) => {
 
@@ -596,16 +647,45 @@ class ReflexContainer
   }
 
   /////////////////////////////////////////////////////////
+  // Utility method that generates a new unique GUID
   //
+  /////////////////////////////////////////////////////////
+  guid (format = 'xxxxxxxxxxxx') {
+
+    let d = new Date().getTime()
+
+    return format.replace(
+      /[xy]/g,
+      function (c) {
+        var r = (d + Math.random() * 16) % 16 | 0
+        d = Math.floor(d / 16)
+        return (c == 'x' ? r : (r & 0x7 | 0x8)).toString(16)
+      })
+  }
+
+  /////////////////////////////////////////////////////////
+  // Utility method to ensure given argument is
+  // returned as an array
+  //
+  /////////////////////////////////////////////////////////
+  toArray (obj) {
+
+    return obj ? (Array.isArray(obj) ? obj : [obj]) : []
+  }
+
+  /////////////////////////////////////////////////////////
+  // Render container. This will clone all original child
+  // components in order to pass some internal properties
+  // used to handle resizing logic
   //
   /////////////////////////////////////////////////////////
   render () {
 
     const classNames = [
-      ...this.props.className.split(' '),
       'reflex-layout',
       'reflex-container',
-      this.props.orientation
+      this.props.orientation,
+      ...this.props.className.split(' '),
     ]
 
     this.children = React.Children.map(
@@ -631,23 +711,6 @@ class ReflexContainer
         { this.children }
       </div>
     )
-  }
-
-  /////////////////////////////////////////////////////////
-  //
-  //
-  /////////////////////////////////////////////////////////
-  guid (format = 'xxxxxxxxxxxx') {
-
-    let d = new Date().getTime()
-
-    return format.replace(
-      /[xy]/g,
-      function (c) {
-        var r = (d + Math.random() * 16) % 16 | 0
-        d = Math.floor(d / 16)
-        return (c == 'x' ? r : (r & 0x7 | 0x8)).toString(16)
-      })
   }
 }
 

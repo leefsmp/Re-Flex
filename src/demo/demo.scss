@@ -26,11 +26,13 @@ body {
 .header {
   background-color: rgba(1, 210, 248, 0.30);
   border-bottom: 1px solid #c6c6c6;
+  overflow: hidden !important;
 }
 
 .footer {
   background-color: rgba(1, 210, 248, 0.30);
   border-top: 1px solid #c6c6c6;
+  overflow: hidden !important;
   text-align: center;
 }
 
@@ -63,14 +65,28 @@ body {
 }
 
 .pane-control > button {
+  border: 1px solid #eeeeee;
+  background-color: #c6c6c6;
+  border-radius: 6px;
   position: relative;
+  margin-right: 4px;
+  overflow: hidden;
+  margin-top: 4px;
+  float: right;
+  height: 17px;
   width: 30px;
-  height: 20px;
-  top: 3px;
+}
+
+.pane-control > button > label {
+  position: relative;
+  font-size: 20px;
+  color: #f0fcff;
+  top: -8px;
 }
 
 .ctrl-pane-content {
-  height: calc(100% - 25px);
+  height: calc(100% - 26px);
+  overflow: hidden;
 }
 
 .ctrl-pane-content > label {

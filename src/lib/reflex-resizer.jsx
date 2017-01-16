@@ -73,8 +73,8 @@ export default class ReflexResizer
   render () {
 
     const classNames = [
-      ...this.props.className.split(' '),
-      'reflex-resizer'
+      'reflex-resizer',
+      ...this.props.className.split(' ')
     ]
 
     const style = Object.assign({},

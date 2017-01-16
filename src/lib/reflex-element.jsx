@@ -43,15 +43,30 @@ export default class ReflexElement
   //
   //
   /////////////////////////////////////////////////////////
-  componentWillReceiveProps (props) {
+  async componentWillReceiveProps (props) {
 
     if (props.size !== this.props.size) {
 
-      this.props.events.emit('element.size', {
-        size: props.size,
-        element: this
-      })
+      const directions = this.toArray(props.direction)
+
+      for (let dir of directions) {
+
+        await this.props.events.emit('element.size', {
+          size: props.size,
+          direction: dir,
+          element: this
+        })
+      }
     }
+  }
+
+  /////////////////////////////////////////////////////////
+  //
+  //
+  /////////////////////////////////////////////////////////
+  toArray (obj) {
+
+    return obj ? (Array.isArray(obj) ? obj : [obj]) : []
   }
 
   /////////////////////////////////////////////////////////
@@ -61,8 +76,8 @@ export default class ReflexElement
   render () {
 
     const classNames = [
-      ...this.props.className.split(' '),
-      'reflex-element'
+      'reflex-element',
+      ...this.props.className.split(' ')
     ]
 
     const style = Object.assign({}, {

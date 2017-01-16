@@ -12,11 +12,13 @@
   <br>
 
   <h3>
-    1/ Basic Re-Flex example:
+    1 - Basic Re-Flex example:
   </h3>
 
   <div>
-    &nbsp;&nbsp;Basic example with two fixed panes vertically arranged
+    &nbsp;&nbsp;The most basic example with two fixed panes vertically arranged. By default each <b><i>ReflexElement</i></b>
+    will be equally arranged within its <b><i>ReflexContainer</i></b>. To specify a custom arrangement, you can use <b><i>flex={number in [0.0, 1.0]}</i></b>
+    property.
   </div>
 
   <br>
@@ -27,11 +29,12 @@
   <br>
 
   <h3>
-    2/ Basic Re-Flex example with splitter:
+    2 - Basic Re-Flex example with splitter:
   </h3>
 
   <div>
-    &nbsp;&nbsp;Basic example with two resizable panes vertically arranged
+    &nbsp;&nbsp;Basic example with two resizable panes vertically arranged: placing a <b><i>ReflexSplitter</i></b>
+    draggable component between two <b><i>ReflexElements</i></b> will allow those elements to be manually resized by user.
   </div>
 
   <br>
@@ -42,11 +45,15 @@
   <br>
 
   <h3>
-    3/ Re-Flex example with splitter propagation:
+    3 - Re-Flex example with splitter propagation:
   </h3>
 
   <div>
-    &nbsp;&nbsp;Example with two splitters propagating the drag
+    &nbsp;&nbsp;Example with two splitters propagating the drag: setting the <b><i>propagate={true}</i></b>
+    property on the <b><i>ReflexSplitter</i></b> components will propagate the drag all the way from right to left or
+    left to right (respectively up and down for an horizontal layout) depending on user interaction. In that demo <b><i>minSize</i></b>
+    and <b><i>maxSize</i></b> properties are also specified on the middle pane, Re-Flex will respect those attributes when dragging
+    and propagating the offset applied by user.
   </div>
 
   <br>
@@ -57,11 +64,11 @@
   <br>
 
   <h3>
-    4/ Re-Flex example with splitter propagation:
+    4 - Re-Flex example with splitter propagation (3x):
   </h3>
 
   <div>
-    &nbsp;&nbsp;Example with three splitters propagating the drag, just for fun ...
+    &nbsp;&nbsp;Example with three splitters propagating the drag, same as example above but one more splitter just for fun ...
   </div>
 
   <br>
@@ -72,14 +79,18 @@
   <br>
 
   <h3>
-    5/ Advanced Re-Flex example:
+    5 - Advanced Re-Flex example:
   </h3>
 
   <div>
-    &nbsp;&nbsp;A more advanced example with multi-nested resizable layouts using events.
-    The <b>ReflexResizer</b> components are only required to fix Safari behavior, which does not handle
-    properly nested flex layouts. This component will resize to fill its parent container using
-    explicit width and height and not "100%"
+    &nbsp;&nbsp;A more advanced example with multi-nested resizable layouts using events: while dragging a splitter
+    the affected panes will get a different background color, illustrating how you can use Re-Flex events to
+    perform some additional custom logic.
+    <br>
+    <br>
+    &nbsp;&nbsp;The <b><i>ReflexResizer</i></b> components are only required to fix Safari behavior, which does not handle
+    properly nested flex layouts. This component will resize to fill its parent container setting
+    explicit <b><i>width</i></b> and <b><i>height</i></b> CSS properties and not <b><i>"100%"</i></b>.
   </div>
 
   <br>
@@ -90,11 +101,19 @@
   <br>
 
   <h3>
-    6/ Controls Re-Flex example:
+    6 - Controlled elements Re-Flex example:
   </h3>
 
   <div>
-    &nbsp;&nbsp;A more advanced example
+    &nbsp;&nbsp;An example that illustrates how to programmatically control the <b><i>size</i></b> of a <b><i>ReflexElement</i></b>.
+    <br>
+    <br>
+    &nbsp;&nbsp;Clicking the (<b><i>- / +</i></b>) buttons in the control bar above each pane will respectively minimize or
+    maximize that pane into the allocated layout space.
+    <br>
+    <br>
+    &nbsp;&nbsp;
+    Clicking the (<b><i>=</i></b>) button will lock the pane to its current size. Click the button again to unlock it.
   </div>
 
   <br>

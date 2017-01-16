@@ -8,9 +8,10 @@ import {
   ReflexResizer
 } from '../../src/lib'
 
+import './demo.scss'
 
 /////////////////////////////////////////////////////////
-// Basic vertical re-flex layout non-resizable
+// Re-flex Basic vertical layout non-resizable
 //
 /////////////////////////////////////////////////////////
 class ReflexBasicDemo
@@ -43,7 +44,7 @@ class ReflexBasicDemo
 }
 
 /////////////////////////////////////////////////////////
-// Basic vertical re-flex layout with resizable splitter
+// Re-flex basic vertical layout with resizable splitter
 //
 /////////////////////////////////////////////////////////
 class ReflexBasicSplitterDemo
@@ -85,7 +86,7 @@ class ReflexBasicSplitterDemo
 }
 
 /////////////////////////////////////////////////////////
-// vertical re-flex layout with double
+// Re-flex vertical layout with double
 // resizable splitter propagation
 //
 /////////////////////////////////////////////////////////
@@ -138,7 +139,7 @@ class ReflexSplitterPropagationDemo2x
 }
 
 /////////////////////////////////////////////////////////
-// vertical re-flex layout with double
+// Re-flex vertical layout with double
 // resizable splitter propagation
 //
 /////////////////////////////////////////////////////////
@@ -194,7 +195,7 @@ extends React.Component {
 }
 
 /////////////////////////////////////////////////////////
-// Advanced re-flex multi-nested resizable layout
+// Re-flex advanced multi-nested resizable layout
 // with event listeners
 //
 /////////////////////////////////////////////////////////
@@ -204,6 +205,10 @@ class ReflexAdvancedDemo
   constructor () {
 
     super()
+
+    this.containerProps = {
+      onResize: this.onResizeContainer.bind(this)
+    }
 
     this.elementProps = {
       onStopResize: this.onStopResizeElement.bind(this),
@@ -229,20 +234,20 @@ class ReflexAdvancedDemo
       this.onResizeWindow)
   }
 
-  onResizeElement (e) {
-
-    e.domElement.classList.add('resizing')
+  onResizeContainer (e) {
 
     // fix for safari compatibility
     this.forceUpdate()
   }
 
+  onResizeElement (e) {
+
+    e.domElement.classList.add('resizing')
+  }
+
   onStopResizeElement (e) {
 
     e.domElement.classList.remove('resizing')
-
-    // fix for safari compatibility
-    this.forceUpdate()
   }
 
   onResizeWindow () {
@@ -253,7 +258,7 @@ class ReflexAdvancedDemo
   render () {
 
     return (
-      <ReflexContainer orientation="horizontal">
+      <ReflexContainer orientation="horizontal" {...this.containerProps}>
         <ReflexElement className="header" flex={0.1}>
           <ReflexResizer className="pane-content">
             <label>
@@ -263,9 +268,9 @@ class ReflexAdvancedDemo
         </ReflexElement>
         <ReflexElement>
           <ReflexResizer>
-            <ReflexContainer orientation="vertical">
+            <ReflexContainer orientation="vertical" {...this.containerProps}>
               <ReflexElement {...this.elementProps}>
-                <ReflexContainer orientation="horizontal">
+                <ReflexContainer orientation="horizontal" {...this.containerProps}>
                   <ReflexElement {...this.elementProps}>
                     <ReflexResizer className="pane-content">
                       <label>
@@ -308,10 +313,10 @@ class ReflexAdvancedDemo
               <ReflexSplitter/>
               <ReflexElement {...this.elementProps}>
                 <ReflexResizer>
-                  <ReflexContainer orientation="horizontal">
+                  <ReflexContainer orientation="horizontal" {...this.containerProps}>
                     <ReflexElement {...this.elementProps}>
                       <ReflexResizer>
-                        <ReflexContainer orientation="vertical">
+                        <ReflexContainer orientation="vertical" {...this.containerProps}>
                           <ReflexElement {...this.elementProps}>
                             <ReflexResizer className="pane-content">
                               <label>
@@ -357,7 +362,7 @@ class ReflexAdvancedDemo
 }
 
 /////////////////////////////////////////////////////////
-// Controlled re-flex element demo
+// Re-flex Controlled element demo
 //
 /////////////////////////////////////////////////////////
 class ControlledElement
@@ -367,25 +372,42 @@ class ControlledElement
 
     super()
 
+    this.onLockSizeClicked =
+      this.onLockSizeClicked.bind(this)
+
     this.onMinimizeClicked =
       this.onMinimizeClicked.bind(this)
 
     this.onMaximizeClicked =
       this.onMaximizeClicked.bind(this)
 
-    this.state = {}
+    this.state = {
+      size: -1
+    }
+  }
+
+  onLockSizeClicked () {
+
+    this.props.onLockSize({
+      locked: this.props.sizeLocked,
+      paneId: this.props.id,
+      size: this.getSize()
+    })
   }
 
   onMinimizeClicked () {
 
-    const currentSize = this.getSize ()
+    const currentSize = this.getSize()
 
     const update = (size) => {
 
-      this.setState(Object.assign({},
-        this.state, {
-          size: size < 25 ? 25 : size
-        }))
+      return new Promise((resolve) => {
+
+        this.setState(Object.assign({},
+          this.state, {
+            size: size < 25 ? 25 : size
+          }), () => resolve())
+      })
     }
 
     const done = (from, to) => {
@@ -400,14 +422,17 @@ class ControlledElement
 
   onMaximizeClicked () {
 
-    const currentSize = this.getSize ()
+    const currentSize = this.getSize()
 
     const update = (size) => {
 
-      this.setState(Object.assign({},
-        this.state, {
-          size
-        }))
+      return new Promise((resolve) => {
+
+        this.setState(Object.assign({},
+          this.state, {
+            size
+          }), () => resolve())
+      })
     }
 
     const done = (from, to) => {
@@ -443,9 +468,10 @@ class ControlledElement
 
       if (!done(from, to)) {
 
-        fn (from += step)
+        fn(from += step).then(() => {
 
-        requestAnimationFrame (stepFn)
+          setTimeout(stepFn, 8)
+        })
       }
     }
 
@@ -454,6 +480,9 @@ class ControlledElement
 
   render () {
 
+    const lockStyle = this.props.sizeLocked ?
+      { color: '#FF0000' } : {}
+
     return (
       <ReflexElement size={this.state.size} {...this.props}>
         <ReflexResizer className="pane-content">
@@ -461,8 +490,15 @@ class ControlledElement
             <label>
               {this.props.name}  Controls
             </label>
-            <button onClick={this.onMinimizeClicked}/>
-            <button onClick={this.onMaximizeClicked}/>
+            <button onClick={this.onMaximizeClicked}>
+              <label> + </label>
+            </button>
+            <button onClick={this.onMinimizeClicked}>
+              <label> - </label>
+            </button>
+            <button onClick={this.onLockSizeClicked}>
+              <label style={lockStyle} > = </label>
+            </button>
           </div>
           <div className="ctrl-pane-content">
             <label>
@@ -482,15 +518,41 @@ class ReflexControlsDemo
 
     super()
 
-    this.onResizeElement =
-      this.onResizeElement.bind(this)
+    this.containerProps = {
+      onResize: this.onResizeContainer.bind(this)
+    }
 
     this.onResizeWindow =
       this.onResizeWindow.bind(this)
 
-    this.ctrlProps = {
-      onResize: this.onResizeElement,
-      minSize: 25
+    this.onLockSize =
+      this.onLockSize.bind(this)
+
+    this.state = {
+      pane1: {
+        onLockSize: this.onLockSize,
+        sizeLocked: false,
+        name: 'Pane 1',
+        direction: 1,
+        id: 'pane1',
+        minSize: 25
+      },
+      pane2: {
+        onLockSize: this.onLockSize,
+        sizeLocked: false,
+        name: 'Pane 2',
+        direction: [1, -1],
+        id: 'pane2',
+        minSize: 25
+      },
+      pane3: {
+        onLockSize: this.onLockSize,
+        sizeLocked: false,
+        name: 'Pane 3',
+        direction:-1,
+        id: 'pane3',
+        minSize: 25
+      }
     }
   }
 
@@ -514,33 +576,51 @@ class ReflexControlsDemo
     this.forceUpdate()
   }
 
-  onResizeElement (e) {
+  onResizeContainer (e) {
 
     // fix for safari compatibility
     this.forceUpdate()
   }
 
+  onLockSize (data) {
+
+    const locked = !this.state[data.paneId].sizeLocked
+
+    this.state[data.paneId].sizeLocked = locked
+
+    if (locked) {
+
+      this.state[data.paneId].minSize = data.size
+      this.state[data.paneId].maxSize = data.size
+
+    } else {
+
+      this.state[data.paneId].minSize = 25
+      this.state[data.paneId].maxSize = Number.MAX_VALUE
+    }
+
+    this.setState(Object.assign({},
+      this.state))
+  }
+
   render () {
 
     return (
-      <ReflexContainer orientation="vertical">
+      <ReflexContainer orientation="vertical" {...this.containerProps}>
 
         <ReflexElement flex={0.4}>
           <ReflexResizer className="pane-content">
-            <ReflexContainer orientation="horizontal">
+            <ReflexContainer orientation="horizontal" {...this.containerProps}>
 
-              <ControlledElement name="Pane 1"
-                shrinkDirection={-1} {...this.ctrlProps}/>
-
-              <ReflexSplitter propagate={true}/>
-
-              <ControlledElement name="Pane 2"
-                shrinkDirection={-1} {...this.ctrlProps}/>
+              <ControlledElement {...this.state.pane1}/>
 
               <ReflexSplitter propagate={true}/>
 
-              <ControlledElement name="Pane 3"
-                shrinkDirection={1} {...this.ctrlProps}/>
+              <ControlledElement {...this.state.pane2}/>
+
+              <ReflexSplitter propagate={true}/>
+
+              <ControlledElement {...this.state.pane3}/>
 
             </ReflexContainer>
           </ReflexResizer>
