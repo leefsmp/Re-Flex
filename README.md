@@ -57,8 +57,9 @@ ReactDOM.render(
 
 ## Installation
 
-* npm install react-reflex
-
+```js
+npm install react-reflex
+```
 
 ## React Suppot
 
@@ -80,6 +81,8 @@ Re-F|ex is responsive, mobile friendly and has been tested on the following brow
 Re-F|ex is the most powerful React layout component out there ... Don't just trust me, try it!
 
 [Click here for code samples and live demos ...](https://leefsmp.github.io/Re-Flex/index.html)
+
+![re-flex-demo](./resources/img/demo.png)
 
 ## Development
 
