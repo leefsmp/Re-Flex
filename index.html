@@ -45,11 +45,16 @@
   <br>
 
   <h3>
-    3 - Re-Flex example with splitter propagation:
+    3 - Re-Flex example with splitter propagation (2x):
   </h3>
 
   <div>
-    &nbsp;&nbsp;Example with two splitters propagating the drag: setting the <b><i>propagate={true}</i></b>
+    &nbsp;&nbsp;Example with two splitters propagating the drag: this is where Re-Flex really makes the difference between any other
+    layout library you can find out there.
+
+    <br>
+    <br>
+    &nbsp;&nbsp;Setting the <b><i>propagate={true}</i></b>
     property on the <b><i>ReflexSplitter</i></b> components will propagate the drag all the way from right to left or
     left to right (respectively up and down for an horizontal layout) depending on user interaction. In that demo <b><i>minSize</i></b>
     and <b><i>maxSize</i></b> properties are also specified on the middle pane, Re-Flex will respect those attributes when dragging
@@ -73,7 +78,7 @@
 
   <br>
 
-  <script src="https://gist.github.com/leefsmp/679a1189c0e9922b8ff5d2f511dde523.js"></script>
+  <script src="https://gist.github.com/leefsmp/04a74bb4fdb6c513590cceed84038ccd.js"></script>
   <div id="demo-splitter-propagation-3x"></div>
 
   <br>
@@ -96,6 +101,15 @@
   <br>
 
   <script src="https://gist.github.com/leefsmp/0dc99af3505d259506cdec74a4c18bc7.js"></script>
+
+  <br>
+  <br>
+
+  &nbsp;&nbsp;Try the sample below and judge the power of Re-Flex ...
+
+  <br>
+  <br>
+
   <div id="demo-advanced"></div>
 
   <br>
@@ -105,20 +119,19 @@
   </h3>
 
   <div>
-    &nbsp;&nbsp;An example that illustrates how to programmatically control the <b><i>size</i></b> of a <b><i>ReflexElement</i></b>.
+    &nbsp;&nbsp;A more verbose example that illustrates how to programmatically control the <b><i>size</i></b> of <b><i>ReflexElements</i></b>.
     <br>
     <br>
     &nbsp;&nbsp;Clicking the (<b><i>- / +</i></b>) buttons in the control bar above each pane will respectively minimize or
     maximize that pane into the allocated layout space.
     <br>
     <br>
-    &nbsp;&nbsp;
-    Clicking the (<b><i>=</i></b>) button will lock the pane to its current size. Click the button again to unlock it.
+    &nbsp;&nbsp;Clicking the (<b><i>=</i></b>) button will lock the pane to its current size. Click the button again to unlock it.
   </div>
 
   <br>
 
-  <script src="https://gist.github.com/leefsmp/0dc99af3505d259506cdec74a4c18bc7.js"></script>
+  <script src="https://gist.github.com/leefsmp/3b0a01068a1d15c1de971bf9747fd87c.js"></script>
   <div id="demo-controls"></div>
 
   <script src="dist/demo/bundle.js"></script>

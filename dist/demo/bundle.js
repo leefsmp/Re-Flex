@@ -13520,7 +13520,7 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
 /////////////////////////////////////////////////////////
-// Re-flex Basic vertical layout non-resizable
+// Re-Flex Basic vertical layout non-resizable
 //
 /////////////////////////////////////////////////////////
 var ReflexBasicDemo = function (_React$Component) {
@@ -13573,7 +13573,7 @@ var ReflexBasicDemo = function (_React$Component) {
 }(_react2.default.Component);
 
 /////////////////////////////////////////////////////////
-// Re-flex basic vertical layout with resizable splitter
+// Re-Flex basic vertical layout with resizable splitter
 //
 /////////////////////////////////////////////////////////
 
@@ -13636,7 +13636,7 @@ var ReflexBasicSplitterDemo = function (_React$Component2) {
 }(_react2.default.Component);
 
 /////////////////////////////////////////////////////////
-// Re-flex vertical layout with double
+// Re-Flex vertical layout with double
 // resizable splitter propagation
 //
 /////////////////////////////////////////////////////////
@@ -13714,7 +13714,7 @@ var ReflexSplitterPropagationDemo2x = function (_React$Component3) {
 }(_react2.default.Component);
 
 /////////////////////////////////////////////////////////
-// Re-flex vertical layout with double
+// Re-Flex vertical layout with triple
 // resizable splitter propagation
 //
 /////////////////////////////////////////////////////////
@@ -13799,7 +13799,7 @@ var ReflexSplitterPropagationDemo3x = function (_React$Component4) {
 }(_react2.default.Component);
 
 /////////////////////////////////////////////////////////
-// Re-flex advanced multi-nested resizable layout
+// Re-Flex advanced multi-nested resizable layout
 // with event listeners
 //
 /////////////////////////////////////////////////////////
@@ -14066,7 +14066,7 @@ var ReflexAdvancedDemo = function (_React$Component5) {
 }(_react2.default.Component);
 
 /////////////////////////////////////////////////////////
-// Re-flex Controlled element demo
+// Re-Flex Controlled element demo
 //
 /////////////////////////////////////////////////////////
 
