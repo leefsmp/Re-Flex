@@ -8,7 +8,10 @@ module.exports = {
   context: path.join(__dirname, '../..'),
 
   entry: {
-    index: './src/lib/index.js'
+    'index': [
+      'babel-polyfill',
+      './src/lib/index.js'
+    ]
   },
 
   output: {
