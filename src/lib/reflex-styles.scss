@@ -57,7 +57,7 @@
 }
 
 .reflex-layout.horizontal > .reflex-splitter.mobile {
-  height: 5px;
+  height: 6px;
 }
 
 .reflex-layout.horizontal > .reflex-splitter:hover {
@@ -75,7 +75,7 @@
 }
 
 .reflex-layout.vertical > .reflex-splitter.mobile {
-  width: 5px;
+  width: 6px;
 }
 
 .reflex-layout.vertical > .reflex-splitter:hover {
@@ -83,3 +83,4 @@
   border-left: 1px solid #eeeeee;
   transition: all 1s ease;
 }
+

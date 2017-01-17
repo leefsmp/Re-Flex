@@ -13,9 +13,9 @@ module.exports = {
 
   output: {
     path: path.join(__dirname, '../../dist/lib'),
+    library: 'react-reflex',
     filename: '[name].js',
-    libraryTarget: 'umd',
-    library: 're-flex'
+    libraryTarget: 'umd'
   },
 
   plugins: [

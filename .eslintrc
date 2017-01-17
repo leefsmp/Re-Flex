@@ -4,8 +4,7 @@
 
   "env": {
     "browser": true,
-    "node": true,
-    "jasmine": true
+    "node": false
   },
 
   // To give you an idea how to override rule options:

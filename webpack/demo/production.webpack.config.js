@@ -30,8 +30,6 @@ module.exports = {
       minChunkSize: 51200
     }),
 
-    new webpack.optimize.DedupePlugin(),
-
     new webpack.optimize.UglifyJsPlugin({
       output: {
         comments: false
@@ -54,6 +52,10 @@ module.exports = {
     extensions: ['.js', '.jsx', '.json']
   },
 
+  stats: {
+    warnings: false
+  },
+
   module: {
 
     rules: [
@@ -68,14 +70,8 @@ module.exports = {
         }]
       },
       {
-        test: /\.css$/,
-        use: [
-          "style-loader",
-          { loader: "css-loader", options: { modules: true } }
-        ]
-      },
-      {
         test: /\.(sass|scss)$/,
+        exclude: /node_modules/,
         use: [ "style-loader", "css-loader", "sass-loader"]
       }
     ]

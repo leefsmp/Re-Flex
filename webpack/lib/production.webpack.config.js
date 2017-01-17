@@ -12,9 +12,9 @@ module.exports = {
 
   output: {
     path: path.join(__dirname, '../../dist/lib'),
+    library: 'react-reflex',
     filename: '[name].js',
-    libraryTarget: 'umd',
-    library: 're-flex'
+    libraryTarget: 'umd'
   },
 
   plugins: [
@@ -28,8 +28,6 @@ module.exports = {
     new webpack.optimize.MinChunkSizePlugin({
       minChunkSize: 51200
     }),
-
-    new webpack.optimize.DedupePlugin(),
 
     new webpack.optimize.UglifyJsPlugin({
       output: {
