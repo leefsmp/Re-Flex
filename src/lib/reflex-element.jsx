@@ -94,7 +94,12 @@ export default class ReflexElement
 
     if (this.props.renderOnResize) {
 
-      this.setStateThrottled({dimensions})
+      this.setStateThrottled({
+        dimensions: {
+          height: Math.floor(dimensions.height),
+          width: Math.floor(dimensions.width)
+        }
+      })
     }
   }
 
