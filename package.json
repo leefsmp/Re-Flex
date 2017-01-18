@@ -1,6 +1,6 @@
 {
   "name": "react-reflex",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "A flex-based React layout component that works",
   "main": "dist/lib/index.min.js",
   "scripts": {
