@@ -116,7 +116,10 @@ export default class ReflexSplitter
 
       if (this.props.onResize) {
 
-        this.props.onResize()
+        this.props.onResize({
+          domElement: ReactDOM.findDOMNode(this),
+          component: this
+        })
       }
 
       event.stopPropagation()
@@ -139,7 +142,10 @@ export default class ReflexSplitter
       // cancels resize from controller
       // if needed by returning true
       // to onStartResize
-      if (this.props.onStartResize(event)) {
+      if (this.props.onStartResize({
+          domElement: ReactDOM.findDOMNode(this),
+          component: this
+      })) {
 
         event.stopPropagation()
         event.preventDefault()
@@ -171,7 +177,10 @@ export default class ReflexSplitter
 
       if (this.props.onStopResize) {
 
-        this.props.onStopResize(event)
+        this.props.onStopResize({
+          domElement: ReactDOM.findDOMNode(this),
+          component: this
+        })
       }
 
       this.props.events.emit('splitter.stopResize', {

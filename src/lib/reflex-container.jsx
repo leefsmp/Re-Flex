@@ -165,8 +165,6 @@ class ReflexContainer
 
     this.emitElementsEvent(
       this.elements, 'onStartResize')
-
-    this.emitEvent('onStartResize')
   }
 
   /////////////////////////////////////////////////////////
@@ -210,8 +208,6 @@ class ReflexContainer
         this.emitElementsEvent(
           this.elements, 'onResize')
 
-        this.emitEvent('onResize')
-
         //this.elements.forEach((element)=>{
         //
         //  const ref = this.refs[element.ref]
@@ -232,8 +228,6 @@ class ReflexContainer
 
     this.emitElementsEvent(
       this.children, 'onStopResize')
-
-    this.emitEvent('onStopResize')
   }
 
   /////////////////////////////////////////////////////////
@@ -272,8 +266,6 @@ class ReflexContainer
 
         this.emitElementsEvent(
           this.elements, 'onResize')
-
-        this.emitEvent('onResize')
 
         resolve()
       })
@@ -558,21 +550,6 @@ class ReflexContainer
       ...this.dispatchStretch(idx, offset),
       ...this.dispatchShrink(idx, offset)
     ]
-  }
-
-  /////////////////////////////////////////////////////////
-  // Emits given if event if present in the component props
-  //
-  /////////////////////////////////////////////////////////
-  emitEvent (event) {
-
-    if (this.props[event]) {
-
-      this.props[event]({
-        domElement: ReactDOM.findDOMNode(this),
-        component: this
-      })
-    }
   }
 
   /////////////////////////////////////////////////////////

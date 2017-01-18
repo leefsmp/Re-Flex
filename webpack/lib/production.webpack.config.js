@@ -47,7 +47,7 @@ module.exports = {
       'process.env.NODE_ENV': '"production"'
     }),
 
-    new webpack.NoErrorsPlugin()
+    new webpack.NoEmitOnErrorsPlugin()
   ],
 
   resolve: {

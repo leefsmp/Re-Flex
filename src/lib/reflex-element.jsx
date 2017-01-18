@@ -4,6 +4,8 @@
 // December 2016
 //
 ///////////////////////////////////////////////////////////
+import throttle from 'lodash.throttle'
+import Measure from 'react-measure'
 import ReactDOM from 'react-dom'
 import React from 'react'
 
@@ -15,6 +17,9 @@ export default class ReflexElement
   //
   /////////////////////////////////////////////////////////
   static propTypes = {
+    renderOnResizeRate: React.PropTypes.number,
+    propagateDimensions: React.PropTypes.bool,
+    renderOnResize: React.PropTypes.bool,
     className: React.PropTypes.string
   }
 
@@ -23,6 +28,9 @@ export default class ReflexElement
   //
   /////////////////////////////////////////////////////////
   static defaultProps = {
+    propagateDimensions: false,
+    renderOnResizeRate: 60,
+    renderOnResize: true,
     className: ''
   }
 
@@ -34,8 +42,17 @@ export default class ReflexElement
 
     super (props)
 
+    this.onMeasure = this.onMeasure.bind(this)
+
+    this.setStateThrottled = throttle((state) => {
+      this.setState(state)
+    }, this.props.renderOnResizeRate)
+
     this.state = {
-      style: {}
+      dimensions: {
+        height: "100%",
+        width: "100%"
+      }
     }
   }
 
@@ -73,6 +90,40 @@ export default class ReflexElement
   //
   //
   /////////////////////////////////////////////////////////
+  onMeasure (dimensions) {
+
+    if (this.props.renderOnResize) {
+
+      this.setStateThrottled({dimensions})
+    }
+  }
+
+  ///////////////////////////////////////////////////////////////////
+  //
+  //
+  ///////////////////////////////////////////////////////////////////
+  renderChildren() {
+
+    if (this.props.propagateDimensions) {
+
+      return React.Children.map(this.props.children, (child) => {
+
+        const newProps = Object.assign({},
+          child.props, {
+            dimensions: this.state.dimensions
+          })
+
+        return React.cloneElement(child, newProps)
+      })
+    }
+
+    return this.props.children
+  }
+
+  /////////////////////////////////////////////////////////
+  //
+  //
+  /////////////////////////////////////////////////////////
   render () {
 
     const classNames = [
@@ -89,9 +140,16 @@ export default class ReflexElement
       }, this.props.style)
 
     return (
-      <div className={classNames.join(' ')} style={style}>
-        { this.props.children }
-      </div>
+      <Measure onMeasure={(dimensions) => this.onMeasure(dimensions)}>
+        <div className={classNames.join(' ')} style={style}>
+          <div style={{
+            height: this.state.dimensions.height,
+            width: this.state.dimensions.width
+          }}>
+            { this.renderChildren() }
+          </div>
+        </div>
+      </Measure>
     )
   }
 }
