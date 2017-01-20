@@ -4,6 +4,7 @@
 // December 2016
 //
 ///////////////////////////////////////////////////////////
+import BrowserType from './BrowserType'
 import throttle from 'lodash.throttle'
 import Measure from 'react-measure'
 import ReactDOM from 'react-dom'
@@ -28,9 +29,9 @@ export default class ReflexElement
   //
   /////////////////////////////////////////////////////////
   static defaultProps = {
+    renderOnResize: BrowserType.isSafari(),
     propagateDimensions: false,
     renderOnResizeRate: 60,
-    renderOnResize: true,
     className: ''
   }
 

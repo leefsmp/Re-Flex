@@ -1,6 +1,6 @@
-import ReflexContainer from './reflex-container'
-import ReflexSplitter from './reflex-splitter'
-import ReflexElement from './reflex-element'
+import ReflexContainer from './ReflexContainer'
+import ReflexSplitter from './ReflexSplitter'
+import ReflexElement from './ReflexElement'
 import './reflex-styles.scss'
 
 module.exports = {

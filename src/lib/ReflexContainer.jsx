@@ -4,9 +4,9 @@
 // December 2016
 //
 ///////////////////////////////////////////////////////////
-import ReflexSplitter from './reflex-splitter'
-import ReflexElement from './reflex-element'
-import ReflexEvents from './reflex-events'
+import ReflexSplitter from './ReflexSplitter'
+import ReflexElement from './ReflexElement'
+import ReflexEvents from './ReflexEvents'
 import ReactDOM from 'react-dom'
 import React from 'react'
 
