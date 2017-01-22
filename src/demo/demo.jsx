@@ -308,7 +308,7 @@ class ReflexAdvancedDemo
                     </ReflexContainer>
                   </div>
                 </ReflexElement>
-                <ReflexSplitter {...this.resizeProps}/>
+                <ReflexSplitter {...this.resizeProps} className="reflex-thin"/>
                 <ReflexElement {...this.resizeProps}>
                   <div className="pane-content">
                     <label>

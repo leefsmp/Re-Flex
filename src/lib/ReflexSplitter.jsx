@@ -203,7 +203,7 @@ export default class ReflexSplitter
 
     if (mobile.isAny()) {
 
-      classNames.push('mobile')
+      classNames.push('reflex-thin')
     }
 
     return (
