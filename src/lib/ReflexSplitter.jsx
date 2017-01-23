@@ -5,6 +5,7 @@
 //
 ///////////////////////////////////////////////////////////
 import ReactDOM from 'react-dom'
+import Browser from './Browser'
 import React from 'react'
 
 export default class ReflexSplitter
@@ -201,7 +202,7 @@ export default class ReflexSplitter
       ...this.props.className.split(' ')
     ]
 
-    if (mobile.isAny()) {
+    if (Browser.isMobile()) {
 
       classNames.push('reflex-thin')
     }
@@ -212,40 +213,5 @@ export default class ReflexSplitter
         onMouseDown={this.onMouseDown}>
       </div>
     )
-  }
-}
-
-const mobile = {
-
-  getUserAgent: function () {
-    return navigator.userAgent;
-  },
-  isAndroid: function () {
-    return this.getUserAgent().match(/Android/i);
-  },
-  isBlackBerry: function () {
-    return this.getUserAgent().match(/BlackBerry/i);
-  },
-  isIOS: function () {
-    return this.getUserAgent().match(/iPhone|iPad|iPod/i);
-  },
-  isOpera: function () {
-    return this.getUserAgent().match(/Opera Mini/i);
-  },
-  isWindows: function () {
-    return this.isWindowsDesktop() || this.isWindowsMobile();
-  },
-  isWindowsMobile: function () {
-    return this.getUserAgent().match(/IEMobile/i);
-  },
-  isWindowsDesktop: function () {
-    return this.getUserAgent().match(/WPDesktop/i);
-  },
-  isAny: function () {
-
-    return this.isAndroid() ||
-      this.isBlackBerry() ||
-      this.isIOS() ||
-      this.isWindowsMobile();
   }
 }

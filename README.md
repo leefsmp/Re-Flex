@@ -73,6 +73,7 @@ Re-F|ex is responsive, mobile friendly and has been tested on the following brow
   * Firefox
   * Safari
   * Opera
+  * Edge
 
 ## Documentation & Samples
 

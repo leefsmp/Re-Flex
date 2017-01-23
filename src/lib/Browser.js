@@ -1,8 +1,8 @@
 /////////////////////////////////////////////////////////
-// Detect Browser Type utils
+// Browser Utils
 //
 /////////////////////////////////////////////////////////
-class BrowserType {
+class Browser {
 
   // Opera 8.0+ (UA detection to detect Blink/v8-powered Opera)
   static isOpera () {
@@ -36,7 +36,7 @@ class BrowserType {
 
   // Edge 20+
   static isEdge () {
-    return (!BrowserType.isIE() && !!window.StyleMedia)
+    return (!Browser.isIE() && !!window.StyleMedia)
   }
 
   // Chrome 1+
@@ -46,8 +46,49 @@ class BrowserType {
 
   // Blink engine detection
   static isBlink () {
-    return ((BrowserType.isChrome() || BrowserType.isOpera()) && !!window.CSS)
+    return ((Browser.isChrome() || Browser.isOpera()) && !!window.CSS)
+  }
+
+
+  static getUserAgent () {
+    return navigator.userAgent
+  }
+
+  static isAndroid () {
+    return Browser.getUserAgent().match(/Android/i)
+  }
+
+  static isBlackBerry () {
+    return Browser.getUserAgent().match(/BlackBerry/i)
+  }
+
+  static isIOS () {
+    return Browser.getUserAgent().match(/iPhone|iPad|iPod/i)
+  }
+
+  static isOpera () {
+    return Browser.getUserAgent().match(/Opera Mini/i)
+  }
+
+  static isWindows () {
+    return Browser.isWindowsDesktop() || Browser.isWindowsMobile()
+  }
+
+  static isWindowsMobile () {
+    return Browser.getUserAgent().match(/IEMobile/i)
+  }
+
+  static isWindowsDesktop () {
+    return Browser.getUserAgent().match(/WPDesktop/i)
+  }
+
+  static isMobile () {
+
+    return Browser.isWindowsMobile() ||
+      Browser.isBlackBerry() ||
+      Browser.isAndroid() ||
+      Browser.isIOS()
   }
 }
 
-export default BrowserType
+export default Browser
