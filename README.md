@@ -94,6 +94,6 @@ Re-F|ex is the most powerful React layout component out there ... Don't just tru
 
 ## Web Applications using Re-F|ex
 
- * [Autodesk Forge RCDB](forge-rcdb.autodesk.io)
+ * [Autodesk Forge RCDB](https://forge-rcdb.autodesk.io)
 
 (Feel free to add your own by submitting a pull request...)
