@@ -1,7 +1,7 @@
 {
   "name": "react-reflex",
   "version": "1.0.6",
-  "description": "A flex-based React layout component that works",
+  "description": "Flex layout component for advanced React web applications",
   "main": "dist/lib/index.min.js",
   "scripts": {
     "build-demo-dev": "webpack --watch --config ./webpack/demo/development.webpack.config",
