@@ -61,7 +61,7 @@ ReactDOM.render(
 npm install react-reflex
 ```
 
-## React Suppot
+## React Support
 
 React >= 0.13.x
 
