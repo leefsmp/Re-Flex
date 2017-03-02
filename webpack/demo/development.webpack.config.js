@@ -9,7 +9,6 @@ module.exports = {
 
   entry: {
     bundle: [
-      'babel-polyfill',
       './src/demo/index.js'
     ]
   },
@@ -34,7 +33,8 @@ module.exports = {
         use: [{
           loader: "babel-loader",
           options: {
-            presets: ['react', 'es2015', 'stage-0'] // { "modules": false }
+            presets: ['react', 'es2015', 'stage-0'],
+            plugins: ['transform-runtime']
           }
         }]
       },
