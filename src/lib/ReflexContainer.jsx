@@ -11,7 +11,7 @@ import ReactDOM from 'react-dom'
 import React from 'react'
 
 class ReflexContainer
-  extends React.Component {
+extends React.Component {
 
   /////////////////////////////////////////////////////////
   //
@@ -226,9 +226,15 @@ class ReflexContainer
 
     document.body.style.cursor = 'auto'
 
+    const resizedRefs = this.elements.map((element) => {
+
+      return element.ref
+    })
+
     const elements = this.children.filter((child) => {
 
-      return (child.type === ReflexElement)
+      return child.type !== ReflexSplitter &&
+        resizedRefs.includes(child.ref)
     })
 
     this.emitElementsEvent(elements, 'onStopResize')
@@ -285,16 +291,16 @@ class ReflexContainer
 
     const diffFlex = elements.reduce((sum, element) => {
 
-        const idx = element.props.index
+      const idx = element.props.index
 
-        const previousFlex = element.props.flex
+      const previousFlex = element.props.flex
 
-        const nextFlex = this.state.flexData[idx].flex
+      const nextFlex = this.state.flexData[idx].flex
 
-        return sum +
-          (previousFlex - nextFlex) / elements.length
+      return sum +
+        (previousFlex - nextFlex) / elements.length
 
-      }, 0)
+    }, 0)
 
     elements.forEach((element) => {
       this.state.flexData[element.props.index].flex
@@ -597,7 +603,7 @@ class ReflexContainer
     const flexValues = children.map((child) => {
 
       if (child.type !== ReflexSplitter &&
-         !child.props.flex) {
+        !child.props.flex) {
 
         ++nbElements
       }
@@ -619,7 +625,7 @@ class ReflexContainer
         return {
           guid: child.props.ref || this.guid(),
           flex: flexValues[idx] ||
-            remainingFlex / nbElements
+          remainingFlex / nbElements
         }
       }
 
