@@ -226,8 +226,12 @@ class ReflexContainer
 
     document.body.style.cursor = 'auto'
 
-    this.emitElementsEvent(
-      this.children, 'onStopResize')
+    const elements = this.children.filter((child) => {
+
+      return (child.type === ReflexElement)
+    })
+
+    this.emitElementsEvent(elements, 'onStopResize')
   }
 
   /////////////////////////////////////////////////////////

@@ -18,7 +18,7 @@ export default class ReflexSplitter
   static propTypes = {
     onStartResize:React.PropTypes.func,
     className: React.PropTypes.string,
-    onEndResize:React.PropTypes.func,
+    onStopResize:React.PropTypes.func,
     propagate: React.PropTypes.bool,
     onResize:React.PropTypes.func
   }
@@ -29,7 +29,7 @@ export default class ReflexSplitter
   /////////////////////////////////////////////////////////
   static defaultProps = {
     onStartResize: null,
-    onEndResize: null,
+    onStopResize: null,
     propagate: false,
     onResize:null,
     className: '',

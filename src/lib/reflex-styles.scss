@@ -12,6 +12,7 @@
   display: -ms-flexbox;      /* TWEENER - IE 10 */
   display: -webkit-flex;     /* NEW - Chrome */
   display: flex;
+  position: relative;
   height: 100%;
   width: 100%;
 }
@@ -29,11 +30,11 @@
 //
 /////////////////////////////////////////////////////////
 .reflex-layout > .reflex-element {
+  position: relative;
   overflow: auto;
   height: 100%;
   width: 100%;
 }
-
 
 /////////////////////////////////////////////////////////
 //Re-Flex Splitter
