@@ -40,7 +40,7 @@ extends React.Component {
     super (props)
 
     this.state = {
-      flexData: this.getInitialFlexData()
+      flexData: this.computeFlexData()
     }
 
     this.events = new ReflexEvents()
@@ -56,6 +56,8 @@ extends React.Component {
 
     this.onElementSize =
       this.onElementSize.bind(this)
+
+    this.children = []
   }
 
   /////////////////////////////////////////////////////////
@@ -88,6 +90,20 @@ extends React.Component {
   componentWillUnmount () {
 
     this.events.off()
+  }
+
+  /////////////////////////////////////////////////////////////
+  //
+  //
+  /////////////////////////////////////////////////////////////
+  componentWillReceiveProps (props) {
+
+    if (props.children.length !== this.state.flexData.length) {
+
+      this.setState(Object.assign({}, this.state, {
+        flexData: this.computeFlexData()
+      }))
+    }
   }
 
   /////////////////////////////////////////////////////////
@@ -248,37 +264,44 @@ extends React.Component {
 
     return new Promise((resolve) => {
 
-      const idx = data.element.props.index
+      try {
 
-      const size = this.getSize(this.children[idx])
+        const idx = data.element.props.index
 
-      const offset = data.size - size
+        const size = this.getSize(this.children[idx])
 
-      const dir = data.direction
+        const offset = data.size - size
 
-      const splitterIdx = idx + dir
+        const dir = data.direction
 
-      const availableOffset =
-        this.computeAvailableOffset(
-          splitterIdx, dir * offset)
+        const splitterIdx = idx + dir
 
-      this.elements = null
+        const availableOffset =
+          this.computeAvailableOffset(
+            splitterIdx, dir * offset)
 
-      if (availableOffset) {
+        this.elements = null
 
-        this.elements = this.dispatchOffset(
-          splitterIdx, availableOffset)
+        if (availableOffset) {
 
-        this.adjustFlex(this.elements)
+          this.elements = this.dispatchOffset(
+            splitterIdx, availableOffset)
+
+          this.adjustFlex(this.elements)
+        }
+
+        this.setState(this.state, () => {
+
+          this.emitElementsEvent(
+            this.elements, 'onResize')
+
+          resolve()
+        })
+
+      } catch (ex) {
+
+        // TODO handle exception ...
       }
-
-      this.setState(this.state, () => {
-
-        this.emitElementsEvent(
-          this.elements, 'onResize')
-
-        resolve()
-      })
     })
   }
 
@@ -589,7 +612,7 @@ extends React.Component {
   // evenly arranged within its container
   //
   /////////////////////////////////////////////////////////
-  getInitialFlexData () {
+  computeFlexData () {
 
     let nbElements = 0
 
@@ -677,6 +700,10 @@ extends React.Component {
 
     this.children = React.Children.map(
       this.props.children, (child, idx) => {
+
+        if (idx > this.state.flexData.length - 1) {
+          return (<div></div>)
+        }
 
         const flexData = this.state.flexData[idx]
 
