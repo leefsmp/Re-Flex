@@ -19,7 +19,8 @@ extends React.Component {
   /////////////////////////////////////////////////////////
   static propTypes = {
     orientation: React.PropTypes.string,
-    className: React.PropTypes.string
+    className: React.PropTypes.string,
+    style: React.PropTypes.object
   }
 
   /////////////////////////////////////////////////////////
@@ -28,7 +29,8 @@ extends React.Component {
   /////////////////////////////////////////////////////////
   static defaultProps = {
     orientation: 'horizontal',
-    className: ''
+    className: '',
+    style: {}
   }
 
   /////////////////////////////////////////////////////////
@@ -721,7 +723,8 @@ extends React.Component {
       })
 
     return (
-      <div className={classNames.join(' ')}>
+      <div className={classNames.join(' ')}
+        style={this.props.style}>
         { this.children }
       </div>
     )

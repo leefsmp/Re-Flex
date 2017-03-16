@@ -18,9 +18,10 @@ export default class ReflexSplitter
   static propTypes = {
     onStartResize:React.PropTypes.func,
     className: React.PropTypes.string,
-    onStopResize:React.PropTypes.func,
+    onStopResize: React.PropTypes.func,
     propagate: React.PropTypes.bool,
-    onResize:React.PropTypes.func
+    onResize: React.PropTypes.func,
+    style: React.PropTypes.object
   }
 
   /////////////////////////////////////////////////////////
@@ -33,6 +34,7 @@ export default class ReflexSplitter
     propagate: false,
     onResize:null,
     className: '',
+    style: {},
     document
   }
 
@@ -210,7 +212,8 @@ export default class ReflexSplitter
     return (
       <div className={classNames.join(' ')}
         onTouchStart={this.onMouseDown}
-        onMouseDown={this.onMouseDown}>
+        onMouseDown={this.onMouseDown}
+        style={this.props.style}>
       </div>
     )
   }
