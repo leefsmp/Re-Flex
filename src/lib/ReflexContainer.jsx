@@ -42,7 +42,7 @@ extends React.Component {
     super (props)
 
     this.state = {
-      flexData: this.computeFlexData()
+      flexData: this.computeFlexData(props.children)
     }
 
     this.events = new ReflexEvents()
@@ -100,12 +100,39 @@ extends React.Component {
   /////////////////////////////////////////////////////////////
   componentWillReceiveProps (props) {
 
-    if (props.children.length !== this.state.flexData.length) {
+    if (props.children.length !== this.state.flexData.length ||
+      this.flexHasChanged(props)) {
 
       this.setState(Object.assign({}, this.state, {
-        flexData: this.computeFlexData()
+        flexData: this.computeFlexData(props.children)
       }))
     }
+  }
+
+  /////////////////////////////////////////////////////////
+  // Check if flex has changed: this allows updating the
+  // component when different flex is passed as property
+  // to one or several children
+  //
+  /////////////////////////////////////////////////////////
+  flexHasChanged (props) {
+
+    const nextChildrenFlex =
+      props.children.map((child) => {
+
+        return child.props.flex || 0
+      })
+
+    const childrenFlex =
+      this.props.children.map((child) => {
+
+        return child.props.flex || 0
+      })
+
+    return !childrenFlex.every((flex, idx) => {
+
+      return flex === nextChildrenFlex[idx]
+    })
   }
 
   /////////////////////////////////////////////////////////
@@ -225,13 +252,6 @@ extends React.Component {
 
         this.emitElementsEvent(
           this.elements, 'onResize')
-
-        //this.elements.forEach((element)=>{
-        //
-        //  const ref = this.refs[element.ref]
-        //
-        //  ref.forceUpdate()
-        //})
       })
     }
   }
@@ -614,18 +634,18 @@ extends React.Component {
   // evenly arranged within its container
   //
   /////////////////////////////////////////////////////////
-  computeFlexData () {
+  computeFlexData (children) {
 
     let nbElements = 0
 
-    if (!this.props.children) {
+    if (!children) {
 
       return []
     }
 
-    const children = this.toArray(this.props.children)
+    const childrenArray = this.toArray(children)
 
-    const flexValues = children.map((child) => {
+    const flexValues = childrenArray.map((child) => {
 
       if (child.type !== ReflexSplitter &&
         !child.props.flex) {
@@ -643,7 +663,7 @@ extends React.Component {
       remainingFlex -= flex
     })
 
-    return children.map((child, idx) => {
+    return childrenArray.map((child, idx) => {
 
       if (child.type !== ReflexSplitter) {
 

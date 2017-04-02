@@ -433,15 +433,15 @@ class ControlledElement
     }
   }
 
-  animate (from, to, step, done, fn) {
+  animate (start, end, step, done, fn) {
 
     const stepFn = () => {
 
-      if (!done(from, to)) {
+      if (!done(start, end)) {
 
-        fn(from += step).then(() => {
+        fn(start += step).then(() => {
 
-          setTimeout(stepFn, 8)
+          window.requestAnimationFrame(stepFn)
         })
       }
     }
