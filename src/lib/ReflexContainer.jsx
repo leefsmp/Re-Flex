@@ -7,20 +7,20 @@
 import ReflexSplitter from './ReflexSplitter'
 import ReflexElement from './ReflexElement'
 import ReflexEvents from './ReflexEvents'
+import PropTypes from 'prop-types'
 import ReactDOM from 'react-dom'
 import React from 'react'
 
-class ReflexContainer
-extends React.Component {
+class ReflexContainer extends React.Component {
 
   /////////////////////////////////////////////////////////
   //
   //
   /////////////////////////////////////////////////////////
   static propTypes = {
-    orientation: React.PropTypes.string,
-    className: React.PropTypes.string,
-    style: React.PropTypes.object
+    orientation: PropTypes.string,
+    className: PropTypes.string,
+    style: PropTypes.object
   }
 
   /////////////////////////////////////////////////////////

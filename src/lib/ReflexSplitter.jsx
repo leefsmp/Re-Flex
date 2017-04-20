@@ -4,24 +4,24 @@
 // December 2016
 //
 ///////////////////////////////////////////////////////////
+import PropTypes from 'prop-types'
 import ReactDOM from 'react-dom'
 import Browser from './Browser'
 import React from 'react'
 
-export default class ReflexSplitter
-  extends React.Component {
+export default class ReflexSplitter extends React.Component {
 
   /////////////////////////////////////////////////////////
   //
   //
   /////////////////////////////////////////////////////////
   static propTypes = {
-    onStartResize:React.PropTypes.func,
-    className: React.PropTypes.string,
-    onStopResize: React.PropTypes.func,
-    propagate: React.PropTypes.bool,
-    onResize: React.PropTypes.func,
-    style: React.PropTypes.object
+    onStartResize: PropTypes.func,
+    onStopResize: PropTypes.func,
+    className: PropTypes.string,
+    propagate: PropTypes.bool,
+    onResize: PropTypes.func,
+    style: PropTypes.object
   }
 
   /////////////////////////////////////////////////////////

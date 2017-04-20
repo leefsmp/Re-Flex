@@ -6,22 +6,22 @@
 ///////////////////////////////////////////////////////////
 import throttle from 'lodash.throttle'
 import Measure from 'react-measure'
+import PropTypes from 'prop-types'
 import ReactDOM from 'react-dom'
 import Browser from './Browser'
 import React from 'react'
 
-export default class ReflexElement
-  extends React.Component {
+export default class ReflexElement extends React.Component {
 
   /////////////////////////////////////////////////////////
   //
   //
   /////////////////////////////////////////////////////////
   static propTypes = {
-    renderOnResizeRate: React.PropTypes.number,
-    propagateDimensions: React.PropTypes.bool,
-    renderOnResize: React.PropTypes.bool,
-    className: React.PropTypes.string
+    renderOnResizeRate: PropTypes.number,
+    propagateDimensions: PropTypes.bool,
+    renderOnResize: PropTypes.bool,
+    className: PropTypes.string
   }
 
   /////////////////////////////////////////////////////////
