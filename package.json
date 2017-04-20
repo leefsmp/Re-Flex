@@ -3,6 +3,7 @@
   "version": "1.1.1",
   "description": "Flex layout component for advanced React web applications",
   "main": "dist/lib/index.min.js",
+  "types": "./index.d.ts",
   "scripts": {
     "build-demo-dev": "webpack --watch --config ./webpack/demo/development.webpack.config",
     "build-demo": "webpack --config ./webpack/demo/production.webpack.config",
