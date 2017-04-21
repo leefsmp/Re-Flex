@@ -15,14 +15,14 @@ export default class ReflexSplitter extends React.Component {
   //
   //
   /////////////////////////////////////////////////////////
-  static propTypes = {
-    onStartResize: PropTypes.func,
-    onStopResize: PropTypes.func,
-    className: PropTypes.string,
-    propagate: PropTypes.bool,
-    onResize: PropTypes.func,
-    style: PropTypes.object
-  }
+  //static propTypes = {
+  //  onStartResize: PropTypes.func,
+  //  onStopResize: PropTypes.func,
+  //  className: PropTypes.string,
+  //  propagate: PropTypes.bool,
+  //  onResize: PropTypes.func,
+  //  style: PropTypes.object
+  //}
 
   /////////////////////////////////////////////////////////
   //
