@@ -117,7 +117,7 @@ class ReflexSplitterPropagationDemo2x
               <br/>
               minSize = 200px
               <br/>
-              maxSize = 400px
+              maxSize = 800px
             </label>
           </div>
         </ReflexElement>
