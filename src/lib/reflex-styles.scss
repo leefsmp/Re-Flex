@@ -71,8 +71,9 @@
   width: 2px;
 }
 
-.reflex-layout.vertical > .reflex-splitter:hover {
-  border-righ: 1px solid #eeeeee;
+.reflex-layout.vertical > .reflex-splitter:hover,
+.reflex-layout.vertical > .reflex-splitter.active {
+  border-right: 1px solid #eeeeee;
   border-left: 1px solid #eeeeee;
 }
 

@@ -209,6 +209,11 @@ export default class ReflexSplitter extends React.Component {
       classNames.push('reflex-thin')
     }
 
+    if (this.state.active) {
+
+      classNames.push('active')
+    }
+
     return (
       <div className={classNames.join(' ')}
         onTouchStart={this.onMouseDown}
