@@ -17,12 +17,12 @@ export default class ReflexElement extends React.Component {
   //
   //
   /////////////////////////////////////////////////////////
-  //static propTypes = {
-  //  renderOnResizeRate: PropTypes.number,
-  //  propagateDimensions: PropTypes.bool,
-  //  renderOnResize: PropTypes.bool,
-  //  className: PropTypes.string
-  //}
+  static propTypes = {
+    renderOnResizeRate: PropTypes.number,
+    propagateDimensions: PropTypes.bool,
+    renderOnResize: PropTypes.bool,
+    className: PropTypes.string
+  }
 
   /////////////////////////////////////////////////////////
   //

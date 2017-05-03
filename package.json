@@ -1,6 +1,6 @@
 {
   "name": "react-reflex",
-  "version": "1.1.4",
+  "version": "1.1.5",
   "description": "Flex layout component for advanced React web applications",
   "main": "dist/lib/index.min.js",
   "types": "./index.d.ts",
@@ -48,7 +48,7 @@
     "prop-types": "15.5.8",
     "react": "^15.4.1",
     "react-dom": "^15.4.1",
-    "react-measure": "^1.4.5",
+    "react-measure": "^1.4.7",
     "sass-loader": "^2.0.1",
     "style-loader": "^0.12.4",
     "webpack": "^2.2.1"

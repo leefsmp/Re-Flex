@@ -17,11 +17,11 @@ class ReflexContainer extends React.Component {
   //
   //
   /////////////////////////////////////////////////////////
-  //static propTypes = {
-  //  orientation: PropTypes.string,
-  //  className: PropTypes.string,
-  //  style: PropTypes.object
-  //}
+  static propTypes = {
+    orientation: PropTypes.string,
+    className: PropTypes.string,
+    style: PropTypes.object
+  }
 
   /////////////////////////////////////////////////////////
   //
