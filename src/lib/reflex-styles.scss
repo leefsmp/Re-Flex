@@ -42,12 +42,13 @@
 /////////////////////////////////////////////////////////
 .reflex-layout > .reflex-splitter {
   background-color: #eeeeee;
+  transition: all 1s ease;
   z-index: 100;
 }
 
+.reflex-layout > .reflex-splitter.active,
 .reflex-layout > .reflex-splitter:hover {
   background-color: #c6c6c6;
-  transition: all 1s ease;
 }
 
 .reflex-layout.horizontal > .reflex-splitter {
@@ -90,12 +91,12 @@
   -moz-background-clip: padding;
   -webkit-background-clip: padding;
   background-clip: padding-box;
+  transition: all 1.5s ease;
   opacity: 0.2;
   z-index: 100;
 }
 
 .reflex-layout > .reflex-splitter.reflex-thin:hover {
-  transition: all 1.5s ease;
   opacity: 0.5;
 }
 
