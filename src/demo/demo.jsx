@@ -209,6 +209,8 @@ class ReflexAdvancedDemo
       onStopResize: this.onStopResize.bind(this),
       onResize: this.onResize.bind(this)
     }
+
+    this.resizedElements = []
   }
 
   onResize (e) {
@@ -216,15 +218,19 @@ class ReflexAdvancedDemo
     if (e.domElement) {
 
       e.domElement.classList.add('resizing')
+
+      this.resizedElements.push(e.domElement)
     }
   }
 
   onStopResize (e) {
 
-    if (e.domElement) {
+    this.resizedElements.forEach((element) => {
 
-      e.domElement.classList.remove('resizing')
-    }
+      element.classList.remove('resizing')
+    })
+
+    this.resizedElements = []
   }
 
   render () {
