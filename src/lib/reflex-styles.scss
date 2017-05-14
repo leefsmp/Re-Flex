@@ -104,29 +104,29 @@
 .reflex-layout.horizontal > .reflex-splitter.reflex-thin {
   border-bottom: 8px solid rgba(255, 255, 255, 0);
   border-top: 8px solid rgba(255, 255, 255, 0);
+  height: 17px !important;
   cursor: row-resize;
   margin: -8px 0;
-  height: 17px;
   width: 100%;
 }
 
 .reflex-layout.horizontal > .reflex-splitter.reflex-thin.active,
 .reflex-layout.horizontal > .reflex-splitter.reflex-thin:hover {
-  border-bottom: 5px solid rgba(228, 228, 228, 1);
-  border-top: 5px solid rgba(228, 228, 228, 1);
+  border-bottom: 8px solid rgba(228, 228, 228, 1);
+  border-top: 8px solid rgba(228, 228, 228, 1);
 }
 
 .reflex-layout.vertical > .reflex-splitter.reflex-thin {
   border-right: 8px solid rgba(255, 255, 255, 0);
   border-left: 8px solid rgba(255, 255, 255, 0);
+  width: 17px !important;
   cursor: col-resize;
   margin: 0 -8px;
   height: 100%;
-  width: 17px;
 }
 
 .reflex-layout.vertical > .reflex-splitter.reflex-thin.active,
 .reflex-layout.vertical > .reflex-splitter.reflex-thin:hover {
-  border-right: 5px solid rgba(228, 228, 228, 1);
-  border-left: 5px solid rgba(228, 228, 228, 1);
+  border-right: 8px solid rgba(228, 228, 228, 1);
+  border-left: 8px solid rgba(228, 228, 228, 1);
 }
