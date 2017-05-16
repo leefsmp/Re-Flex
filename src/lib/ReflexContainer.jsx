@@ -102,7 +102,7 @@ class ReflexContainer extends React.Component {
   /////////////////////////////////////////////////////////
   getValidChildren (props = this.props) {
 
-    return props.children.filter((child) => {
+    return this.toArray(props.children).filter((child) => {
 
       return !!child
     })
