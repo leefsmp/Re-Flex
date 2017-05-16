@@ -43,8 +43,6 @@ class ReflexContainer extends React.Component {
 
     const children = this.getValidChildren (props)
 
-    console.log(children)
-
     this.state = {
       flexData: this.computeFlexData(children)
     }
