@@ -589,19 +589,25 @@ class ReflexControlsDemo
 //
 /////////////////////////////////////////////////////////
 ReactDOM.render(<ReflexBasicDemo/>,
-  document.getElementById('demo-basic'))
+  document.getElementById(
+    'demo-basic'))
 
 ReactDOM.render(<ReflexBasicSplitterDemo/>,
-  document.getElementById('demo-basic-splitter'))
+  document.getElementById(
+    'demo-basic-splitter'))
 
 ReactDOM.render(<ReflexSplitterPropagationDemo2x/>,
-  document.getElementById('demo-splitter-propagation-2x'))
+  document.getElementById(
+    'demo-splitter-propagation-2x'))
 
 ReactDOM.render(<ReflexSplitterPropagationDemo3x/>,
-  document.getElementById('demo-splitter-propagation-3x'))
+  document.getElementById(
+    'demo-splitter-propagation-3x'))
 
 ReactDOM.render(<ReflexAdvancedDemo/>,
-  document.getElementById('demo-advanced'))
+  document.getElementById(
+    'demo-advanced'))
 
 ReactDOM.render(<ReflexControlsDemo/>,
-  document.getElementById('demo-controls'))
+  document.getElementById(
+    'demo-controls'))

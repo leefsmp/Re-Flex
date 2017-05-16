@@ -41,8 +41,12 @@ class ReflexContainer extends React.Component {
 
     super (props)
 
+    const children = this.getValidChildren (props)
+
+    console.log(children)
+
     this.state = {
-      flexData: this.computeFlexData(props.children)
+      flexData: this.computeFlexData(children)
     }
 
     this.events = new ReflexEvents()
@@ -94,17 +98,32 @@ class ReflexContainer extends React.Component {
     this.events.off()
   }
 
+  /////////////////////////////////////////////////////////
+  //
+  //
+  /////////////////////////////////////////////////////////
+  getValidChildren (props = this.props) {
+
+    return props.children.filter((child) => {
+
+      return !!child
+    })
+  }
+
   /////////////////////////////////////////////////////////////
   //
   //
   /////////////////////////////////////////////////////////////
   componentWillReceiveProps (props) {
 
-    if (props.children.length !== this.state.flexData.length ||
+    const children = this.getValidChildren (props)
+
+    if (children.length !== this.state.flexData.length ||
       this.flexHasChanged(props)) {
 
       this.setState(Object.assign({}, this.state, {
-        flexData: this.computeFlexData(props.children)
+
+        flexData: this.computeFlexData(children)
       }))
     }
   }
@@ -124,7 +143,7 @@ class ReflexContainer extends React.Component {
       })
 
     const childrenFlex =
-      this.props.children.map((child) => {
+      this.getValidChildren().map((child) => {
 
         return child.props.flex || 0
       })
@@ -648,7 +667,7 @@ class ReflexContainer extends React.Component {
     const flexValues = childrenArray.map((child) => {
 
       if (child.type !== ReflexSplitter &&
-        !child.props.flex) {
+         !child.props.flex) {
 
         ++nbElements
       }
@@ -700,7 +719,7 @@ class ReflexContainer extends React.Component {
   // returned as an array
   //
   /////////////////////////////////////////////////////////
-  toArray (obj) {
+  toArray (obj, filter) {
 
     return obj ? (Array.isArray(obj) ? obj : [obj]) : []
   }
@@ -721,7 +740,7 @@ class ReflexContainer extends React.Component {
     ]
 
     this.children = React.Children.map(
-      this.props.children, (child, idx) => {
+      this.getValidChildren(), (child, idx) => {
 
         if (idx > this.state.flexData.length - 1) {
           return (<div></div>)
