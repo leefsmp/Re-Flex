@@ -585,6 +585,122 @@ class ReflexControlsDemo
 }
 
 /////////////////////////////////////////////////////////
+// Re-Flex Size Aware element demo
+//
+/////////////////////////////////////////////////////////
+class SizeAwareElement extends React.Component {
+
+  fitBounds (value, min, max) {
+
+    return Math.max(Math.min(value, max), min)
+  }
+
+  rgbGradient (color1, color2, weight) {
+
+    const w1 = weight
+
+    const w2 = 1 - w1
+
+    const rgb = [
+      Math.round(color1[0] * w1 + color2[0] * w2),
+      Math.round(color1[1] * w1 + color2[1] * w2),
+      Math.round(color1[2] * w1 + color2[2] * w2)
+    ]
+
+    return rgb.map((c) => this.fitBounds(c, 0, 255))
+  }
+
+  render() {
+
+    const { width, height } = this.props.dimensions
+
+    const maxWidth = window.innerWidth - 100
+
+    const maxHeight = 280
+
+    const weight =
+      (width * height) /
+      (maxWidth * maxHeight)
+
+    const rgb = this.rgbGradient(
+      [0, 255, 0],
+      [255, 0, 0],
+      weight)
+
+    const style = {
+      background: `rgb(${rgb[0]}, ${rgb[1]}, ${rgb[2]})`,
+      color: 'whitesmoke'
+    }
+
+    return (
+      <div className="pane-content" style={style}>
+        <label>
+          I am so Size-Aware!
+          <br/>
+          <br/>
+          Width: {width} px
+          <br/>
+          x
+          <br/>
+          Height: {height} px
+        </label>
+      </div>
+    )
+  }
+}
+
+class ReflexSizeAwareDemo
+  extends React.Component {
+
+  render () {
+
+    return (
+      <ReflexContainer orientation="vertical">
+
+        <ReflexElement>
+
+        <ReflexContainer orientation="horizontal">
+
+          <ReflexElement
+            propagateDimensions={true}
+            renderOnResizeRate={50}
+            renderOnResize={true}
+            flex={0.8}>
+
+            <SizeAwareElement/>
+
+          </ReflexElement>
+
+          <ReflexSplitter/>
+
+          <ReflexElement className="bottom-pane">
+            <div className="pane-content">
+              <label>
+                Bottom Pane
+              </label>
+            </div>
+          </ReflexElement>
+
+        </ReflexContainer>
+
+        </ReflexElement>
+
+      <ReflexSplitter/>
+
+        <ReflexElement className="right-pane" flex={0.2}>
+          <div className="pane-content">
+            <label>
+              Right Pane
+            </label>
+          </div>
+        </ReflexElement>
+
+      </ReflexContainer>
+    )
+  }
+}
+
+/////////////////////////////////////////////////////////
 // Render all demos
 //
 /////////////////////////////////////////////////////////
@@ -611,3 +727,7 @@ ReactDOM.render(<ReflexAdvancedDemo/>,
 ReactDOM.render(<ReflexControlsDemo/>,
   document.getElementById(
     'demo-controls'))
+
+ReactDOM.render(<ReflexSizeAwareDemo/>,
+  document.getElementById(
+    'demo-size-aware'))

@@ -97,8 +97,8 @@ export default class ReflexElement extends React.Component {
 
       this.setStateThrottled({
         dimensions: {
-          height: Math.floor(dimensions.height),
-          width: Math.floor(dimensions.width)
+          height: Math.floor(dimensions.height) + 1,
+          width: Math.floor(dimensions.width) + 1
         }
       })
     }
@@ -108,7 +108,7 @@ export default class ReflexElement extends React.Component {
   //
   //
   ///////////////////////////////////////////////////////////////////
-  renderChildren() {
+  renderChildren () {
 
     if (this.props.propagateDimensions) {
 
@@ -137,7 +137,9 @@ export default class ReflexElement extends React.Component {
       ...this.props.className.split(' ')
     ]
 
-    const style = Object.assign({}, {
+    const className = classNames.join(' ')
+
+    const outerStyle = Object.assign({}, {
         WebkitBoxFlex: this.props.flex,
         FlexElement: this.props.flex,
         MozBoxFlex: this.props.flex,
@@ -145,13 +147,15 @@ export default class ReflexElement extends React.Component {
         flex: this.props.flex
       }, this.props.style)
 
+    const innerStyle = {
+      height: this.state.dimensions.height,
+      width: this.state.dimensions.width
+    }
+
     return (
-      <Measure onMeasure={(dimensions) => this.onMeasure(dimensions)}>
-        <div className={classNames.join(' ')} style={style}>
-          <div style={{
-            height: this.state.dimensions.height,
-            width: this.state.dimensions.width
-          }}>
+      <Measure onMeasure={this.onMeasure}>
+        <div className={className} style={outerStyle}>
+          <div style={innerStyle}>
             { this.renderChildren() }
           </div>
         </div>

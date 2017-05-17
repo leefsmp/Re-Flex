@@ -129,6 +129,28 @@
   <script src="https://gist.github.com/leefsmp/3b0a01068a1d15c1de971bf9747fd87c.js"></script>
   <div id="demo-controls"></div>
 
+  <br>
+
+  <h3>
+    7 - Size-aware element Re-Flex example:
+  </h3>
+
+  <div>
+    &nbsp;&nbsp;This demo illustrates how to enable <b><i>ReflexElement</i></b> children to be "<i>size-aware</i>".
+    Under the hoods, Re-Flex is using <a href="https://github.com/souporserious/react-measure" target="_blank">react-measure</a> to inject a
+    <b><i>dimensions</i></b> property to its child elements.
+    <br>
+    <br>
+    &nbsp;&nbsp;To activate that feature, you need to use use <b><i>propagateDimensions={true}</i></b> and also <b><i>renderOnResize={true}</i></b>
+    in order to force the child elelement to re-render when its size has been modified. Because re-rendering a component at each resizing step can be
+    costly, you can specify the rendering rate using <b><i>renderOnResizeRate</i></b>, which is set to a default value of <b><i>60</i></b> ms.
+   </div>
+
+  <br>
+
+  <script src="https://gist.github.com/leefsmp/f79c50a1ddcbd9566d629d76efeb1fd7.js"></script>
+  <div id="demo-size-aware"></div>
+
   <script src="dist/demo/bundle.js"></script>
 
   <div id="page-footer-filler"></div>
