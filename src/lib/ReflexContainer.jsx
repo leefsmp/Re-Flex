@@ -723,6 +723,29 @@ class ReflexContainer extends React.Component {
   }
 
   /////////////////////////////////////////////////////////
+  //
+  //
+  /////////////////////////////////////////////////////////
+  render () {
+
+    this.children = React.Children.map(
+      this.props.children, (child, idx) => {
+
+        const newProps = Object.assign({}, child.props, {
+          myProp: 'value'
+        })
+
+        return React.cloneElement(child, newProps)
+      })
+
+    return (
+      <div className="container">
+        { this.children }
+      </div>
+    )
+  }
+
+  /////////////////////////////////////////////////////////
   // Render container. This will clone all original child
   // components in order to pass some internal properties
   // used to handle resizing logic

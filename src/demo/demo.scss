@@ -93,6 +93,11 @@ body {
 }
 
 .pane-control > button {
+  transition-timing-function: ease;
+  transition-duration: 1.0s;
+  transition-property: all;
+  transition-delay: 0.0s;
+
   border: 1px solid #eeeeee;
   background-color: #c6c6c6;
   border-radius: 6px;
@@ -100,16 +105,30 @@ body {
   margin-right: 4px;
   overflow: hidden;
   margin-top: 4px;
+  outline: none;
   float: right;
   height: 17px;
   width: 30px;
 }
 
+.pane-control > button:hover {
+  border: 1px solid #0c63ff;
+}
+
 .pane-control > button > label {
+  transition-timing-function: ease;
+  transition-duration: 1.0s;
+  transition-property: all;
+  transition-delay: 0.0s;
+
   position: relative;
   font-size: 20px;
   color: #f0fcff;
   top: -8px;
+}
+
+.pane-control > button:hover > label {
+  color: #0c63ff;
 }
 
 .ctrl-pane-content {
