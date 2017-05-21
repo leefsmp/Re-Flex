@@ -65,7 +65,7 @@ module.exports = {
           loader: "babel-loader",
           options: {
             presets: ['react', 'es2015', 'stage-0'],
-            plugins: ['transform-runtime']
+            plugins: ['add-react-displayname', 'transform-runtime']
           }
         }]
       },
