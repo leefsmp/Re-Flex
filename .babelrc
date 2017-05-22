@@ -1,0 +1,34 @@
+{
+  "env": {
+    "commonjs": {
+      "plugins": [
+        "transform-runtime",
+        [
+          "babel-plugin-transform-require-ignore", {
+            "extensions": [".scss"]
+          }
+        ]
+      ],
+      "presets": [
+        "react",
+        "es2015",
+        "stage-0"
+      ]
+    },
+    "es": {
+      "plugins": [
+        "transform-runtime",
+        [
+          "babel-plugin-transform-require-ignore", {
+            "extensions": [".scss"]
+          }
+        ]
+      ],
+      "presets": [
+        "es2015-rollup",
+        "react",
+        "stage-0"
+      ]
+    }
+  }
+}

@@ -3,8 +3,8 @@ import ReflexSplitter from './ReflexSplitter'
 import ReflexElement from './ReflexElement'
 import './reflex-styles.scss'
 
-module.exports = {
+export {
   ReflexContainer,
   ReflexSplitter,
   ReflexElement
-}
+};
