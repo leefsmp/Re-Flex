@@ -7,8 +7,8 @@ module.exports = {
   context: path.join(__dirname, '../..'),
 
   entry: {
-    'index.min': [
-      './dist/es/index.js'
+    'react-reflex.min': [
+      './src/lib/index.js'
     ]
   },
 
@@ -48,6 +48,21 @@ module.exports = {
 
     new webpack.NoEmitOnErrorsPlugin()
   ],
+
+  module: {
+    rules: [
+      {
+        test: /\.(js|jsx)$/,
+        exclude: /(node_modules)/,
+        use: {
+          loader: 'babel-loader',
+          options: {
+            forceEnv: 'es'
+          }
+        }
+      }
+    ]
+  },
 
   resolve: {
     extensions: ['.js', '.jsx', '.json']

@@ -7,16 +7,31 @@ module.exports = {
   context: path.join(__dirname, '../..'),
 
   entry: {
-    'index': [
-      './dist/es/index.js'
+    'react-reflex': [
+      './src/lib/index.js'
     ]
   },
 
   output: {
-    path: path.join(__dirname, '../../dist/lib'),
+    path: path.join(__dirname, '../../dist/umd'),
     library: 'react-reflex',
     filename: '[name].js',
     libraryTarget: 'umd'
+  },
+
+  module: {
+    rules: [
+      {
+        test: /\.(js|jsx)$/,
+        exclude: /(node_modules)/,
+        use: {
+          loader: 'babel-loader',
+          options: {
+            forceEnv: 'es'
+          }
+        }
+      }
+    ]
   },
 
   resolve: {

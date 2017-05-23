@@ -15,8 +15,8 @@
         "transform-runtime"
       ],
       "presets": [
-        "es2015-rollup",
         "react",
+        "es2015-rollup",
         "stage-0"
       ]
     }
