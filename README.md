@@ -108,7 +108,7 @@ Re-F|ex is the most powerful React layout component out there ... Don't just tru
 
 ## Development
 
-* Build the lib: `npm run build-lib` | `npm run build-lib-dev` (dev mode non-minified with source-map)
+* Build the lib: `npm run build` | `npm run build-dev` (dev mode non-minified with source-map)
 * Build the demo: `npm run build-demo` | `npm run build-demo-dev` (dev mode non-minified with source-map + watch)
 
 ## About the Author
