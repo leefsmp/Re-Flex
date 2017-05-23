@@ -7,6 +7,7 @@ import {
   ReflexElement
 } from '../../src/lib'
 
+import '../../styles.css'
 import './demo.scss'
 
 /////////////////////////////////////////////////////////

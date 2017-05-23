@@ -8,12 +8,12 @@ module.exports = {
 
   entry: {
     'index.min': [
-      './src/lib/index.js'
+      './dist/es/index.js'
     ]
   },
 
   output: {
-    path: path.join(__dirname, '../../dist/lib'),
+    path: path.join(__dirname, '../../dist/umd'),
     library: 'react-reflex',
     filename: '[name].js',
     libraryTarget: 'umd'
@@ -21,7 +21,7 @@ module.exports = {
 
   plugins: [
 
-    new clean(['dist/lib'], {
+    new clean(['dist/umd'], {
       root: __dirname + '/..',
       verbose: true,
       dry: false
@@ -51,28 +51,6 @@ module.exports = {
 
   resolve: {
     extensions: ['.js', '.jsx', '.json']
-  },
-
-  module: {
-
-    rules: [
-      {
-        test: /\.jsx?$/,
-        exclude: /node_modules/,
-        use: [{
-          loader: "babel-loader",
-          options: {
-            presets: ['react', 'es2015', 'stage-0'],
-            plugins: ['transform-runtime']
-          }
-        }]
-      },
-      {
-        test: /\.(sass|scss)$/,
-        exclude: /node_modules/,
-        use: [ "style-loader", "css-loader", "sass-loader"]
-      }
-    ]
   },
 
   externals: {

@@ -65,12 +65,12 @@ module.exports = {
           loader: "babel-loader",
           options: {
             presets: ['react', 'es2015', 'stage-0'],
-            plugins: ['add-react-displayname', 'transform-runtime']
+            plugins: ['transform-runtime']
           }
         }]
       },
       {
-        test: /\.(sass|scss)$/,
+        test: /\.(css|sass|scss)$/,
         exclude: /node_modules/,
         use: [ "style-loader", "css-loader", "sass-loader"]
       }

@@ -18,6 +18,8 @@ import {
   ReflexElement
 } from 'react-reflex'
 
+import 'react-reflex/styles.css'
+
 /////////////////////////////////////////////////////////
 // Basic vertical re-flex layout with splitter
 // Adding a splitter between two ReflexElements
@@ -57,8 +59,29 @@ ReactDOM.render(
 
 ## Installation
 
-```js
+```sh
 npm install react-reflex
+```
+
+ES6, CommonJS, and UMD builds are available with each distribution.
+
+```js
+// You will need to import the styles separately
+// You probably want to do this just once during the bootstrapping phase of your application.
+import 'react-reflex/styles.css'
+
+// then you can import the components
+import {
+  ReflexContainer,
+  ReflexSplitter,
+  ReflexElement
+} from 'react-reflex'
+```
+
+You can also use the UMD build
+```html
+<link rel="stylesheet" href="path-to-react-reflex/styles.css">
+<script src="path-to-react-reflex/dist/umd/index.min.js"></script>
 ```
 
 ## React Support

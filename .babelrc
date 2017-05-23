@@ -2,12 +2,7 @@
   "env": {
     "commonjs": {
       "plugins": [
-        "transform-runtime",
-        [
-          "babel-plugin-transform-require-ignore", {
-            "extensions": [".scss"]
-          }
-        ]
+        "transform-runtime"
       ],
       "presets": [
         "react",
@@ -17,12 +12,7 @@
     },
     "es": {
       "plugins": [
-        "transform-runtime",
-        [
-          "babel-plugin-transform-require-ignore", {
-            "extensions": [".scss"]
-          }
-        ]
+        "transform-runtime"
       ],
       "presets": [
         "es2015-rollup",

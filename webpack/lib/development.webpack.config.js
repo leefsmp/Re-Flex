@@ -8,7 +8,7 @@ module.exports = {
 
   entry: {
     'index': [
-      './src/lib/index.js'
+      './dist/es/index.js'
     ]
   },
 
@@ -19,34 +19,8 @@ module.exports = {
     libraryTarget: 'umd'
   },
 
-  plugins: [
-
-  ],
-
   resolve: {
     extensions: ['.js', '.jsx', '.json']
-  },
-
-  module: {
-
-    rules: [
-      {
-        test: /\.jsx?$/,
-        exclude: /node_modules/,
-        use: [{
-          loader: "babel-loader",
-          options: {
-            presets: ['react', 'es2015', 'stage-0'],
-            plugins: ['transform-runtime']
-          }
-        }]
-      },
-      {
-        test: /\.(sass|scss)$/,
-        exclude: /node_modules/,
-        use: [ "style-loader", "css-loader", "sass-loader"]
-      }
-    ]
   },
 
   externals: {
