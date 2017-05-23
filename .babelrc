@@ -1,0 +1,24 @@
+{
+  "env": {
+    "commonjs": {
+      "plugins": [
+        "transform-runtime"
+      ],
+      "presets": [
+        "react",
+        "es2015",
+        "stage-0"
+      ]
+    },
+    "es": {
+      "plugins": [
+        "transform-runtime"
+      ],
+      "presets": [
+        "react",
+        "es2015-rollup",
+        "stage-0"
+      ]
+    }
+  }
+}

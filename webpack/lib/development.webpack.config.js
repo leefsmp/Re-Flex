@@ -7,46 +7,35 @@ module.exports = {
   context: path.join(__dirname, '../..'),
 
   entry: {
-    'index': [
+    'react-reflex': [
       './src/lib/index.js'
     ]
   },
 
   output: {
-    path: path.join(__dirname, '../../dist/lib'),
+    path: path.join(__dirname, '../../dist/umd'),
     library: 'react-reflex',
     filename: '[name].js',
     libraryTarget: 'umd'
   },
 
-  plugins: [
-
-  ],
+  module: {
+    rules: [
+      {
+        test: /\.(js|jsx)$/,
+        exclude: /(node_modules)/,
+        use: {
+          loader: 'babel-loader',
+          options: {
+            forceEnv: 'es'
+          }
+        }
+      }
+    ]
+  },
 
   resolve: {
     extensions: ['.js', '.jsx', '.json']
-  },
-
-  module: {
-
-    rules: [
-      {
-        test: /\.jsx?$/,
-        exclude: /node_modules/,
-        use: [{
-          loader: "babel-loader",
-          options: {
-            presets: ['react', 'es2015', 'stage-0'],
-            plugins: ['transform-runtime']
-          }
-        }]
-      },
-      {
-        test: /\.(sass|scss)$/,
-        exclude: /node_modules/,
-        use: [ "style-loader", "css-loader", "sass-loader"]
-      }
-    ]
   },
 
   externals: {
