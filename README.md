@@ -81,7 +81,7 @@ import {
 You can also use the UMD build
 ```html
 <link rel="stylesheet" href="path-to-react-reflex/styles.css">
-<script src="path-to-react-reflex/dist/umd/index.min.js"></script>
+<script src="path-to-react-reflex/dist/umd/react-reflex.min.js"></script>
 ```
 
 ## React Support
