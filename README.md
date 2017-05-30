@@ -104,7 +104,7 @@ Re-F|ex is the most powerful React layout component out there ... Don't just tru
 
 [Click here for code samples and live demos ...](https://leefsmp.github.io/Re-Flex/index.html)
 
-![re-flex-demo](./resources/img/demo.png)
+![re-flex-demo](https://raw.githubusercontent.com/leefsmp/data/3a343089/Re-Flex/demo.gif)
 
 ## Development
 
