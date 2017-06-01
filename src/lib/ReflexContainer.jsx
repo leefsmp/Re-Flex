@@ -473,7 +473,8 @@ class ReflexContainer extends React.Component {
 
     const size = this.getSize(child)
 
-    const minSize = child.props.minSize
+    const minSize = Math.max(
+      child.props.minSize, 1)
 
     const availableShrink = size - minSize
 
@@ -495,7 +496,7 @@ class ReflexContainer extends React.Component {
   }
 
   /////////////////////////////////////////////////////////
-  // Currently not used, causes a wacky behavior ...
+  // Returns flex value for unit pixel
   //
   /////////////////////////////////////////////////////////
   computePixelFlex () {
@@ -528,14 +529,19 @@ class ReflexContainer extends React.Component {
 
     const size = this.getSize(element)
 
-    if (size) {
+    const idx = element.props.index
 
-      const idx = element.props.index
+    const newSize = Math.max(size + offset, 1)
 
-      const newSize = size + offset
+    const currentFlex = this.state.flexData[idx].flex
 
-      this.state.flexData[idx].flex *= newSize / size
-    }
+    const newFlex = (currentFlex > 0)
+        ? currentFlex * newSize / size
+        : this.computePixelFlex () * newSize
+
+    this.state.flexData[idx].flex =
+      (!isFinite(newFlex) || isNaN(newFlex))
+        ? 0 : newFlex
   }
 
   /////////////////////////////////////////////////////////
@@ -546,6 +552,11 @@ class ReflexContainer extends React.Component {
   dispatchStretch (idx, offset) {
 
     const childIdx = offset < 0 ? idx + 1 : idx - 1
+
+    if (childIdx < 0 || childIdx > this.children.length-1) {
+
+      return []
+    }
 
     const child = this.children[childIdx]
 
@@ -583,6 +594,11 @@ class ReflexContainer extends React.Component {
   dispatchShrink (idx, offset) {
 
     const childIdx = offset > 0 ? idx + 1 : idx - 1
+
+    if (childIdx < 0 || childIdx > this.children.length-1) {
+
+      return []
+    }
 
     const child = this.children[childIdx]
 
