@@ -536,7 +536,7 @@ var ReflexContainer = function (_React$Component) {
 
       var size = this.getSize(child);
 
-      var minSize = Math.max(child.props.minSize, 1);
+      var minSize = Math.max(child.props.minSize, 0);
 
       var availableShrink = size - minSize;
 
@@ -595,7 +595,7 @@ var ReflexContainer = function (_React$Component) {
 
       var idx = element.props.index;
 
-      var newSize = Math.max(size + offset, 1);
+      var newSize = Math.max(size + offset, 0);
 
       var currentFlex = this.state.flexData[idx].flex;
 
@@ -799,7 +799,7 @@ var ReflexContainer = function (_React$Component) {
 
   }, {
     key: 'toArray',
-    value: function toArray(obj, filter) {
+    value: function toArray(obj) {
 
       return obj ? Array.isArray(obj) ? obj : [obj] : [];
     }

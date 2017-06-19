@@ -39,7 +39,7 @@ var ReflexElement = function (_React$Component) {
 
     var _this = _possibleConstructorReturn(this, (ReflexElement.__proto__ || _Object$getPrototypeOf(ReflexElement)).call(this, props));
 
-    _this.onMeasure = _this.onMeasure.bind(_this);
+    _this.onResize = _this.onResize.bind(_this);
 
     _this.setStateThrottled = throttle(function (state) {
       _this.setState(state);
@@ -174,15 +174,15 @@ var ReflexElement = function (_React$Component) {
     /////////////////////////////////////////////////////////
 
   }, {
-    key: 'onMeasure',
-    value: function onMeasure(dimensions) {
+    key: 'onResize',
+    value: function onResize(rect) {
 
       if (this.props.renderOnResize) {
 
         this.setStateThrottled({
           dimensions: {
-            height: Math.floor(dimensions.height) + 1,
-            width: Math.floor(dimensions.width) + 1
+            height: Math.floor(rect.bounds.height) + 1,
+            width: Math.floor(rect.bounds.width) + 1
           }
         });
       }
@@ -221,6 +221,7 @@ var ReflexElement = function (_React$Component) {
   }, {
     key: 'render',
     value: function render() {
+      var _this3 = this;
 
       var classNames = ['reflex-element'].concat(_toConsumableArray(this.props.className.split(' ')));
 
@@ -241,16 +242,19 @@ var ReflexElement = function (_React$Component) {
 
       return React.createElement(
         Measure,
-        { onMeasure: this.onMeasure },
-        React.createElement(
-          'div',
-          { className: className, style: outerStyle },
-          React.createElement(
+        { bounds: true, onResize: this.onResize },
+        function (_ref2) {
+          var measureRef = _ref2.measureRef;
+          return React.createElement(
             'div',
-            { style: innerStyle },
-            this.renderChildren()
-          )
-        )
+            { ref: measureRef, className: className, style: outerStyle },
+            React.createElement(
+              'div',
+              { style: innerStyle },
+              _this3.renderChildren()
+            )
+          );
+        }
       );
     }
   }]);
