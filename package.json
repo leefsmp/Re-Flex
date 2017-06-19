@@ -1,6 +1,6 @@
 {
   "name": "react-reflex",
-  "version": "2.0.2",
+  "version": "2.0.3",
   "description": "Flex layout component for advanced React web applications",
   "main": "dist/commonjs/index.js",
   "module": "dist/es/index.js",
@@ -60,7 +60,7 @@
     "babel-runtime": "^6.23.0",
     "lodash.throttle": "^4.1.1",
     "prop-types": "^15.5.8",
-    "react-measure": "^1.4.7"
+    "react-measure": "^2.0.2"
   },
   "peerDependencies": {
     "react": "^15.4.1",

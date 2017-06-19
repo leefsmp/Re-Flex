@@ -43,7 +43,7 @@ export default class ReflexElement extends React.Component {
 
     super (props)
 
-    this.onMeasure = this.onMeasure.bind(this)
+    this.onResize = this.onResize.bind(this)
 
     this.setStateThrottled = throttle((state) => {
       this.setState(state)
@@ -91,14 +91,14 @@ export default class ReflexElement extends React.Component {
   //
   //
   /////////////////////////////////////////////////////////
-  onMeasure (dimensions) {
+  onResize (rect) {
 
     if (this.props.renderOnResize) {
 
       this.setStateThrottled({
         dimensions: {
-          height: Math.floor(dimensions.height) + 1,
-          width: Math.floor(dimensions.width) + 1
+          height: Math.floor(rect.bounds.height) + 1,
+          width: Math.floor(rect.bounds.width) + 1
         }
       })
     }
@@ -153,12 +153,15 @@ export default class ReflexElement extends React.Component {
     }
 
     return (
-      <Measure onMeasure={this.onMeasure}>
-        <div className={className} style={outerStyle}>
-          <div style={innerStyle}>
-            { this.renderChildren() }
+      <Measure bounds onResize={this.onResize}>
+        {
+          ({ measureRef }) =>
+          <div ref={measureRef} className={className} style={outerStyle}>
+            <div style={innerStyle}>
+              { this.renderChildren() }
+            </div>
           </div>
-        </div>
+        }
       </Measure>
     )
   }
