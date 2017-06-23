@@ -135,7 +135,7 @@ class ReflexContainer extends React.Component {
   flexHasChanged (props) {
 
     const nextChildrenFlex =
-      props.children.map((child) => {
+      this.getValidChildren(props).map((child) => {
 
         return child.props.flex || 0
       })

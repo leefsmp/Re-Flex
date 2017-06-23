@@ -143,7 +143,7 @@ var ReflexContainer = function (_React$Component) {
     key: 'flexHasChanged',
     value: function flexHasChanged(props) {
 
-      var nextChildrenFlex = props.children.map(function (child) {
+      var nextChildrenFlex = this.getValidChildren(props).map(function (child) {
 
         return child.props.flex || 0;
       });
@@ -802,11 +802,13 @@ var ReflexContainer = function (_React$Component) {
 ReflexContainer.propTypes = {
   orientation: PropTypes.string,
   className: PropTypes.string,
-  style: PropTypes.object };
+  style: PropTypes.object
+};
 ReflexContainer.defaultProps = {
   orientation: 'horizontal',
   className: '',
-  style: {} };
+  style: {}
+};
 
 
 export default ReflexContainer;
