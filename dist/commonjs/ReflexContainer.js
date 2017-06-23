@@ -853,11 +853,9 @@ var ReflexContainer = function (_React$Component) {
 ReflexContainer.propTypes = {
   orientation: _propTypes2.default.string,
   className: _propTypes2.default.string,
-  style: _propTypes2.default.object
-};
+  style: _propTypes2.default.object };
 ReflexContainer.defaultProps = {
   orientation: 'horizontal',
   className: '',
-  style: {}
-};
+  style: {} };
 exports.default = ReflexContainer;

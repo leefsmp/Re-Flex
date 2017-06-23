@@ -266,12 +266,10 @@ ReflexElement.propTypes = {
   renderOnResizeRate: PropTypes.number,
   propagateDimensions: PropTypes.bool,
   renderOnResize: PropTypes.bool,
-  className: PropTypes.string
-};
+  className: PropTypes.string };
 ReflexElement.defaultProps = {
   renderOnResize: Browser.isSafari(),
   propagateDimensions: false,
   renderOnResizeRate: 60,
-  className: ''
-};
+  className: '' };
 export default ReflexElement;

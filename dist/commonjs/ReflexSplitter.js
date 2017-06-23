@@ -259,8 +259,7 @@ ReflexSplitter.propTypes = {
   className: _propTypes2.default.string,
   propagate: _propTypes2.default.bool,
   onResize: _propTypes2.default.func,
-  style: _propTypes2.default.object
-};
+  style: _propTypes2.default.object };
 ReflexSplitter.defaultProps = {
   onStartResize: null,
   onStopResize: null,
@@ -268,6 +267,5 @@ ReflexSplitter.defaultProps = {
   onResize: null,
   className: '',
   style: {},
-  document: document
-};
+  document: document };
 exports.default = ReflexSplitter;
