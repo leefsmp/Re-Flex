@@ -236,8 +236,8 @@ var ReflexElement = function (_React$Component) {
 
         this.setStateThrottled({
           dimensions: {
-            height: Math.floor(rect.bounds.height) + 1,
-            width: Math.floor(rect.bounds.width) + 1
+            height: Math.floor(rect.bounds.height),
+            width: Math.floor(rect.bounds.width)
           }
         });
       }
