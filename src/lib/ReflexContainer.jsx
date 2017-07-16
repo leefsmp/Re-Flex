@@ -41,10 +41,8 @@ class ReflexContainer extends React.Component {
 
     super (props)
 
-    const children = this.getValidChildren (props)
-
     this.state = {
-      flexData: this.computeFlexData(children)
+      flexData: []
     }
 
     this.events = new ReflexEvents()
@@ -68,7 +66,30 @@ class ReflexContainer extends React.Component {
   //
   //
   /////////////////////////////////////////////////////////
+  setPartialState (partialState) {
+
+    return new Promise((resolve) => {
+
+      this.setState(Object.assign({}, this.state,
+        partialState), () => {
+        resolve()
+      })
+    })
+  }
+
+  /////////////////////////////////////////////////////////
+  //
+  //
+  /////////////////////////////////////////////////////////
   componentDidMount () {
+
+    const pixelFlex = this.computePixelFlex()
+
+    const flexData = this.computeFlexData()
+
+    this.setPartialState ({
+      flexData
+    })
 
     this.events.on(
       'splitter.startResize',
@@ -119,10 +140,11 @@ class ReflexContainer extends React.Component {
     if (children.length !== this.state.flexData.length ||
       this.flexHasChanged(props)) {
 
-      this.setState(Object.assign({}, this.state, {
+      const flexData = this.computeFlexData(children)
 
-        flexData: this.computeFlexData(children)
-      }))
+      this.setPartialState({
+        flexData
+      })
     }
   }
 
@@ -158,7 +180,9 @@ class ReflexContainer extends React.Component {
   /////////////////////////////////////////////////////////
   getSize (element) {
 
-    const ref = this.refs[element.ref]
+    const ref = element.ref
+      ? this.refs[element.ref]
+      : element
 
     const domElement = ReactDOM.findDOMNode(ref)
 
@@ -265,7 +289,7 @@ class ReflexContainer extends React.Component {
 
       this.adjustFlex(this.elements)
 
-      this.setState(this.state, () => {
+      this.setPartialState(this.state).then(() => {
 
         this.emitElementsEvent(
           this.elements, 'onResize')
@@ -329,7 +353,7 @@ class ReflexContainer extends React.Component {
           this.adjustFlex(this.elements)
         }
 
-        this.setState(this.state, () => {
+        this.setPartialState(this.state).then(() => {
 
           this.emitElementsEvent(
             this.elements, 'onResize')
@@ -503,17 +527,15 @@ class ReflexContainer extends React.Component {
 
     const domElement = ReactDOM.findDOMNode(this)
 
-    const parent = domElement.parentNode
-
     switch (this.props.orientation) {
 
       case 'horizontal':
 
-        return 1.0 / parent.offsetHeight
+        return 1.0 / domElement.offsetHeight
 
       case 'vertical':
 
-        return 1.0 / parent.offsetWidth
+        return 1.0 / domElement.offsetWidth
 
       default :
 
@@ -667,47 +689,92 @@ class ReflexContainer extends React.Component {
   // evenly arranged within its container
   //
   /////////////////////////////////////////////////////////
-  computeFlexData (children) {
+  computeFlexData (children = this.getValidChildren()) {
 
-    let nbElements = 0
+    const pixelFlex = this.computePixelFlex()
 
-    if (!children) {
-
-      return []
+    const computeFreeFlex = (flexData) => {
+      return flexData.reduce((sum, entry) => {
+        if (entry.type !== ReflexSplitter
+          && entry.constrained) {
+          return sum - entry.flex
+        }
+        return sum
+      }, 1)
     }
 
-    const childrenArray = this.toArray(children)
-
-    const flexValues = childrenArray.map((child) => {
-
-      if (child.type !== ReflexSplitter &&
-         !child.props.flex) {
-
-        ++nbElements
-      }
-
-      return child.props ? (child.props.flex || 0) : 0
-    })
-
-    let remainingFlex = 1
-
-    flexValues.forEach((flex) => {
-
-      remainingFlex -= flex
-    })
-
-    return childrenArray.map((child, idx) => {
-
-      if (child.type !== ReflexSplitter) {
-
-        return {
-          guid: child.props.ref || this.guid(),
-          flex: flexValues[idx] ||
-          remainingFlex / nbElements
+    const computeFreeElements = (flexData) => {
+      return flexData.reduce((sum, entry) => {
+        if (entry.type !== ReflexSplitter
+          && !entry.constrained) {
+          return sum + 1
         }
-      }
+        return sum
+      }, 0)
+    }
 
-      return { flex : 0 }
+    const flexDataInit = children.map((child) => {
+
+      const props = child.props
+
+      return {
+        maxFlex: (props.maxSize || Number.MAX_VALUE) * pixelFlex,
+        minFlex: (props.minSize || 1) * pixelFlex,
+        constrained: props.flex !== undefined,
+        guid: props.ref || this.guid(),
+        flex: props.flex || 0,
+        type: child.type
+      }
+    })
+
+    const computeFlexDataRec = (flexDataIn) => {
+
+      let hasContrain = false
+
+      const freeElements = computeFreeElements(flexDataIn)
+
+      const freeFlex = computeFreeFlex(flexDataIn)
+
+      const flexDataOut = flexDataIn.map((entry) => {
+
+        if (entry.type === ReflexSplitter) {
+          return entry
+        }
+
+        const proposedFlex = !entry.constrained
+          ? freeFlex / freeElements
+          : entry.flex
+
+        const constrainedFlex =
+          Math.min(entry.maxFlex,
+            Math.max(entry.minFlex, proposedFlex))
+
+        const constrained =
+          (constrainedFlex !== proposedFlex)
+
+        hasContrain = hasContrain || constrained
+
+        return Object.assign({}, entry, {
+          flex: constrainedFlex,
+          constrained
+        })
+      })
+
+      return hasContrain
+        ? computeFlexDataRec(flexDataOut)
+        : flexDataOut
+    }
+
+    const flexData = computeFlexDataRec(flexDataInit)
+
+    return flexData.map((entry) => {
+
+      return entry.type !== ReflexSplitter
+        ? {
+          guid: entry.guid,
+          flex: entry.flex
+        }
+        : { flex : 0 }
     })
   }
 
@@ -715,7 +782,7 @@ class ReflexContainer extends React.Component {
   // Utility method that generates a new unique GUID
   //
   /////////////////////////////////////////////////////////
-  guid (format = 'xxxxxxxxxxxx') {
+  guid (format = 'xxxx-xxxx') {
 
     let d = new Date().getTime()
 
