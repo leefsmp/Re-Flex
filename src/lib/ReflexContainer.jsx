@@ -719,6 +719,7 @@ class ReflexContainer extends React.Component {
 
       return {
         maxFlex: (props.maxSize || Number.MAX_VALUE) * pixelFlex,
+        sizeFlex: (props.size || Number.MAX_VALUE) * pixelFlex,
         minFlex: (props.minSize || 1) * pixelFlex,
         constrained: props.flex !== undefined,
         guid: props.ref || this.guid(),
@@ -746,8 +747,10 @@ class ReflexContainer extends React.Component {
           : entry.flex
 
         const constrainedFlex =
-          Math.min(entry.maxFlex,
-            Math.max(entry.minFlex, proposedFlex))
+          Math.min(entry.sizeFlex,
+            Math.min(entry.maxFlex,
+              Math.max(entry.minFlex,
+                proposedFlex)))
 
         const constrained =
           (constrainedFlex !== proposedFlex)
