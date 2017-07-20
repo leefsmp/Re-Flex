@@ -83,8 +83,6 @@ class ReflexContainer extends React.Component {
   /////////////////////////////////////////////////////////
   componentDidMount () {
 
-    const pixelFlex = this.computePixelFlex()
-
     const flexData = this.computeFlexData()
 
     this.setPartialState ({

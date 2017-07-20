@@ -702,6 +702,107 @@ class ReflexSizeAwareDemo
 }
 
 /////////////////////////////////////////////////////////
+// Re-Flex Storage demo
+//
+/////////////////////////////////////////////////////////
+class ReflexStorageDemo
+  extends React.Component {
+
+  constructor (props) {
+
+    super (props)
+
+    this.onResizePane = this.onResizePane.bind(this)
+
+    this.layoutState = this.getLayoutState()
+  }
+
+  getLayoutState () {
+
+    const item = window.localStorage.getItem(
+      "re-flex-storage-demo")
+
+    if (item) {
+
+      return JSON.parse(item)
+    }
+
+    return {
+      appPane: {
+        flex: 0.8
+      },
+      rightPane: {
+        flex: 0.2
+      }
+    }
+  }
+
+  onResizePane (event) {
+
+    const { name, flex } = event.component.props
+
+    this.layoutState[name].flex = flex
+
+    window.localStorage.setItem(
+      "re-flex-storage-demo",
+      JSON.stringify(this.layoutState))
+  }
+
+  render () {
+
+    return (
+      <ReflexContainer orientation="vertical">
+
+        <ReflexElement>
+
+          <ReflexContainer orientation="horizontal">
+
+            <ReflexElement flex={this.layoutState.appPane.flex}
+              onResize={this.onResizePane}
+              name="appPane">
+
+              <div className="pane-content">
+                <label>
+                  App Pane
+                </label>
+              </div>
+
+            </ReflexElement>
+
+            <ReflexSplitter/>
+
+            <ReflexElement className="bottom-pane">
+              <div className="pane-content">
+                <label>
+                  Bottom Pane
+                </label>
+              </div>
+            </ReflexElement>
+
+          </ReflexContainer>
+
+        </ReflexElement>
+
+        <ReflexSplitter/>
+
+        <ReflexElement flex={this.layoutState.rightPane.flex}
+          onResize={this.onResizePane}
+          className="right-pane"
+          name="rightPane">
+
+          <div className="pane-content">
+            <label>
+              Right Pane
+            </label>
+          </div>
+        </ReflexElement>
+
+      </ReflexContainer>
+    )
+  }
+}
+
+/////////////////////////////////////////////////////////
 // Render all demos
 //
 /////////////////////////////////////////////////////////
@@ -732,3 +833,7 @@ ReactDOM.render(<ReflexControlsDemo/>,
 ReactDOM.render(<ReflexSizeAwareDemo/>,
   document.getElementById(
     'demo-size-aware'))
+
+ReactDOM.render(<ReflexStorageDemo/>,
+  document.getElementById(
+    'demo-storage'))

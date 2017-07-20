@@ -1,7 +1,7 @@
 import _toConsumableArray from 'babel-runtime/helpers/toConsumableArray';
 import _Math$sign from 'babel-runtime/core-js/math/sign';
-import _Promise from 'babel-runtime/core-js/promise';
 import _Object$assign from 'babel-runtime/core-js/object/assign';
+import _Promise from 'babel-runtime/core-js/promise';
 import _Object$getPrototypeOf from 'babel-runtime/core-js/object/get-prototype-of';
 import _classCallCheck from 'babel-runtime/helpers/classCallCheck';
 import _createClass from 'babel-runtime/helpers/createClass';
@@ -38,10 +38,8 @@ var ReflexContainer = function (_React$Component) {
 
     var _this = _possibleConstructorReturn(this, (ReflexContainer.__proto__ || _Object$getPrototypeOf(ReflexContainer)).call(this, props));
 
-    var children = _this.getValidChildren(props);
-
     _this.state = {
-      flexData: _this.computeFlexData(children)
+      flexData: []
     };
 
     _this.events = new ReflexEvents();
@@ -71,8 +69,34 @@ var ReflexContainer = function (_React$Component) {
 
 
   _createClass(ReflexContainer, [{
+    key: 'setPartialState',
+    value: function setPartialState(partialState) {
+      var _this2 = this;
+
+      return new _Promise(function (resolve) {
+
+        _this2.setState(_Object$assign({}, _this2.state, partialState), function () {
+          resolve();
+        });
+      });
+    }
+
+    /////////////////////////////////////////////////////////
+    //
+    //
+    /////////////////////////////////////////////////////////
+
+  }, {
     key: 'componentDidMount',
     value: function componentDidMount() {
+
+      var pixelFlex = this.computePixelFlex();
+
+      var flexData = this.computeFlexData();
+
+      this.setPartialState({
+        flexData: flexData
+      });
 
       this.events.on('splitter.startResize', this.onSplitterStartResize);
 
@@ -125,10 +149,11 @@ var ReflexContainer = function (_React$Component) {
 
       if (children.length !== this.state.flexData.length || this.flexHasChanged(props)) {
 
-        this.setState(_Object$assign({}, this.state, {
+        var flexData = this.computeFlexData(children);
 
-          flexData: this.computeFlexData(children)
-        }));
+        this.setPartialState({
+          flexData: flexData
+        });
       }
     }
 
@@ -168,7 +193,7 @@ var ReflexContainer = function (_React$Component) {
     key: 'getSize',
     value: function getSize(element) {
 
-      var ref = this.refs[element.ref];
+      var ref = element.ref ? this.refs[element.ref] : element;
 
       var domElement = ReactDOM.findDOMNode(ref);
 
@@ -245,7 +270,7 @@ var ReflexContainer = function (_React$Component) {
   }, {
     key: 'onSplitterResize',
     value: function onSplitterResize(data) {
-      var _this2 = this;
+      var _this3 = this;
 
       var idx = data.splitter.props.index;
 
@@ -272,9 +297,9 @@ var ReflexContainer = function (_React$Component) {
 
         this.adjustFlex(this.elements);
 
-        this.setState(this.state, function () {
+        this.setPartialState(this.state).then(function () {
 
-          _this2.emitElementsEvent(_this2.elements, 'onResize');
+          _this3.emitElementsEvent(_this3.elements, 'onResize');
         });
       }
     }
@@ -311,7 +336,7 @@ var ReflexContainer = function (_React$Component) {
   }, {
     key: 'onElementSize',
     value: function onElementSize(data) {
-      var _this3 = this;
+      var _this4 = this;
 
       return new _Promise(function (resolve) {
 
@@ -319,7 +344,7 @@ var ReflexContainer = function (_React$Component) {
 
           var idx = data.element.props.index;
 
-          var size = _this3.getSize(_this3.children[idx]);
+          var size = _this4.getSize(_this4.children[idx]);
 
           var offset = data.size - size;
 
@@ -327,20 +352,20 @@ var ReflexContainer = function (_React$Component) {
 
           var splitterIdx = idx + dir;
 
-          var availableOffset = _this3.computeAvailableOffset(splitterIdx, dir * offset);
+          var availableOffset = _this4.computeAvailableOffset(splitterIdx, dir * offset);
 
-          _this3.elements = null;
+          _this4.elements = null;
 
           if (availableOffset) {
 
-            _this3.elements = _this3.dispatchOffset(splitterIdx, availableOffset);
+            _this4.elements = _this4.dispatchOffset(splitterIdx, availableOffset);
 
-            _this3.adjustFlex(_this3.elements);
+            _this4.adjustFlex(_this4.elements);
           }
 
-          _this3.setState(_this3.state, function () {
+          _this4.setPartialState(_this4.state).then(function () {
 
-            _this3.emitElementsEvent(_this3.elements, 'onResize');
+            _this4.emitElementsEvent(_this4.elements, 'onResize');
 
             resolve();
           });
@@ -360,7 +385,7 @@ var ReflexContainer = function (_React$Component) {
   }, {
     key: 'adjustFlex',
     value: function adjustFlex(elements) {
-      var _this4 = this;
+      var _this5 = this;
 
       var diffFlex = elements.reduce(function (sum, element) {
 
@@ -368,13 +393,13 @@ var ReflexContainer = function (_React$Component) {
 
         var previousFlex = element.props.flex;
 
-        var nextFlex = _this4.state.flexData[idx].flex;
+        var nextFlex = _this5.state.flexData[idx].flex;
 
         return sum + (previousFlex - nextFlex) / elements.length;
       }, 0);
 
       elements.forEach(function (element) {
-        _this4.state.flexData[element.props.index].flex += diffFlex;
+        _this5.state.flexData[element.props.index].flex += diffFlex;
       });
     }
 
@@ -512,17 +537,15 @@ var ReflexContainer = function (_React$Component) {
 
       var domElement = ReactDOM.findDOMNode(this);
 
-      var parent = domElement.parentNode;
-
       switch (this.props.orientation) {
 
         case 'horizontal':
 
-          return 1.0 / parent.offsetHeight;
+          return 1.0 / domElement.offsetHeight;
 
         case 'vertical':
 
-          return 1.0 / parent.offsetWidth;
+          return 1.0 / domElement.offsetWidth;
 
         default:
 
@@ -651,13 +674,13 @@ var ReflexContainer = function (_React$Component) {
   }, {
     key: 'emitElementsEvent',
     value: function emitElementsEvent(elements, event) {
-      var _this5 = this;
+      var _this6 = this;
 
       this.toArray(elements).forEach(function (element) {
 
         if (element.props[event]) {
 
-          var ref = _this5.refs[element.ref];
+          var ref = _this6.refs[element.ref];
 
           element.props[event]({
             domElement: ReactDOM.findDOMNode(ref),
@@ -676,46 +699,86 @@ var ReflexContainer = function (_React$Component) {
 
   }, {
     key: 'computeFlexData',
-    value: function computeFlexData(children) {
-      var _this6 = this;
+    value: function computeFlexData() {
+      var _this7 = this;
 
-      var nbElements = 0;
+      var children = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : this.getValidChildren();
 
-      if (!children) {
 
-        return [];
-      }
+      var pixelFlex = this.computePixelFlex();
 
-      var childrenArray = this.toArray(children);
+      var computeFreeFlex = function computeFreeFlex(flexData) {
+        return flexData.reduce(function (sum, entry) {
+          if (entry.type !== ReflexSplitter && entry.constrained) {
+            return sum - entry.flex;
+          }
+          return sum;
+        }, 1);
+      };
 
-      var flexValues = childrenArray.map(function (child) {
+      var computeFreeElements = function computeFreeElements(flexData) {
+        return flexData.reduce(function (sum, entry) {
+          if (entry.type !== ReflexSplitter && !entry.constrained) {
+            return sum + 1;
+          }
+          return sum;
+        }, 0);
+      };
 
-        if (child.type !== ReflexSplitter && !child.props.flex) {
+      var flexDataInit = children.map(function (child) {
 
-          ++nbElements;
-        }
+        var props = child.props;
 
-        return child.props ? child.props.flex || 0 : 0;
+        return {
+          maxFlex: (props.maxSize || Number.MAX_VALUE) * pixelFlex,
+          sizeFlex: (props.size || Number.MAX_VALUE) * pixelFlex,
+          minFlex: (props.minSize || 1) * pixelFlex,
+          constrained: props.flex !== undefined,
+          guid: props.ref || _this7.guid(),
+          flex: props.flex || 0,
+          type: child.type
+        };
       });
 
-      var remainingFlex = 1;
+      var computeFlexDataRec = function computeFlexDataRec(flexDataIn) {
 
-      flexValues.forEach(function (flex) {
+        var hasContrain = false;
 
-        remainingFlex -= flex;
-      });
+        var freeElements = computeFreeElements(flexDataIn);
 
-      return childrenArray.map(function (child, idx) {
+        var freeFlex = computeFreeFlex(flexDataIn);
 
-        if (child.type !== ReflexSplitter) {
+        var flexDataOut = flexDataIn.map(function (entry) {
 
-          return {
-            guid: child.props.ref || _this6.guid(),
-            flex: flexValues[idx] || remainingFlex / nbElements
-          };
-        }
+          if (entry.type === ReflexSplitter) {
+            return entry;
+          }
 
-        return { flex: 0 };
+          var proposedFlex = !entry.constrained ? freeFlex / freeElements : entry.flex;
+
+          var constrainedFlex = Math.min(entry.sizeFlex, Math.min(entry.maxFlex, Math.max(entry.minFlex, proposedFlex)));
+
+          var constrained = constrainedFlex !== proposedFlex;
+
+          hasContrain = hasContrain || constrained;
+
+          return _Object$assign({}, entry, {
+            flex: constrainedFlex,
+            constrained: constrained
+          });
+        });
+
+        return hasContrain ? computeFlexDataRec(flexDataOut) : flexDataOut;
+      };
+
+      var flexData = computeFlexDataRec(flexDataInit);
+
+      return flexData.map(function (entry) {
+
+        return entry.type !== ReflexSplitter ? {
+          guid: entry.guid,
+          flex: entry.flex
+        } : { flex: 0 };
       });
     }
 
@@ -727,7 +790,7 @@ var ReflexContainer = function (_React$Component) {
   }, {
     key: 'guid',
     value: function guid() {
-      var format = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 'xxxxxxxxxxxx';
+      var format = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 'xxxx-xxxx';
 
 
       var d = new Date().getTime();
@@ -762,23 +825,23 @@ var ReflexContainer = function (_React$Component) {
   }, {
     key: 'render',
     value: function render() {
-      var _this7 = this;
+      var _this8 = this;
 
       var classNames = ['reflex-layout', 'reflex-container', this.props.orientation].concat(_toConsumableArray(this.props.className.split(' ')));
 
       this.children = React.Children.map(this.getValidChildren(), function (child, idx) {
 
-        if (idx > _this7.state.flexData.length - 1) {
+        if (idx > _this8.state.flexData.length - 1) {
           return React.createElement('div', null);
         }
 
-        var flexData = _this7.state.flexData[idx];
+        var flexData = _this8.state.flexData[idx];
 
         var newProps = _Object$assign({}, child.props, {
           maxSize: child.props.maxSize || Number.MAX_VALUE,
-          orientation: _this7.props.orientation,
+          orientation: _this8.props.orientation,
           minSize: child.props.minSize || 1,
-          events: _this7.events,
+          events: _this8.events,
           flex: flexData.flex,
           ref: flexData.guid,
           index: idx
