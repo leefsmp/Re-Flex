@@ -90,8 +90,6 @@ var ReflexContainer = function (_React$Component) {
     key: 'componentDidMount',
     value: function componentDidMount() {
 
-      var pixelFlex = this.computePixelFlex();
-
       var flexData = this.computeFlexData();
 
       this.setPartialState({

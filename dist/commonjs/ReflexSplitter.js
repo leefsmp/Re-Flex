@@ -244,16 +244,21 @@ var ReflexSplitter = function (_React$Component) {
         classNames.push('active');
       }
 
-      return _react2.default.createElement('div', { className: classNames.join(' '),
-        onTouchStart: this.onMouseDown,
-        onMouseDown: this.onMouseDown,
-        style: this.props.style });
+      return _react2.default.createElement(
+        'div',
+        { className: classNames.join(' '),
+          onTouchStart: this.onMouseDown,
+          onMouseDown: this.onMouseDown,
+          style: this.props.style },
+        this.props.children
+      );
     }
   }]);
   return ReflexSplitter;
 }(_react2.default.Component);
 
 ReflexSplitter.propTypes = {
+  children: _propTypes2.default.oneOfType([_propTypes2.default.arrayOf(_propTypes2.default.node), _propTypes2.default.node]),
   onStartResize: _propTypes2.default.func,
   onStopResize: _propTypes2.default.func,
   className: _propTypes2.default.string,

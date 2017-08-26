@@ -16,6 +16,10 @@ export default class ReflexSplitter extends React.Component {
   //
   /////////////////////////////////////////////////////////
   static propTypes = {
+    children: PropTypes.oneOfType([
+      PropTypes.arrayOf(PropTypes.node),
+      PropTypes.node
+    ]),
     onStartResize: PropTypes.func,
     onStopResize: PropTypes.func,
     className: PropTypes.string,
@@ -219,6 +223,7 @@ export default class ReflexSplitter extends React.Component {
         onTouchStart={this.onMouseDown}
         onMouseDown={this.onMouseDown}
         style={this.props.style}>
+        {this.props.children}
       </div>
     )
   }

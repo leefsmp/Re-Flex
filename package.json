@@ -1,6 +1,6 @@
 {
   "name": "react-reflex",
-  "version": "2.0.7",
+  "version": "2.0.8",
   "description": "Flex layout component for advanced React web applications",
   "main": "dist/commonjs/index.js",
   "module": "dist/es/index.js",
