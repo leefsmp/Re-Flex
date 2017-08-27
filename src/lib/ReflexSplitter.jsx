@@ -77,11 +77,15 @@ export default class ReflexSplitter extends React.Component {
 
     this.document.addEventListener(
       'mousemove',
-      this.onMouseMove)
+      this.onMouseMove, {
+        passive: false
+      })
 
     this.document.addEventListener(
       'touchmove',
-      this.onMouseMove)
+      this.onMouseMove, {
+        passive: false
+      })
   }
 
   /////////////////////////////////////////////////////////
@@ -154,9 +158,6 @@ export default class ReflexSplitter extends React.Component {
           component: this
       })) {
 
-        event.stopPropagation()
-        event.preventDefault()
-
         return
       }
     }
@@ -165,9 +166,6 @@ export default class ReflexSplitter extends React.Component {
       splitter: this,
       event
     })
-
-    event.stopPropagation()
-    event.preventDefault()
   }
 
   /////////////////////////////////////////////////////////

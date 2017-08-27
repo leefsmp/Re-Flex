@@ -102,9 +102,13 @@ var ReflexSplitter = function (_React$Component) {
 
       this.document.addEventListener('mouseup', this.onMouseUp);
 
-      this.document.addEventListener('mousemove', this.onMouseMove);
+      this.document.addEventListener('mousemove', this.onMouseMove, {
+        passive: false
+      });
 
-      this.document.addEventListener('touchmove', this.onMouseMove);
+      this.document.addEventListener('touchmove', this.onMouseMove, {
+        passive: false
+      });
     }
 
     /////////////////////////////////////////////////////////
@@ -177,9 +181,6 @@ var ReflexSplitter = function (_React$Component) {
           component: this
         })) {
 
-          event.stopPropagation();
-          event.preventDefault();
-
           return;
         }
       }
@@ -188,9 +189,6 @@ var ReflexSplitter = function (_React$Component) {
         splitter: this,
         event: event
       });
-
-      event.stopPropagation();
-      event.preventDefault();
     }
 
     /////////////////////////////////////////////////////////
