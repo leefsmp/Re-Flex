@@ -69,7 +69,7 @@ var ReflexElement = function (_React$Component) {
   _createClass(ReflexElement, [{
     key: 'componentWillReceiveProps',
     value: function () {
-      var _ref = _asyncToGenerator(_regeneratorRuntime.mark(function _callee(props) {
+      var _ref = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime.mark(function _callee(props) {
         var directions, _iteratorNormalCompletion, _didIteratorError, _iteratorError, _iterator, _step, dir;
 
         return _regeneratorRuntime.wrap(function _callee$(_context) {

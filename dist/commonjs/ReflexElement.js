@@ -124,7 +124,7 @@ var ReflexElement = function (_React$Component) {
   (0, _createClass3.default)(ReflexElement, [{
     key: 'componentWillReceiveProps',
     value: function () {
-      var _ref = (0, _asyncToGenerator3.default)(_regenerator2.default.mark(function _callee(props) {
+      var _ref = (0, _asyncToGenerator3.default)( /*#__PURE__*/_regenerator2.default.mark(function _callee(props) {
         var directions, _iteratorNormalCompletion, _didIteratorError, _iteratorError, _iterator, _step, dir;
 
         return _regenerator2.default.wrap(function _callee$(_context) {
