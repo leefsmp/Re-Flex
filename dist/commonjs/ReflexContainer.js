@@ -156,6 +156,17 @@ var ReflexContainer = function (_React$Component) {
 
       this.events.on('element.size', this.onElementSize);
     }
+  }, {
+    key: 'componentDidUpdate',
+    value: function componentDidUpdate() {
+      if (this.state.flexData.some(function (flexData) {
+        return !isFinite(flexData.flex);
+      })) {
+        this.setPartialState({
+          flexData: this.computeFlexData()
+        });
+      }
+    }
 
     /////////////////////////////////////////////////////////
     //

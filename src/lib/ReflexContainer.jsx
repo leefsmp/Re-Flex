@@ -106,6 +106,14 @@ class ReflexContainer extends React.Component {
       this.onElementSize)
   }
 
+  componentDidUpdate() {
+    if (this.state.flexData.some(flexData => !isFinite(flexData.flex))) {
+      this.setPartialState ({
+        flexData: this.computeFlexData()
+      })
+    }
+  }
+
   /////////////////////////////////////////////////////////
   //
   //
@@ -556,8 +564,8 @@ class ReflexContainer extends React.Component {
     const currentFlex = this.state.flexData[idx].flex
 
     const newFlex = (currentFlex > 0)
-        ? currentFlex * newSize / size
-        : this.computePixelFlex () * newSize
+      ? currentFlex * newSize / size
+      : this.computePixelFlex () * newSize
 
     this.state.flexData[idx].flex =
       (!isFinite(newFlex) || isNaN(newFlex))
@@ -845,7 +853,7 @@ class ReflexContainer extends React.Component {
 
     return (
       <div className={classNames.join(' ')}
-        style={this.props.style}>
+           style={this.props.style}>
         { this.children }
       </div>
     )
