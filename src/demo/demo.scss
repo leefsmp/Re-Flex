@@ -9,7 +9,6 @@ html {
 }
 
 html, body {
-  overflow: -moz-scrollbars-none;
   -ms-overflow-style: none;
   margin: 0;
   padding: 0;
@@ -184,6 +183,12 @@ body {
 }
 
 #demo-storage {
+  border: 1px solid #0c63ff;
+  background-color: white;
+  height: 280px;
+}
+
+#demo-custom-splitter {
   border: 1px solid #0c63ff;
   background-color: white;
   height: 280px;

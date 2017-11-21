@@ -296,6 +296,16 @@ class ReflexContainer extends React.Component {
   }
 
   /////////////////////////////////////////////////////////
+  // Determines if element is a splitter
+  // or wraps a splitter
+  //
+  /////////////////////////////////////////////////////////
+  isSplitterElement (element) {
+
+    return element.type === ReflexSplitter
+  }
+
+  /////////////////////////////////////////////////////////
   // Handles splitter stopResize event
   //
   /////////////////////////////////////////////////////////
@@ -310,7 +320,7 @@ class ReflexContainer extends React.Component {
 
     const elements = this.children.filter((child) => {
 
-      return child.type !== ReflexSplitter &&
+      return !this.isSplitterElement(child) &&
         resizedRefs.includes(child.ref)
     })
 
@@ -428,7 +438,7 @@ class ReflexContainer extends React.Component {
 
         const child = this.children[idx + 2]
 
-        const typeCheck = (child.type === ReflexSplitter)
+        const typeCheck = this.isSplitterElement(child)
 
         return typeCheck && child.props.propagate
       }
@@ -439,7 +449,7 @@ class ReflexContainer extends React.Component {
 
         const child = this.children[idx - 2]
 
-        const typeCheck = (child.type === ReflexSplitter)
+        const typeCheck = this.isSplitterElement(child)
 
         return typeCheck && child.props.propagate
       }
@@ -693,7 +703,7 @@ class ReflexContainer extends React.Component {
 
     const computeFreeFlex = (flexData) => {
       return flexData.reduce((sum, entry) => {
-        if (entry.type !== ReflexSplitter
+        if (!this.isSplitterElement(entry)
           && entry.constrained) {
           return sum - entry.flex
         }
@@ -703,7 +713,7 @@ class ReflexContainer extends React.Component {
 
     const computeFreeElements = (flexData) => {
       return flexData.reduce((sum, entry) => {
-        if (entry.type !== ReflexSplitter
+        if (!this.isSplitterElement(entry)
           && !entry.constrained) {
           return sum + 1
         }
@@ -736,7 +746,7 @@ class ReflexContainer extends React.Component {
 
       const flexDataOut = flexDataIn.map((entry) => {
 
-        if (entry.type === ReflexSplitter) {
+        if (this.isSplitterElement(entry)) {
           return entry
         }
 
@@ -770,12 +780,11 @@ class ReflexContainer extends React.Component {
 
     return flexData.map((entry) => {
 
-      return entry.type !== ReflexSplitter
-        ? {
-          guid: entry.guid,
-          flex: entry.flex
-        }
-        : { flex : 0 }
+      return {
+          flex: !this.isSplitterElement(entry)
+            ? entry.flex : 0.0,
+          guid: entry.guid
+       }
     })
   }
 
@@ -825,7 +834,7 @@ class ReflexContainer extends React.Component {
       this.getValidChildren(), (child, idx) => {
 
         if (idx > this.state.flexData.length - 1) {
-          return (<div></div>)
+          return <div/>
         }
 
         const flexData = this.state.flexData[idx]
