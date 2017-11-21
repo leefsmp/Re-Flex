@@ -1,2 +1,2 @@
-const {ReflexContainer, ReflexSplitter, ReflexElement} = require('./src/lib');
+const {ReflexContainer, ReflexSplitter, ReflexElement} = require('./dist/umd/react-reflex.min');
 export { ReflexContainer, ReflexSplitter, ReflexElement };
