@@ -803,54 +803,6 @@ class ReflexStorageDemo
 }
 
 /////////////////////////////////////////////////////////
-// Re-Flex Splitter Wrapper demo
-//
-/////////////////////////////////////////////////////////
-class SplitterWrapper extends React.Component {
-  render() {
-    return <ReflexSplitter/>
-  }
-}
-
-class ReflexSplitterDemo
-  extends React.Component {
-
-  constructor (props) {
-
-    super (props)
-  }
-
-  render () {
-
-    return (
-      <ReflexContainer orientation="vertical">
-
-        <ReflexElement className="left-pane">
-
-          <div className="pane-content">
-            <label>
-              Left Pane
-            </label>
-          </div>
-        </ReflexElement>
-
-        <ReflexSplitter/>
-
-        <ReflexElement className="right-pane">
-
-          <div className="pane-content">
-            <label>
-              Right Pane
-            </label>
-          </div>
-        </ReflexElement>
-
-      </ReflexContainer>
-    )
-  }
-}
-
-/////////////////////////////////////////////////////////
 // Render all demos
 //
 /////////////////////////////////////////////////////////
@@ -885,7 +837,3 @@ ReactDOM.render(<ReflexSizeAwareDemo/>,
 ReactDOM.render(<ReflexStorageDemo/>,
   document.getElementById(
     'demo-storage'))
-
-ReactDOM.render(<ReflexSplitterDemo/>,
-  document.getElementById(
-    'demo-custom-splitter'))
