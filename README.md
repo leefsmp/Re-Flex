@@ -123,7 +123,7 @@ Re-F|ex is the most powerful React layout component out there ... Don't just tru
 
  * [Autodesk Forge RCDB Configurator](https://forge-rcdb.autodesk.io/configurator?id=57f3739777c879f48ad54a44)
 
-  ![forge-rcdb-configurator](https://github.com/Autodesk-Forge/forge-rcdb.nodejs/blob/master/resources/img/configurator/Visual%20Reports%20AEC.png)
+  ![forge-rcdb-configurator](https://github.com/Autodesk-Forge/forge-rcdb.nodejs/blob/master/resources/img/misc/configurator.png)
 
  * [CodecastJS.com](https://codecastjs.com)
 
