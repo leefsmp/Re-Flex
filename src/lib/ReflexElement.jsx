@@ -21,6 +21,8 @@ export default class ReflexElement extends React.Component {
     renderOnResizeRate: PropTypes.number,
     propagateDimensions: PropTypes.bool,
     renderOnResize: PropTypes.bool,
+    resizeHeight: PropTypes.bool, 
+    resizeWidth: PropTypes.bool,
     className: PropTypes.string
   }
 
@@ -31,6 +33,8 @@ export default class ReflexElement extends React.Component {
   static defaultProps = {
     renderOnResize: Browser.isSafari(),
     propagateDimensions: false,
+    resizeHeight: true, 
+    resizeWidth: true,
     renderOnResizeRate: 60,
     className: ''
   }
@@ -92,13 +96,13 @@ export default class ReflexElement extends React.Component {
   //
   /////////////////////////////////////////////////////////
   onResize (rect) {
-
-    if (this.props.renderOnResize) {
+    const { renderOnResize, resizeHeight, resizeWidth} = this.props
+    if (renderOnResize) {
 
       this.setStateThrottled({
         dimensions: {
-          height: Math.floor(rect.bounds.height),
-          width: Math.floor(rect.bounds.width)
+          ...resizeHeight && {height: Math.floor(rect.bounds.height)},
+          ...resizeWidth && {width: Math.floor(rect.bounds.width)}
         }
       })
     }
