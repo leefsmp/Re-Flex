@@ -3,19 +3,26 @@
 //
 /////////////////////////////////////////////////////////
 class Browser {
+  // Check if not running on server
+  static isBrowser () {
+    return typeof window !== 'undefined';
+  }
 
   // Opera 8.0+ (UA detection to detect Blink/v8-powered Opera)
   static isOpera () {
-    return (!!window.opera || navigator.userAgent.indexOf(' OPR/') >= 0)
+    return Browser.isBrowser() && (!!window.opera || navigator.userAgent.indexOf(' OPR/') >= 0)
   }
 
   // Firefox 1.0+
   static isFirefox () {
-    return (typeof InstallTrigger !== 'undefined')
+    return Browser.isBrowser() && (typeof InstallTrigger !== 'undefined')
   }
 
   // Safari 3.0+
   static isSafari () {
+    if (!Browser.isBrowser()) {
+      return false;
+    }
 
     const hasPushNotif = (p) => {
       return p.toString() === "[object SafariRemoteNotification]"
@@ -31,63 +38,64 @@ class Browser {
   // Internet Explorer 6-11
   static isIE () {
     /*@cc_on!@*/
-    return (false || !!document.documentMode)
+    return Browser.isBrowser() && !!document.documentMode
   }
 
   // Edge 20+
   static isEdge () {
-    return (!Browser.isIE() && !!window.StyleMedia)
+    return Browser.isBrowser() && (!Browser.isIE() && !!window.StyleMedia)
   }
 
   // Chrome 1+
   static isChrome () {
-    return(!!window.chrome && !!window.chrome.webstore)
+    return Browser.isBrowser() && (!!window.chrome && !!window.chrome.webstore)
   }
 
   // Blink engine detection
   static isBlink () {
-    return ((Browser.isChrome() || Browser.isOpera()) && !!window.CSS)
+    return Browser.isBrowser() && ((Browser.isChrome() || Browser.isOpera()) && !!window.CSS)
   }
 
 
   static getUserAgent () {
-    return navigator.userAgent
+    return typeof navigator === 'undefined' ? '' : navigator.userAgent
   }
 
   static isAndroid () {
-    return Browser.getUserAgent().match(/Android/i)
+    return Browser.isBrowser() && Browser.getUserAgent().match(/Android/i)
   }
 
   static isBlackBerry () {
-    return Browser.getUserAgent().match(/BlackBerry/i)
+    return Browser.isBrowser() && Browser.getUserAgent().match(/BlackBerry/i)
   }
 
   static isIOS () {
-    return Browser.getUserAgent().match(/iPhone|iPad|iPod/i)
+    return Browser.isBrowser() && Browser.getUserAgent().match(/iPhone|iPad|iPod/i)
   }
 
   static isOpera () {
-    return Browser.getUserAgent().match(/Opera Mini/i)
+    return Browser.isBrowser() && Browser.getUserAgent().match(/Opera Mini/i)
   }
 
   static isWindows () {
-    return Browser.isWindowsDesktop() || Browser.isWindowsMobile()
+    return Browser.isBrowser() && Browser.isWindowsDesktop() || Browser.isWindowsMobile()
   }
 
   static isWindowsMobile () {
-    return Browser.getUserAgent().match(/IEMobile/i)
+    return Browser.isBrowser() && Browser.getUserAgent().match(/IEMobile/i)
   }
 
   static isWindowsDesktop () {
-    return Browser.getUserAgent().match(/WPDesktop/i)
+    return Browser.isBrowser() && Browser.getUserAgent().match(/WPDesktop/i)
   }
 
   static isMobile () {
 
-    return Browser.isWindowsMobile() ||
+    return Browser.isBrowser() &&
+      (Browser.isWindowsMobile() ||
       Browser.isBlackBerry() ||
       Browser.isAndroid() ||
-      Browser.isIOS()
+      Browser.isIOS())
   }
 }
 
