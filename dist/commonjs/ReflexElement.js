@@ -12,6 +12,10 @@ var _assign = require('babel-runtime/core-js/object/assign');
 
 var _assign2 = _interopRequireDefault(_assign);
 
+var _extends2 = require('babel-runtime/helpers/extends');
+
+var _extends3 = _interopRequireDefault(_extends2);
+
 var _regenerator = require('babel-runtime/regenerator');
 
 var _regenerator2 = _interopRequireDefault(_regenerator);
@@ -231,14 +235,16 @@ var ReflexElement = function (_React$Component) {
   }, {
     key: 'onResize',
     value: function onResize(rect) {
+      var _props = this.props,
+          renderOnResize = _props.renderOnResize,
+          resizeHeight = _props.resizeHeight,
+          resizeWidth = _props.resizeWidth;
 
-      if (this.props.renderOnResize) {
+
+      if (renderOnResize) {
 
         this.setStateThrottled({
-          dimensions: {
-            height: Math.floor(rect.bounds.height),
-            width: Math.floor(rect.bounds.width)
-          }
+          dimensions: (0, _extends3.default)({}, resizeHeight && { height: Math.floor(rect.bounds.height) }, resizeWidth && { width: Math.floor(rect.bounds.width) })
         });
       }
     }
@@ -320,10 +326,14 @@ ReflexElement.propTypes = {
   renderOnResizeRate: _propTypes2.default.number,
   propagateDimensions: _propTypes2.default.bool,
   renderOnResize: _propTypes2.default.bool,
+  resizeHeight: _propTypes2.default.bool,
+  resizeWidth: _propTypes2.default.bool,
   className: _propTypes2.default.string };
 ReflexElement.defaultProps = {
-  renderOnResize: _Browser2.default.isSafari(),
+  renderOnResize: _Browser2.default.isSafari(), // Safari is creepy ...
   propagateDimensions: false,
   renderOnResizeRate: 60,
+  resizeHeight: true,
+  resizeWidth: true,
   className: '' };
 exports.default = ReflexElement;

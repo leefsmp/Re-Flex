@@ -1,5 +1,6 @@
 import _toConsumableArray from 'babel-runtime/helpers/toConsumableArray';
 import _Object$assign from 'babel-runtime/core-js/object/assign';
+import _extends from 'babel-runtime/helpers/extends';
 import _regeneratorRuntime from 'babel-runtime/regenerator';
 import _getIterator from 'babel-runtime/core-js/get-iterator';
 import _asyncToGenerator from 'babel-runtime/helpers/asyncToGenerator';
@@ -176,14 +177,16 @@ var ReflexElement = function (_React$Component) {
   }, {
     key: 'onResize',
     value: function onResize(rect) {
+      var _props = this.props,
+          renderOnResize = _props.renderOnResize,
+          resizeHeight = _props.resizeHeight,
+          resizeWidth = _props.resizeWidth;
 
-      if (this.props.renderOnResize) {
+
+      if (renderOnResize) {
 
         this.setStateThrottled({
-          dimensions: {
-            height: Math.floor(rect.bounds.height),
-            width: Math.floor(rect.bounds.width)
-          }
+          dimensions: _extends({}, resizeHeight && { height: Math.floor(rect.bounds.height) }, resizeWidth && { width: Math.floor(rect.bounds.width) })
         });
       }
     }
@@ -266,10 +269,14 @@ ReflexElement.propTypes = {
   renderOnResizeRate: PropTypes.number,
   propagateDimensions: PropTypes.bool,
   renderOnResize: PropTypes.bool,
+  resizeHeight: PropTypes.bool,
+  resizeWidth: PropTypes.bool,
   className: PropTypes.string };
 ReflexElement.defaultProps = {
-  renderOnResize: Browser.isSafari(),
+  renderOnResize: Browser.isSafari(), // Safari is creepy ...
   propagateDimensions: false,
   renderOnResizeRate: 60,
+  resizeHeight: true,
+  resizeWidth: true,
   className: '' };
 export default ReflexElement;

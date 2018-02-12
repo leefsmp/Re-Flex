@@ -210,7 +210,8 @@ var ReflexSplitter = function (_React$Component) {
         { className: classNames.join(' '),
           onTouchStart: this.onMouseDown,
           onMouseDown: this.onMouseDown,
-          style: this.props.style },
+          style: this.props.style,
+          id: this.props.id },
         this.props.children
       );
     }

@@ -33,13 +33,15 @@ export default class ReflexSplitter extends React.Component {
   //
   /////////////////////////////////////////////////////////
   static defaultProps = {
+    document: typeof document === 'undefined' 
+      ? null 
+      : document,
     onStartResize: null,
     onStopResize: null,
     propagate: false,
     onResize:null,
     className: '',
-    style: {},
-    document: typeof document === 'undefined' ? null : document,
+    style: {}
   }
 
   /////////////////////////////////////////////////////////
