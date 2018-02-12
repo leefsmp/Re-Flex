@@ -39,7 +39,7 @@ export default class ReflexSplitter extends React.Component {
     onResize:null,
     className: '',
     style: {},
-    document
+    document: typeof document === 'undefined' ? null : document,
   }
 
   /////////////////////////////////////////////////////////
@@ -66,6 +66,9 @@ export default class ReflexSplitter extends React.Component {
   //
   /////////////////////////////////////////////////////////
   componentDidMount () {
+    if (!this.document) {
+      return;
+    }
 
     this.document.addEventListener(
       'touchend',
@@ -93,6 +96,9 @@ export default class ReflexSplitter extends React.Component {
   //
   /////////////////////////////////////////////////////////
   componentWillUnmount () {
+    if (!this.document) {
+      return;
+    }
 
     this.document.removeEventListener(
       'mouseup',
