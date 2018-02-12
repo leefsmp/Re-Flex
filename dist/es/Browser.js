@@ -11,12 +11,19 @@ var Browser = function () {
   }
 
   _createClass(Browser, null, [{
-    key: 'isOpera',
+    key: 'isBrowser',
 
+    // Check if not running on server
+    value: function isBrowser() {
+      return typeof window !== 'undefined';
+    }
 
     // Opera 8.0+ (UA detection to detect Blink/v8-powered Opera)
+
+  }, {
+    key: 'isOpera',
     value: function isOpera() {
-      return !!window.opera || navigator.userAgent.indexOf(' OPR/') >= 0;
+      return Browser.isBrowser() && (!!window.opera || navigator.userAgent.indexOf(' OPR/') >= 0);
     }
 
     // Firefox 1.0+
@@ -24,7 +31,7 @@ var Browser = function () {
   }, {
     key: 'isFirefox',
     value: function isFirefox() {
-      return typeof InstallTrigger !== 'undefined';
+      return Browser.isBrowser() && typeof InstallTrigger !== 'undefined';
     }
 
     // Safari 3.0+
@@ -32,6 +39,9 @@ var Browser = function () {
   }, {
     key: 'isSafari',
     value: function isSafari() {
+      if (!Browser.isBrowser()) {
+        return false;
+      }
 
       var hasPushNotif = function hasPushNotif(p) {
         return p.toString() === "[object SafariRemoteNotification]";
@@ -50,7 +60,7 @@ var Browser = function () {
     key: 'isIE',
     value: function isIE() {
       /*@cc_on!@*/
-      return false || !!document.documentMode;
+      return Browser.isBrowser() && !!document.documentMode;
     }
 
     // Edge 20+
@@ -58,7 +68,7 @@ var Browser = function () {
   }, {
     key: 'isEdge',
     value: function isEdge() {
-      return !Browser.isIE() && !!window.StyleMedia;
+      return Browser.isBrowser() && !Browser.isIE() && !!window.StyleMedia;
     }
 
     // Chrome 1+
@@ -66,7 +76,7 @@ var Browser = function () {
   }, {
     key: 'isChrome',
     value: function isChrome() {
-      return !!window.chrome && !!window.chrome.webstore;
+      return Browser.isBrowser() && !!window.chrome && !!window.chrome.webstore;
     }
 
     // Blink engine detection
@@ -74,53 +84,53 @@ var Browser = function () {
   }, {
     key: 'isBlink',
     value: function isBlink() {
-      return (Browser.isChrome() || Browser.isOpera()) && !!window.CSS;
+      return Browser.isBrowser() && (Browser.isChrome() || Browser.isOpera()) && !!window.CSS;
     }
   }, {
     key: 'getUserAgent',
     value: function getUserAgent() {
-      return navigator.userAgent;
+      return typeof navigator === 'undefined' ? '' : navigator.userAgent;
     }
   }, {
     key: 'isAndroid',
     value: function isAndroid() {
-      return Browser.getUserAgent().match(/Android/i);
+      return Browser.isBrowser() && Browser.getUserAgent().match(/Android/i);
     }
   }, {
     key: 'isBlackBerry',
     value: function isBlackBerry() {
-      return Browser.getUserAgent().match(/BlackBerry/i);
+      return Browser.isBrowser() && Browser.getUserAgent().match(/BlackBerry/i);
     }
   }, {
     key: 'isIOS',
     value: function isIOS() {
-      return Browser.getUserAgent().match(/iPhone|iPad|iPod/i);
+      return Browser.isBrowser() && Browser.getUserAgent().match(/iPhone|iPad|iPod/i);
     }
   }, {
     key: 'isOpera',
     value: function isOpera() {
-      return Browser.getUserAgent().match(/Opera Mini/i);
+      return Browser.isBrowser() && Browser.getUserAgent().match(/Opera Mini/i);
     }
   }, {
     key: 'isWindows',
     value: function isWindows() {
-      return Browser.isWindowsDesktop() || Browser.isWindowsMobile();
+      return Browser.isBrowser() && Browser.isWindowsDesktop() || Browser.isWindowsMobile();
     }
   }, {
     key: 'isWindowsMobile',
     value: function isWindowsMobile() {
-      return Browser.getUserAgent().match(/IEMobile/i);
+      return Browser.isBrowser() && Browser.getUserAgent().match(/IEMobile/i);
     }
   }, {
     key: 'isWindowsDesktop',
     value: function isWindowsDesktop() {
-      return Browser.getUserAgent().match(/WPDesktop/i);
+      return Browser.isBrowser() && Browser.getUserAgent().match(/WPDesktop/i);
     }
   }, {
     key: 'isMobile',
     value: function isMobile() {
 
-      return Browser.isWindowsMobile() || Browser.isBlackBerry() || Browser.isAndroid() || Browser.isIOS();
+      return Browser.isBrowser() && (Browser.isWindowsMobile() || Browser.isBlackBerry() || Browser.isAndroid() || Browser.isIOS());
     }
   }]);
 

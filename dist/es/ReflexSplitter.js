@@ -60,6 +60,9 @@ var ReflexSplitter = function (_React$Component) {
   _createClass(ReflexSplitter, [{
     key: 'componentDidMount',
     value: function componentDidMount() {
+      if (!this.document) {
+        return;
+      }
 
       this.document.addEventListener('touchend', this.onMouseUp);
 
@@ -82,6 +85,9 @@ var ReflexSplitter = function (_React$Component) {
   }, {
     key: 'componentWillUnmount',
     value: function componentWillUnmount() {
+      if (!this.document) {
+        return;
+      }
 
       this.document.removeEventListener('mouseup', this.onMouseUp);
 
@@ -229,11 +235,11 @@ ReflexSplitter.propTypes = {
   onResize: PropTypes.func,
   style: PropTypes.object };
 ReflexSplitter.defaultProps = {
+  document: typeof document === 'undefined' ? null : document,
   onStartResize: null,
   onStopResize: null,
   propagate: false,
   onResize: null,
   className: '',
-  style: {},
-  document: document };
+  style: {} };
 export default ReflexSplitter;
