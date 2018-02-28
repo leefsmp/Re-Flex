@@ -17,26 +17,6 @@ class ReflexContainer extends React.Component {
   //
   //
   /////////////////////////////////////////////////////////
-  static propTypes = {
-    orientation: PropTypes.string,
-    className: PropTypes.string,
-    style: PropTypes.object
-  }
-
-  /////////////////////////////////////////////////////////
-  //
-  //
-  /////////////////////////////////////////////////////////
-  static defaultProps = {
-    orientation: 'horizontal',
-    className: '',
-    style: {}
-  }
-
-  /////////////////////////////////////////////////////////
-  //
-  //
-  /////////////////////////////////////////////////////////
   constructor (props) {
 
     super (props)
@@ -190,10 +170,8 @@ class ReflexContainer extends React.Component {
         return domElement.offsetHeight
 
       case 'vertical':
-        return domElement.offsetWidth
-
       default:
-        return 0
+        return domElement.offsetWidth
     }
   }
 
@@ -213,6 +191,7 @@ class ReflexContainer extends React.Component {
         return pos.pageY - this.previousPos
 
       case 'vertical':
+      default:
         return pos.pageX - this.previousPos
     }
   }
@@ -235,6 +214,7 @@ class ReflexContainer extends React.Component {
         break
 
       case 'vertical':
+      default:
         document.body.style.cursor = 'col-resize'
         this.previousPos = pos.pageX
         break
@@ -278,6 +258,7 @@ class ReflexContainer extends React.Component {
           break
 
         case 'vertical':
+        default:
           this.previousPos = pos.pageX
           break
       }
@@ -542,12 +523,9 @@ class ReflexContainer extends React.Component {
         return 1.0 / domElement.offsetHeight
 
       case 'vertical':
+      default:
 
         return 1.0 / domElement.offsetWidth
-
-      default :
-
-        return 0
     }
   }
 
@@ -859,6 +837,28 @@ class ReflexContainer extends React.Component {
       </div>
     )
   }
+}
+
+/////////////////////////////////////////////////////////
+//
+//
+/////////////////////////////////////////////////////////
+ReflexContainer.propTypes = {
+  orientation: PropTypes.oneOf([
+    'horizontal', 'vertical'
+  ]),
+  className: PropTypes.string,
+  style: PropTypes.object
+}
+
+/////////////////////////////////////////////////////////
+//
+//
+/////////////////////////////////////////////////////////
+ReflexContainer.defaultProps = {
+  orientation: 'horizontal',
+  className: '',
+  style: {}
 }
 
 export default ReflexContainer

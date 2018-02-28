@@ -79,12 +79,6 @@ var ReflexContainer = function (_React$Component) {
   //
   //
   /////////////////////////////////////////////////////////
-
-
-  /////////////////////////////////////////////////////////
-  //
-  //
-  /////////////////////////////////////////////////////////
   function ReflexContainer(props) {
     (0, _classCallCheck3.default)(this, ReflexContainer);
 
@@ -107,12 +101,6 @@ var ReflexContainer = function (_React$Component) {
     _this.children = [];
     return _this;
   }
-
-  /////////////////////////////////////////////////////////
-  //
-  //
-  /////////////////////////////////////////////////////////
-
 
   /////////////////////////////////////////////////////////
   //
@@ -253,10 +241,8 @@ var ReflexContainer = function (_React$Component) {
           return domElement.offsetHeight;
 
         case 'vertical':
-          return domElement.offsetWidth;
-
         default:
-          return 0;
+          return domElement.offsetWidth;
       }
     }
 
@@ -277,6 +263,7 @@ var ReflexContainer = function (_React$Component) {
           return pos.pageY - this.previousPos;
 
         case 'vertical':
+        default:
           return pos.pageX - this.previousPos;
       }
     }
@@ -300,6 +287,7 @@ var ReflexContainer = function (_React$Component) {
           break;
 
         case 'vertical':
+        default:
           document.body.style.cursor = 'col-resize';
           this.previousPos = pos.pageX;
           break;
@@ -339,6 +327,7 @@ var ReflexContainer = function (_React$Component) {
             break;
 
           case 'vertical':
+          default:
             this.previousPos = pos.pageX;
             break;
         }
@@ -608,12 +597,9 @@ var ReflexContainer = function (_React$Component) {
           return 1.0 / domElement.offsetHeight;
 
         case 'vertical':
-
-          return 1.0 / domElement.offsetWidth;
-
         default:
 
-          return 0;
+          return 1.0 / domElement.offsetWidth;
       }
     }
 
@@ -925,12 +911,25 @@ var ReflexContainer = function (_React$Component) {
   return ReflexContainer;
 }(_react2.default.Component);
 
+/////////////////////////////////////////////////////////
+//
+//
+/////////////////////////////////////////////////////////
+
+
 ReflexContainer.propTypes = {
-  orientation: _propTypes2.default.string,
+  orientation: _propTypes2.default.oneOf(['horizontal', 'vertical']),
   className: _propTypes2.default.string,
-  style: _propTypes2.default.object };
-ReflexContainer.defaultProps = {
+  style: _propTypes2.default.object
+
+  /////////////////////////////////////////////////////////
+  //
+  //
+  /////////////////////////////////////////////////////////
+};ReflexContainer.defaultProps = {
   orientation: 'horizontal',
   className: '',
-  style: {} };
+  style: {}
+};
+
 exports.default = ReflexContainer;
