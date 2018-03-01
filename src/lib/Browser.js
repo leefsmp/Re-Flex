@@ -3,6 +3,7 @@
 //
 /////////////////////////////////////////////////////////
 class Browser {
+
   // Check if not running on server
   static isBrowser () {
     return typeof window !== 'undefined';
@@ -20,19 +21,12 @@ class Browser {
 
   // Safari 3.0+
   static isSafari () {
+
     if (!Browser.isBrowser()) {
       return false;
     }
 
-    const hasPushNotif = (p) => {
-      return p.toString() === "[object SafariRemoteNotification]"
-    }
-
-    const htmlElement = Object.prototype.toString.call(window.HTMLElement)
-
-    const push = !window['safari'] || safari.pushNotification
-
-    return (htmlElement.indexOf('Constructor') > 0 || hasPushNotif (push))
+    return (/^((?!chrome|android).)*safari/i.test(navigator.userAgent))
   }
 
   // Internet Explorer 6-11
