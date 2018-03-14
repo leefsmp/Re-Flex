@@ -13,7 +13,6 @@ var Browser = function () {
   _createClass(Browser, null, [{
     key: 'isBrowser',
 
-
     // Check if not running on server
     value: function isBrowser() {
       return typeof window !== 'undefined';
@@ -40,13 +39,19 @@ var Browser = function () {
   }, {
     key: 'isSafari',
     value: function isSafari() {
-
       if (!Browser.isBrowser()) {
         return false;
       }
 
-      return (/^((?!chrome|android).)*safari/i.test(navigator.userAgent)
-      );
+      var hasPushNotif = function hasPushNotif(p) {
+        return p.toString() === "[object SafariRemoteNotification]";
+      };
+
+      var htmlElement = Object.prototype.toString.call(window.HTMLElement);
+
+      var push = !window['safari'] || safari.pushNotification;
+
+      return htmlElement.indexOf('Constructor') > 0 || hasPushNotif(push);
     }
 
     // Internet Explorer 6-11
