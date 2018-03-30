@@ -595,8 +595,8 @@ var ReflexContainer = function (_React$Component) {
         case 'horizontal':
 
           if (domElement.offsetHeight === 0.0) {
-            console.warning('Found ReflexContainer with height=0, ' + 'this will cause invalid behavior...');
-            console.warning(domElement);
+            console.error('Found ReflexContainer with height=0, ' + 'this will cause invalid behavior...');
+            console.error(domElement);
             return 0.0;
           }
 
@@ -606,8 +606,8 @@ var ReflexContainer = function (_React$Component) {
         default:
 
           if (domElement.offsetWidth === 0.0) {
-            console.warning('Found ReflexContainer with width=0, ' + 'this will cause invalid behavior...');
-            console.warning(domElement);
+            console.error('Found ReflexContainer with width=0, ' + 'this will cause invalid behavior...');
+            console.error(domElement);
             return 0.0;
           }
 
