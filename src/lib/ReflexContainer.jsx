@@ -283,7 +283,10 @@ class ReflexContainer extends React.Component {
   /////////////////////////////////////////////////////////
   isSplitterElement (element) {
 
-    return element.type === ReflexSplitter
+    //https://github.com/leefsmp/Re-Flex/issues/49
+    return (process.env.NODE_ENV === 'development')
+      ? (element.type === (<ReflexSplitter/>).type)
+      : (element.type === ReflexSplitter)
   }
 
   /////////////////////////////////////////////////////////
@@ -521,10 +524,10 @@ class ReflexContainer extends React.Component {
       case 'horizontal':
 
         if (domElement.offsetHeight === 0.0) {
-          console.error(
+          console.warn(
             'Found ReflexContainer with height=0, ' +
             'this will cause invalid behavior...')
-          console.error(domElement)
+          console.warn(domElement)
           return 0.0
         }
 
@@ -534,10 +537,10 @@ class ReflexContainer extends React.Component {
       default:
 
         if (domElement.offsetWidth === 0.0) {
-          console.error(
+          console.warn(
             'Found ReflexContainer with width=0, ' +
             'this will cause invalid behavior...')
-          console.error(domElement)
+          console.warn(domElement)
           return 0.0
         }
 
