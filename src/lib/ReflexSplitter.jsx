@@ -68,6 +68,7 @@ export default class ReflexSplitter extends React.Component {
   //
   /////////////////////////////////////////////////////////
   componentDidMount () {
+    
     if (!this.document) {
       return;
     }
@@ -98,6 +99,7 @@ export default class ReflexSplitter extends React.Component {
   //
   /////////////////////////////////////////////////////////
   componentWillUnmount () {
+
     if (!this.document) {
       return;
     }
@@ -117,6 +119,14 @@ export default class ReflexSplitter extends React.Component {
     this.document.removeEventListener(
       'touchmove',
       this.onMouseMove)
+
+    if (this.state.active) {
+    
+      this.props.events.emit('splitter.stopResize', {
+        splitter: this,
+        event: null
+      })
+    }
   }
 
   /////////////////////////////////////////////////////////
@@ -139,7 +149,7 @@ export default class ReflexSplitter extends React.Component {
           domElement: ReactDOM.findDOMNode(this),
           component: this
         })
-      }
+      }    
 
       event.stopPropagation()
       event.preventDefault()
