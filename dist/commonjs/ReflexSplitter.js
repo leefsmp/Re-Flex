@@ -97,6 +97,7 @@ var ReflexSplitter = function (_React$Component) {
   (0, _createClass3.default)(ReflexSplitter, [{
     key: 'componentDidMount',
     value: function componentDidMount() {
+
       if (!this.document) {
         return;
       }
@@ -122,6 +123,7 @@ var ReflexSplitter = function (_React$Component) {
   }, {
     key: 'componentWillUnmount',
     value: function componentWillUnmount() {
+
       if (!this.document) {
         return;
       }
@@ -133,6 +135,14 @@ var ReflexSplitter = function (_React$Component) {
       this.document.removeEventListener('mousemove', this.onMouseMove);
 
       this.document.removeEventListener('touchmove', this.onMouseMove);
+
+      if (this.state.active) {
+
+        this.props.events.emit('splitter.stopResize', {
+          splitter: this,
+          event: null
+        });
+      }
     }
 
     /////////////////////////////////////////////////////////
