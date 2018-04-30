@@ -5,11 +5,11 @@
 //
 ///////////////////////////////////////////////////////////
 import ReflexSplitter from './ReflexSplitter'
-import ReflexElement from './ReflexElement'
 import ReflexEvents from './ReflexEvents'
 import PropTypes from 'prop-types'
 import ReactDOM from 'react-dom'
 import React from 'react'
+import { cloneDeep, round } from 'lodash'
 
 class ReflexContainer extends React.Component {
 
@@ -236,23 +236,54 @@ class ReflexContainer extends React.Component {
   //
   /////////////////////////////////////////////////////////
   onSplitterResize (data) {
-
     const idx = data.splitter.props.index
 
     const offset = this.getOffset(data.event)
 
-    const availableOffset =
-      this.computeAvailableOffset(
-        idx, offset)
+    let availableOffset = this.computeAvailableOffset(idx, offset)
 
-    if (availableOffset) {
+    if (this.hasCollapsed) {
+      if (
+        this.isNegativeWhenCollapsing ? offset > 0 : offset < 0
+      ) {
+        this.hasCollapsed = false
+        this.setPartialState(this.stateBeforeCollapse).then(
+          () => {
+            this.emitElementsEvent(this.elements, 'onResize')
+          }
+        )
+      }
+      return
+    }
 
-      const pos = data.event.changedTouches ?
-        data.event.changedTouches[0] :
-        data.event
+    if (!availableOffset) {
+      this.closeThreshold = 40
+      const shrink = this.computeAvailableShrink(idx, offset)
+
+      if (
+        shrink === 0 &&
+        Math.abs(offset) > this.closeThreshold
+      ) {
+        const childIdx = offset > 0 ? idx + 1 : idx - 1
+
+        const child = this.children[childIdx]
+        const size = this.getSize(child)
+        this.stateBeforeCollapse = cloneDeep(this.state)
+        this.isNegativeWhenCollapsing = offset < 0
+        availableOffset = size * (offset > 0 ? 1 : -1)
+        this.hasCollapsed = child.props
+        this.elements = this.dispatchOffset(idx, availableOffset)
+        this.adjustFlex(this.elements)
+        this.setPartialState(this.state).then(() => {
+          this.emitElementsEvent(this.elements, 'onResize')
+        })
+      }
+    } else if (availableOffset) {
+      const pos = data.event.changedTouches
+        ? data.event.changedTouches[0]
+        : data.event
 
       switch (this.props.orientation) {
-
         case 'horizontal':
           this.previousPos = pos.pageY
           break
@@ -263,15 +294,15 @@ class ReflexContainer extends React.Component {
           break
       }
 
-      this.elements = this.dispatchOffset(
-        idx, availableOffset)
+      this.elements = this.dispatchOffset(idx, availableOffset)
 
       this.adjustFlex(this.elements)
-
+      console.log(
+        'this.state:',
+        JSON.stringify(this.state, null, 4)
+      )
       this.setPartialState(this.state).then(() => {
-
-        this.emitElementsEvent(
-          this.elements, 'onResize')
+        this.emitElementsEvent(this.elements, 'onResize')
       })
     }
   }
@@ -294,6 +325,10 @@ class ReflexContainer extends React.Component {
   //
   /////////////////////////////////////////////////////////
   onSplitterStopResize (data) {
+    if (this.hasCollapsed) {
+      this.props.onPanelCollapse && this.props.onPanelCollapse(this.hasCollapsed)
+      this.hasCollapsed = false;
+    }
 
     document.body.style.cursor = 'auto'
 
@@ -632,7 +667,7 @@ class ReflexContainer extends React.Component {
     const size = this.getSize(child)
 
     const newSize = Math.max(
-      child.props.minSize,
+      // child.props.minSize, //tnr: not sure what to do about this.. I had to comment this out to make the collapsing work
       size - Math.abs(offset))
 
     const dispatchedShrink = newSize - size
@@ -841,7 +876,7 @@ class ReflexContainer extends React.Component {
           orientation: this.props.orientation,
           minSize: child.props.minSize || 1,
           events: this.events,
-          flex: flexData.flex,
+          flex: round(flexData.flex, 5), //tnr: this rounding is necessary because flex was getting computed very slightly off (eg -1.423432e-17). This corrects for that
           ref: flexData.guid,
           index: idx
         })
