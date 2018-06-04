@@ -220,7 +220,7 @@ class ReflexContainer extends React.Component {
         break
     }
 
-    const idx = data.splitter.props.index
+    const idx = data.index || data.splitter.props.index
 
     this.elements = [
       this.children[idx - 1],
@@ -237,7 +237,7 @@ class ReflexContainer extends React.Component {
   /////////////////////////////////////////////////////////
   onSplitterResize (data) {
 
-    const idx = data.splitter.props.index
+    const idx = data.index || data.splitter.props.index
 
     const offset = this.getOffset(data.event)
 

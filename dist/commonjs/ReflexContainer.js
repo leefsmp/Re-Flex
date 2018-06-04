@@ -293,7 +293,7 @@ var ReflexContainer = function (_React$Component) {
           break;
       }
 
-      var idx = data.splitter.props.index;
+      var idx = data.index || data.splitter.props.index;
 
       this.elements = [this.children[idx - 1], this.children[idx + 1]];
 
@@ -310,7 +310,7 @@ var ReflexContainer = function (_React$Component) {
     value: function onSplitterResize(data) {
       var _this3 = this;
 
-      var idx = data.splitter.props.index;
+      var idx = data.index || data.splitter.props.index;
 
       var offset = this.getOffset(data.event);
 
