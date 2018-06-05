@@ -36,24 +36,14 @@ var _reactDom = require('react-dom');
 
 var _reactDom2 = _interopRequireDefault(_reactDom);
 
-var _Browser = require('./Browser');
-
-var _Browser2 = _interopRequireDefault(_Browser);
-
 var _react = require('react');
 
 var _react2 = _interopRequireDefault(_react);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-///////////////////////////////////////////////////////////
-// ReflexSplitter
-// By Philippe Leefsma
-// December 2016
-//
-///////////////////////////////////////////////////////////
-var ReflexSplitter = function (_React$Component) {
-  (0, _inherits3.default)(ReflexSplitter, _React$Component);
+var ReflexHandle = function (_React$Component) {
+  (0, _inherits3.default)(ReflexHandle, _React$Component);
 
   /////////////////////////////////////////////////////////
   //
@@ -65,10 +55,10 @@ var ReflexSplitter = function (_React$Component) {
   //
   //
   /////////////////////////////////////////////////////////
-  function ReflexSplitter(props) {
-    (0, _classCallCheck3.default)(this, ReflexSplitter);
+  function ReflexHandle(props) {
+    (0, _classCallCheck3.default)(this, ReflexHandle);
 
-    var _this = (0, _possibleConstructorReturn3.default)(this, (ReflexSplitter.__proto__ || (0, _getPrototypeOf2.default)(ReflexSplitter)).call(this, props));
+    var _this = (0, _possibleConstructorReturn3.default)(this, (ReflexHandle.__proto__ || (0, _getPrototypeOf2.default)(ReflexHandle)).call(this, props));
 
     _this.state = {
       active: false
@@ -94,7 +84,7 @@ var ReflexSplitter = function (_React$Component) {
   /////////////////////////////////////////////////////////
 
 
-  (0, _createClass3.default)(ReflexSplitter, [{
+  (0, _createClass3.default)(ReflexHandle, [{
     key: 'componentDidMount',
     value: function componentDidMount() {
 
@@ -246,12 +236,7 @@ var ReflexSplitter = function (_React$Component) {
     key: 'render',
     value: function render() {
 
-      var classNames = ['reflex-splitter'].concat((0, _toConsumableArray3.default)(this.props.className.split(' ')));
-
-      if (_Browser2.default.isMobile()) {
-
-        classNames.push('reflex-thin');
-      }
+      var classNames = ['reflex-handle'].concat((0, _toConsumableArray3.default)(this.props.className.split(' ')));
 
       if (this.state.active) {
 
@@ -269,10 +254,16 @@ var ReflexSplitter = function (_React$Component) {
       );
     }
   }]);
-  return ReflexSplitter;
-}(_react2.default.Component);
+  return ReflexHandle;
+}(_react2.default.Component); ///////////////////////////////////////////////////////////
+// ReflexHandle
+// By Philippe Leefsma
+// June 2018
+//
+///////////////////////////////////////////////////////////
 
-ReflexSplitter.propTypes = {
+
+ReflexHandle.propTypes = {
   children: _propTypes2.default.oneOfType([_propTypes2.default.arrayOf(_propTypes2.default.node), _propTypes2.default.node]),
   onStartResize: _propTypes2.default.func,
   onStopResize: _propTypes2.default.func,
@@ -280,7 +271,7 @@ ReflexSplitter.propTypes = {
   propagate: _propTypes2.default.bool,
   onResize: _propTypes2.default.func,
   style: _propTypes2.default.object };
-ReflexSplitter.defaultProps = {
+ReflexHandle.defaultProps = {
   document: typeof document === 'undefined' ? null : document,
   onStartResize: null,
   onStopResize: null,
@@ -288,4 +279,4 @@ ReflexSplitter.defaultProps = {
   onResize: null,
   className: '',
   style: {} };
-exports.default = ReflexSplitter;
+exports.default = ReflexHandle;

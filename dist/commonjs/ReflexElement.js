@@ -4,13 +4,13 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _toConsumableArray2 = require('babel-runtime/helpers/toConsumableArray');
-
-var _toConsumableArray3 = _interopRequireDefault(_toConsumableArray2);
-
 var _assign = require('babel-runtime/core-js/object/assign');
 
 var _assign2 = _interopRequireDefault(_assign);
+
+var _toConsumableArray2 = require('babel-runtime/helpers/toConsumableArray');
+
+var _toConsumableArray3 = _interopRequireDefault(_toConsumableArray2);
 
 var _extends2 = require('babel-runtime/helpers/extends');
 
@@ -48,6 +48,10 @@ var _inherits2 = require('babel-runtime/helpers/inherits');
 
 var _inherits3 = _interopRequireDefault(_inherits2);
 
+var _ReflexHandle = require('./ReflexHandle');
+
+var _ReflexHandle2 = _interopRequireDefault(_ReflexHandle);
+
 var _lodash = require('lodash.throttle');
 
 var _lodash2 = _interopRequireDefault(_lodash);
@@ -74,12 +78,6 @@ var _react2 = _interopRequireDefault(_react);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-///////////////////////////////////////////////////////////
-// ReflexElement
-// By Philippe Leefsma
-// December 2016
-//
-///////////////////////////////////////////////////////////
 var ReflexElement = function (_React$Component) {
   (0, _inherits3.default)(ReflexElement, _React$Component);
 
@@ -156,9 +154,9 @@ var ReflexElement = function (_React$Component) {
                 dir = _step.value;
                 _context.next = 11;
                 return this.props.events.emit('element.size', {
+                  index: props.index,
                   size: props.size,
-                  direction: dir,
-                  element: this
+                  direction: dir
                 });
 
               case 11:
@@ -250,6 +248,20 @@ var ReflexElement = function (_React$Component) {
     }
 
     /////////////////////////////////////////////////////////
+    // Determines if element is an handle
+    // or wraps an handle
+    //
+    /////////////////////////////////////////////////////////
+
+  }, {
+    key: 'isHandleElement',
+    value: function isHandleElement(element) {
+
+      //https://github.com/leefsmp/Re-Flex/issues/49
+      return process.env.NODE_ENV === 'development' ? element.type === _react2.default.createElement(_ReflexHandle2.default, null).type : element.type === _ReflexHandle2.default;
+    }
+
+    /////////////////////////////////////////////////////////
     //
     //
     /////////////////////////////////////////////////////////
@@ -259,19 +271,26 @@ var ReflexElement = function (_React$Component) {
     value: function renderChildren() {
       var _this2 = this;
 
-      if (this.props.propagateDimensions) {
+      return _react2.default.Children.map(this.props.children, function (child) {
 
-        return _react2.default.Children.map(this.props.children, function (child) {
+        var childProps = (0, _extends3.default)({}, child.props);
 
-          var newProps = (0, _assign2.default)({}, child.props, {
+        if (_this2.props.propagateDimensions) {
+          childProps = (0, _extends3.default)({}, childProps, {
             dimensions: _this2.state.dimensions
           });
+        }
 
-          return _react2.default.cloneElement(child, newProps);
-        });
-      }
+        if (_this2.isHandleElement(child)) {
 
-      return this.props.children;
+          childProps = (0, _extends3.default)({}, childProps, {
+            index: _this2.props.index - 1,
+            events: _this2.props.events
+          });
+        }
+
+        return _react2.default.cloneElement(child, childProps);
+      });
     }
 
     /////////////////////////////////////////////////////////
@@ -320,7 +339,13 @@ var ReflexElement = function (_React$Component) {
     }
   }]);
   return ReflexElement;
-}(_react2.default.Component);
+}(_react2.default.Component); ///////////////////////////////////////////////////////////
+// ReflexElement
+// By Philippe Leefsma
+// December 2016
+//
+///////////////////////////////////////////////////////////
+
 
 ReflexElement.propTypes = {
   renderOnResizeRate: _propTypes2.default.number,

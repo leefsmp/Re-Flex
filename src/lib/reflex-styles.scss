@@ -59,6 +59,10 @@
   height: 2px;
 }
 
+.reflex-layout.horizontal .reflex-handle {
+  cursor: row-resize;
+}
+
 .reflex-layout.horizontal > .reflex-splitter:hover,
 .reflex-layout.horizontal > .reflex-splitter.active {
   border-bottom: 1px solid #eeeeee;
@@ -71,6 +75,10 @@
   cursor: col-resize;
   height: 100%;
   width: 2px;
+}
+
+.reflex-layout.vertical .reflex-handle {
+  cursor: col-resize;
 }
 
 .reflex-layout.vertical > .reflex-splitter:hover,

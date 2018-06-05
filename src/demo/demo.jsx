@@ -4,7 +4,8 @@ import React from 'react'
 import {
   ReflexContainer,
   ReflexSplitter,
-  ReflexElement
+  ReflexElement,
+  ReflexHandle
 } from '../../src/lib'
 
 import '../../styles.css'
@@ -948,6 +949,47 @@ class ReflexCollapseDemo
 }
 
 /////////////////////////////////////////////////////////
+// Re-Flex handle element demo
+//
+/////////////////////////////////////////////////////////
+class ReflexHandleDemo
+  extends React.Component {
+
+  render () {
+
+    return (
+      <ReflexContainer orientation="horizontal">
+        <ReflexElement minSize={36}>
+          <div className="handle">
+            Top Pane Header
+          </div>
+          <div className="pane-content">
+            <label>
+              Top Pane
+            </label>  
+          </div>
+        </ReflexElement>
+
+        <ReflexSplitter/>
+
+        <ReflexElement minSize={36}>
+          <ReflexHandle className="handle">
+            Bottom Pane Header: I am a draggable handle! 
+            Drag me to resize ...
+          </ReflexHandle>
+          <div className="pane-content">
+            <label>
+              Bottom Pane
+            </label>  
+          </div>
+        </ReflexElement>  
+
+      </ReflexContainer>
+    )
+  }
+}
+
+/////////////////////////////////////////////////////////
 // Render all demos
 //
 /////////////////////////////////////////////////////////
@@ -983,6 +1025,10 @@ ReactDOM.render(<ReflexStorageDemo/>,
   document.getElementById(
     'demo-storage'))
 
-    ReactDOM.render(<ReflexCollapseDemo/>,
-      document.getElementById(
-        'demo-collapse'))
+ReactDOM.render(<ReflexCollapseDemo/>,
+  document.getElementById(
+    'demo-collapse'))
+
+ReactDOM.render(<ReflexHandleDemo/>,
+  document.getElementById(
+    'demo-handle'))

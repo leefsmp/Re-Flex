@@ -27,14 +27,14 @@ class ReflexContainer extends React.Component {
 
     this.events = new ReflexEvents()
 
-    this.onSplitterStartResize =
-      this.onSplitterStartResize.bind(this)
+    this.onStartResize =
+      this.onStartResize.bind(this)
 
-    this.onSplitterStopResize =
-      this.onSplitterStopResize.bind(this)
+    this.onStopResize =
+      this.onStopResize.bind(this)
 
-    this.onSplitterResize =
-      this.onSplitterResize.bind(this)
+    this.onResize =
+      this.onResize.bind(this)
 
     this.onElementSize =
       this.onElementSize.bind(this)
@@ -70,16 +70,16 @@ class ReflexContainer extends React.Component {
     })
 
     this.events.on(
-      'splitter.startResize',
-      this.onSplitterStartResize)
+      'startResize',
+      this.onStartResize)
 
     this.events.on(
-      'splitter.stopResize',
-      this.onSplitterStopResize)
+      'stopResize',
+      this.onStopResize)
 
     this.events.on(
-      'splitter.resize',
-      this.onSplitterResize)
+      'resize',
+      this.onResize)
 
     this.events.on(
       'element.size',
@@ -197,10 +197,10 @@ class ReflexContainer extends React.Component {
   }
 
   /////////////////////////////////////////////////////////
-  // Handles splitter startResize event
+  // Handles startResize event
   //
   /////////////////////////////////////////////////////////
-  onSplitterStartResize (data) {
+  onStartResize (data) {
 
     const pos = data.event.changedTouches ?
       data.event.changedTouches[0] :
@@ -220,11 +220,9 @@ class ReflexContainer extends React.Component {
         break
     }
 
-    const idx = data.index || data.splitter.props.index
-
     this.elements = [
-      this.children[idx - 1],
-      this.children[idx + 1]
+      this.children[data.index - 1],
+      this.children[data.index + 1]
     ]
 
     this.emitElementsEvent(
@@ -235,15 +233,13 @@ class ReflexContainer extends React.Component {
   // Handles splitter resize event
   //
   /////////////////////////////////////////////////////////
-  onSplitterResize (data) {
-
-    const idx = data.index || data.splitter.props.index
+  onResize (data) {
 
     const offset = this.getOffset(data.event)
 
     const availableOffset =
       this.computeAvailableOffset(
-        idx, offset)
+        data.index, offset)
 
     if (availableOffset) {
 
@@ -264,7 +260,7 @@ class ReflexContainer extends React.Component {
       }
 
       this.elements = this.dispatchOffset(
-        idx, availableOffset)
+        data.index, availableOffset)
 
       this.adjustFlex(this.elements)
 
@@ -290,10 +286,10 @@ class ReflexContainer extends React.Component {
   }
 
   /////////////////////////////////////////////////////////
-  // Handles splitter stopResize event
+  // Handles stopResize event
   //
   /////////////////////////////////////////////////////////
-  onSplitterStopResize (data) {
+  onStopResize (data) {
 
     document.body.style.cursor = 'auto'
 
@@ -321,7 +317,7 @@ class ReflexContainer extends React.Component {
 
       try {
 
-        const idx = data.element.props.index
+        const idx = data.index
 
         const size = this.getSize(this.children[idx])
 
@@ -828,13 +824,13 @@ class ReflexContainer extends React.Component {
     ]
 
     this.children = React.Children.map(
-      this.getValidChildren(), (child, idx) => {
+      this.getValidChildren(), (child, index) => {
 
-        if (idx > this.state.flexData.length - 1) {
+        if (index > this.state.flexData.length - 1) {
           return <div/>
         }
 
-        const flexData = this.state.flexData[idx]
+        const flexData = this.state.flexData[index]
 
         const newProps = Object.assign({}, child.props, {
           maxSize: child.props.maxSize || Number.MAX_VALUE,
@@ -843,7 +839,7 @@ class ReflexContainer extends React.Component {
           events: this.events,
           flex: flexData.flex,
           ref: flexData.guid,
-          index: idx
+          index
         })
 
         return React.cloneElement(child, newProps)

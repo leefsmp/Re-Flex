@@ -101,8 +101,8 @@ var ReflexSplitter = function (_React$Component) {
 
       if (this.state.active) {
 
-        this.props.events.emit('splitter.stopResize', {
-          splitter: this,
+        this.props.events.emit('stopResize', {
+          index: this.props.index,
           event: null
         });
       }
@@ -119,8 +119,8 @@ var ReflexSplitter = function (_React$Component) {
 
       if (this.state.active) {
 
-        this.props.events.emit('splitter.resize', {
-          splitter: this,
+        this.props.events.emit('resize', {
+          index: this.props.index,
           event: event
         });
 
@@ -164,8 +164,8 @@ var ReflexSplitter = function (_React$Component) {
         }
       }
 
-      this.props.events.emit('splitter.startResize', {
-        splitter: this,
+      this.props.events.emit('startResize', {
+        index: this.props.index,
         event: event
       });
     }
@@ -193,8 +193,8 @@ var ReflexSplitter = function (_React$Component) {
           });
         }
 
-        this.props.events.emit('splitter.stopResize', {
-          splitter: this,
+        this.props.events.emit('stopResize', {
+          index: this.props.index,
           event: event
         });
       }

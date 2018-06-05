@@ -1,5 +1,5 @@
-import _toConsumableArray from 'babel-runtime/helpers/toConsumableArray';
 import _Object$assign from 'babel-runtime/core-js/object/assign';
+import _toConsumableArray from 'babel-runtime/helpers/toConsumableArray';
 import _extends from 'babel-runtime/helpers/extends';
 import _regeneratorRuntime from 'babel-runtime/regenerator';
 import _getIterator from 'babel-runtime/core-js/get-iterator';
@@ -15,6 +15,7 @@ import _inherits from 'babel-runtime/helpers/inherits';
 // December 2016
 //
 ///////////////////////////////////////////////////////////
+import ReflexHandle from './ReflexHandle';
 import throttle from 'lodash.throttle';
 import Measure from 'react-measure';
 import PropTypes from 'prop-types';
@@ -98,9 +99,9 @@ var ReflexElement = function (_React$Component) {
                 dir = _step.value;
                 _context.next = 11;
                 return this.props.events.emit('element.size', {
+                  index: props.index,
                   size: props.size,
-                  direction: dir,
-                  element: this
+                  direction: dir
                 });
 
               case 11:
@@ -192,6 +193,20 @@ var ReflexElement = function (_React$Component) {
     }
 
     /////////////////////////////////////////////////////////
+    // Determines if element is an handle
+    // or wraps an handle
+    //
+    /////////////////////////////////////////////////////////
+
+  }, {
+    key: 'isHandleElement',
+    value: function isHandleElement(element) {
+
+      //https://github.com/leefsmp/Re-Flex/issues/49
+      return process.env.NODE_ENV === 'development' ? element.type === React.createElement(ReflexHandle, null).type : element.type === ReflexHandle;
+    }
+
+    /////////////////////////////////////////////////////////
     //
     //
     /////////////////////////////////////////////////////////
@@ -201,19 +216,26 @@ var ReflexElement = function (_React$Component) {
     value: function renderChildren() {
       var _this2 = this;
 
-      if (this.props.propagateDimensions) {
+      return React.Children.map(this.props.children, function (child) {
 
-        return React.Children.map(this.props.children, function (child) {
+        var childProps = _extends({}, child.props);
 
-          var newProps = _Object$assign({}, child.props, {
+        if (_this2.props.propagateDimensions) {
+          childProps = _extends({}, childProps, {
             dimensions: _this2.state.dimensions
           });
+        }
 
-          return React.cloneElement(child, newProps);
-        });
-      }
+        if (_this2.isHandleElement(child)) {
 
-      return this.props.children;
+          childProps = _extends({}, childProps, {
+            index: _this2.props.index - 1,
+            events: _this2.props.events
+          });
+        }
+
+        return React.cloneElement(child, childProps);
+      });
     }
 
     /////////////////////////////////////////////////////////

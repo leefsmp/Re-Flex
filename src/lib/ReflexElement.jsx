@@ -4,6 +4,7 @@
 // December 2016
 //
 ///////////////////////////////////////////////////////////
+import ReflexHandle from './ReflexHandle'
 import throttle from 'lodash.throttle'
 import Measure from 'react-measure'
 import PropTypes from 'prop-types'
@@ -74,9 +75,9 @@ export default class ReflexElement extends React.Component {
       for (let dir of directions) {
 
         await this.props.events.emit('element.size', {
+          index: props.index,
           size: props.size,
-          direction: dir,
-          element: this
+          direction: dir
         })
       }
     }
@@ -115,25 +116,49 @@ export default class ReflexElement extends React.Component {
   }
 
   /////////////////////////////////////////////////////////
+  // Determines if element is an handle
+  // or wraps an handle
+  //
+  /////////////////////////////////////////////////////////
+  isHandleElement (element) {
+
+    //https://github.com/leefsmp/Re-Flex/issues/49
+    return (process.env.NODE_ENV === 'development')
+      ? (element.type === (<ReflexHandle/>).type)
+      : (element.type === ReflexHandle)
+  }
+
+  /////////////////////////////////////////////////////////
   //
   //
   /////////////////////////////////////////////////////////
   renderChildren () {
 
-    if (this.props.propagateDimensions) {
+    return React.Children.map(
+      this.props.children, (child) => {
 
-      return React.Children.map(this.props.children, (child) => {
+        let childProps = {
+          ...child.props
+        }
 
-        const newProps = Object.assign({},
-          child.props, {
+        if (this.props.propagateDimensions) {
+          childProps = {
+            ...childProps,
             dimensions: this.state.dimensions
-          })
+          }
+        }
 
-        return React.cloneElement(child, newProps)
-      })
-    }
+        if (this.isHandleElement(child)) {
 
-    return this.props.children
+          childProps = {
+            ...childProps,
+            index: this.props.index - 1,
+            events: this.props.events
+          }
+        }
+
+        return React.cloneElement(child, childProps)
+    })
   }
 
   /////////////////////////////////////////////////////////

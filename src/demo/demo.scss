@@ -140,6 +140,12 @@ body {
   top:30%;
 }
 
+.handle {
+  background: #eae9e9;
+  padding: 8px 0 0 8px;
+  height: 28px;
+}
+
 #demo-basic {
   border: 1px solid #0c63ff;
   background-color: white;
@@ -189,6 +195,12 @@ body {
 }
 
 #demo-collapse {
+  border: 1px solid #0c63ff;
+  background-color: white;
+  height: 280px;
+}
+
+#demo-handle {
   border: 1px solid #0c63ff;
   background-color: white;
   height: 280px;

@@ -90,11 +90,11 @@ var ReflexContainer = function (_React$Component) {
 
     _this.events = new _ReflexEvents2.default();
 
-    _this.onSplitterStartResize = _this.onSplitterStartResize.bind(_this);
+    _this.onStartResize = _this.onStartResize.bind(_this);
 
-    _this.onSplitterStopResize = _this.onSplitterStopResize.bind(_this);
+    _this.onStopResize = _this.onStopResize.bind(_this);
 
-    _this.onSplitterResize = _this.onSplitterResize.bind(_this);
+    _this.onResize = _this.onResize.bind(_this);
 
     _this.onElementSize = _this.onElementSize.bind(_this);
 
@@ -136,11 +136,11 @@ var ReflexContainer = function (_React$Component) {
         flexData: flexData
       });
 
-      this.events.on('splitter.startResize', this.onSplitterStartResize);
+      this.events.on('startResize', this.onStartResize);
 
-      this.events.on('splitter.stopResize', this.onSplitterStopResize);
+      this.events.on('stopResize', this.onStopResize);
 
-      this.events.on('splitter.resize', this.onSplitterResize);
+      this.events.on('resize', this.onResize);
 
       this.events.on('element.size', this.onElementSize);
     }
@@ -269,13 +269,13 @@ var ReflexContainer = function (_React$Component) {
     }
 
     /////////////////////////////////////////////////////////
-    // Handles splitter startResize event
+    // Handles startResize event
     //
     /////////////////////////////////////////////////////////
 
   }, {
-    key: 'onSplitterStartResize',
-    value: function onSplitterStartResize(data) {
+    key: 'onStartResize',
+    value: function onStartResize(data) {
 
       var pos = data.event.changedTouches ? data.event.changedTouches[0] : data.event;
 
@@ -293,9 +293,7 @@ var ReflexContainer = function (_React$Component) {
           break;
       }
 
-      var idx = data.index || data.splitter.props.index;
-
-      this.elements = [this.children[idx - 1], this.children[idx + 1]];
+      this.elements = [this.children[data.index - 1], this.children[data.index + 1]];
 
       this.emitElementsEvent(this.elements, 'onStartResize');
     }
@@ -306,15 +304,13 @@ var ReflexContainer = function (_React$Component) {
     /////////////////////////////////////////////////////////
 
   }, {
-    key: 'onSplitterResize',
-    value: function onSplitterResize(data) {
+    key: 'onResize',
+    value: function onResize(data) {
       var _this3 = this;
-
-      var idx = data.index || data.splitter.props.index;
 
       var offset = this.getOffset(data.event);
 
-      var availableOffset = this.computeAvailableOffset(idx, offset);
+      var availableOffset = this.computeAvailableOffset(data.index, offset);
 
       if (availableOffset) {
 
@@ -332,7 +328,7 @@ var ReflexContainer = function (_React$Component) {
             break;
         }
 
-        this.elements = this.dispatchOffset(idx, availableOffset);
+        this.elements = this.dispatchOffset(data.index, availableOffset);
 
         this.adjustFlex(this.elements);
 
@@ -358,13 +354,13 @@ var ReflexContainer = function (_React$Component) {
     }
 
     /////////////////////////////////////////////////////////
-    // Handles splitter stopResize event
+    // Handles stopResize event
     //
     /////////////////////////////////////////////////////////
 
   }, {
-    key: 'onSplitterStopResize',
-    value: function onSplitterStopResize(data) {
+    key: 'onStopResize',
+    value: function onStopResize(data) {
       var _this4 = this;
 
       document.body.style.cursor = 'auto';
@@ -396,7 +392,7 @@ var ReflexContainer = function (_React$Component) {
 
         try {
 
-          var idx = data.element.props.index;
+          var idx = data.index;
 
           var size = _this5.getSize(_this5.children[idx]);
 
@@ -892,13 +888,13 @@ var ReflexContainer = function (_React$Component) {
 
       var classNames = ['reflex-layout', 'reflex-container', this.props.orientation].concat((0, _toConsumableArray3.default)(this.props.className.split(' ')));
 
-      this.children = _react2.default.Children.map(this.getValidChildren(), function (child, idx) {
+      this.children = _react2.default.Children.map(this.getValidChildren(), function (child, index) {
 
-        if (idx > _this9.state.flexData.length - 1) {
+        if (index > _this9.state.flexData.length - 1) {
           return _react2.default.createElement('div', null);
         }
 
-        var flexData = _this9.state.flexData[idx];
+        var flexData = _this9.state.flexData[index];
 
         var newProps = (0, _assign2.default)({}, child.props, {
           maxSize: child.props.maxSize || Number.MAX_VALUE,
@@ -907,7 +903,7 @@ var ReflexContainer = function (_React$Component) {
           events: _this9.events,
           flex: flexData.flex,
           ref: flexData.guid,
-          index: idx
+          index: index
         });
 
         return _react2.default.cloneElement(child, newProps);

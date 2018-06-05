@@ -1,15 +1,14 @@
 ///////////////////////////////////////////////////////////
-// ReflexSplitter
+// ReflexHandle
 // By Philippe Leefsma
-// December 2016
+// June 2018
 //
 ///////////////////////////////////////////////////////////
 import PropTypes from 'prop-types'
 import ReactDOM from 'react-dom'
-import Browser from './Browser'
 import React from 'react'
 
-export default class ReflexSplitter extends React.Component {
+export default class ReflexHandle extends React.Component {
 
   /////////////////////////////////////////////////////////
   //
@@ -220,14 +219,9 @@ export default class ReflexSplitter extends React.Component {
   render () {
 
     const classNames = [
-      'reflex-splitter',
+      'reflex-handle',
       ...this.props.className.split(' ')
     ]
-
-    if (Browser.isMobile()) {
-
-      classNames.push('reflex-thin')
-    }
 
     if (this.state.active) {
 
