@@ -137,6 +137,8 @@ export default class ReflexElement extends React.Component {
     return React.Children.map(
       this.props.children, (child) => {
 
+        if (!child) return null
+        
         let childProps = {
           ...child.props
         }

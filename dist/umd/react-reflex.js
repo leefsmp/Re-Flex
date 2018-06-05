@@ -1585,6 +1585,8 @@ var ReflexElement = function (_React$Component) {
 
       return __WEBPACK_IMPORTED_MODULE_17_react___default.a.Children.map(this.props.children, function (child) {
 
+        if (!child) return null;
+
         var childProps = __WEBPACK_IMPORTED_MODULE_2_babel_runtime_helpers_extends___default()({}, child.props);
 
         if (_this2.props.propagateDimensions) {

@@ -273,6 +273,8 @@ var ReflexElement = function (_React$Component) {
 
       return _react2.default.Children.map(this.props.children, function (child) {
 
+        if (!child) return null;
+
         var childProps = (0, _extends3.default)({}, child.props);
 
         if (_this2.props.propagateDimensions) {
