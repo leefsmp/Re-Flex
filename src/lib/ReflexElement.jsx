@@ -37,6 +37,7 @@ export default class ReflexElement extends React.Component {
     renderOnResizeRate: 60,
     resizeHeight: true,
     resizeWidth: true,
+    direction: [1],
     className: ''
   }
 
