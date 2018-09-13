@@ -362,5 +362,6 @@ ReflexElement.defaultProps = {
   renderOnResizeRate: 60,
   resizeHeight: true,
   resizeWidth: true,
+  direction: [1],
   className: '' };
 exports.default = ReflexElement;

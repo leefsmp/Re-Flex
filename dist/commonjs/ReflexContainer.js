@@ -44,10 +44,6 @@ var _ReflexSplitter = require('./ReflexSplitter');
 
 var _ReflexSplitter2 = _interopRequireDefault(_ReflexSplitter);
 
-var _ReflexElement = require('./ReflexElement');
-
-var _ReflexElement2 = _interopRequireDefault(_ReflexElement);
-
 var _ReflexEvents = require('./ReflexEvents');
 
 var _ReflexEvents2 = _interopRequireDefault(_ReflexEvents);
@@ -66,18 +62,23 @@ var _react2 = _interopRequireDefault(_react);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-///////////////////////////////////////////////////////////
-// ReflexContainer
-// By Philippe Leefsma
-// December 2016
-//
-///////////////////////////////////////////////////////////
 var ReflexContainer = function (_React$Component) {
   (0, _inherits3.default)(ReflexContainer, _React$Component);
 
   /////////////////////////////////////////////////////////
   //
   //
+  /////////////////////////////////////////////////////////
+
+
+  /////////////////////////////////////////////////////////
+  // orientation: Orientation of the layout container
+  //              valid values are ['horizontal', 'vertical'] 
+  // maxRecDepth: Maximun recursion depth to solve initial flex
+  //              of layout elements based on user provided values
+  // className: Space separated classnames to apply custom styles 
+  //            to the layout container  
+  // style: allows passing inline style to the container
   /////////////////////////////////////////////////////////
   function ReflexContainer(props) {
     (0, _classCallCheck3.default)(this, ReflexContainer);
@@ -101,6 +102,12 @@ var ReflexContainer = function (_React$Component) {
     _this.children = [];
     return _this;
   }
+
+  /////////////////////////////////////////////////////////
+  //
+  //
+  /////////////////////////////////////////////////////////
+
 
   /////////////////////////////////////////////////////////
   //
@@ -800,6 +807,8 @@ var ReflexContainer = function (_React$Component) {
       });
 
       var computeFlexDataRec = function computeFlexDataRec(flexDataIn) {
+        var depth = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 0;
+
 
         var hasContrain = false;
 
@@ -827,7 +836,7 @@ var ReflexContainer = function (_React$Component) {
           });
         });
 
-        return hasContrain ? computeFlexDataRec(flexDataOut) : flexDataOut;
+        return hasContrain && depth < _this8.props.maxRecDepth ? computeFlexDataRec(flexDataOut, depth + 1) : flexDataOut;
       };
 
       var flexData = computeFlexDataRec(flexDataInit);
@@ -918,27 +927,22 @@ var ReflexContainer = function (_React$Component) {
     }
   }]);
   return ReflexContainer;
-}(_react2.default.Component);
-
-/////////////////////////////////////////////////////////
+}(_react2.default.Component); ///////////////////////////////////////////////////////////
+// ReflexContainer
+// By Philippe Leefsma
+// December 2016
 //
-//
-/////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////
 
 
 ReflexContainer.propTypes = {
   orientation: _propTypes2.default.oneOf(['horizontal', 'vertical']),
+  maxRecDepth: _propTypes2.default.number,
   className: _propTypes2.default.string,
-  style: _propTypes2.default.object
-
-  /////////////////////////////////////////////////////////
-  //
-  //
-  /////////////////////////////////////////////////////////
-};ReflexContainer.defaultProps = {
+  style: _propTypes2.default.object };
+ReflexContainer.defaultProps = {
   orientation: 'horizontal',
+  maxRecDepth: 100,
   className: '',
-  style: {}
-};
-
+  style: {} };
 exports.default = ReflexContainer;

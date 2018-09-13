@@ -5,13 +5,41 @@
 //
 ///////////////////////////////////////////////////////////
 import ReflexSplitter from './ReflexSplitter'
-import ReflexElement from './ReflexElement'
 import ReflexEvents from './ReflexEvents'
 import PropTypes from 'prop-types'
 import ReactDOM from 'react-dom'
 import React from 'react'
 
 class ReflexContainer extends React.Component {
+
+  /////////////////////////////////////////////////////////
+  // orientation: Orientation of the layout container
+  //              valid values are ['horizontal', 'vertical'] 
+  // maxRecDepth: Maximun recursion depth to solve initial flex
+  //              of layout elements based on user provided values
+  // className: Space separated classnames to apply custom styles 
+  //            to the layout container  
+  // style: allows passing inline style to the container
+  /////////////////////////////////////////////////////////
+  static propTypes = {
+    orientation: PropTypes.oneOf([
+      'horizontal', 'vertical'
+    ]),
+    maxRecDepth: PropTypes.number,
+    className: PropTypes.string,
+    style: PropTypes.object,
+  }
+
+  /////////////////////////////////////////////////////////
+  //
+  //
+  /////////////////////////////////////////////////////////
+  static defaultProps = {
+    orientation: 'horizontal',
+    maxRecDepth: 100,
+    className: '',
+    style: {}
+  }
 
   /////////////////////////////////////////////////////////
   //
@@ -729,7 +757,7 @@ class ReflexContainer extends React.Component {
       }
     })
 
-    const computeFlexDataRec = (flexDataIn) => {
+    const computeFlexDataRec = (flexDataIn, depth=0) => {
 
       let hasContrain = false
 
@@ -764,8 +792,8 @@ class ReflexContainer extends React.Component {
         })
       })
 
-      return hasContrain
-        ? computeFlexDataRec(flexDataOut)
+      return (hasContrain && depth < this.props.maxRecDepth)
+        ? computeFlexDataRec(flexDataOut, depth+1)
         : flexDataOut
     }
 
@@ -852,28 +880,6 @@ class ReflexContainer extends React.Component {
       </div>
     )
   }
-}
-
-/////////////////////////////////////////////////////////
-//
-//
-/////////////////////////////////////////////////////////
-ReflexContainer.propTypes = {
-  orientation: PropTypes.oneOf([
-    'horizontal', 'vertical'
-  ]),
-  className: PropTypes.string,
-  style: PropTypes.object
-}
-
-/////////////////////////////////////////////////////////
-//
-//
-/////////////////////////////////////////////////////////
-ReflexContainer.defaultProps = {
-  orientation: 'horizontal',
-  className: '',
-  style: {}
 }
 
 export default ReflexContainer

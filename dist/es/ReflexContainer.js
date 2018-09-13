@@ -14,7 +14,6 @@ import _inherits from 'babel-runtime/helpers/inherits';
 //
 ///////////////////////////////////////////////////////////
 import ReflexSplitter from './ReflexSplitter';
-import ReflexElement from './ReflexElement';
 import ReflexEvents from './ReflexEvents';
 import PropTypes from 'prop-types';
 import ReactDOM from 'react-dom';
@@ -26,6 +25,17 @@ var ReflexContainer = function (_React$Component) {
   /////////////////////////////////////////////////////////
   //
   //
+  /////////////////////////////////////////////////////////
+
+
+  /////////////////////////////////////////////////////////
+  // orientation: Orientation of the layout container
+  //              valid values are ['horizontal', 'vertical'] 
+  // maxRecDepth: Maximun recursion depth to solve initial flex
+  //              of layout elements based on user provided values
+  // className: Space separated classnames to apply custom styles 
+  //            to the layout container  
+  // style: allows passing inline style to the container
   /////////////////////////////////////////////////////////
   function ReflexContainer(props) {
     _classCallCheck(this, ReflexContainer);
@@ -49,6 +59,12 @@ var ReflexContainer = function (_React$Component) {
     _this.children = [];
     return _this;
   }
+
+  /////////////////////////////////////////////////////////
+  //
+  //
+  /////////////////////////////////////////////////////////
+
 
   /////////////////////////////////////////////////////////
   //
@@ -748,6 +764,8 @@ var ReflexContainer = function (_React$Component) {
       });
 
       var computeFlexDataRec = function computeFlexDataRec(flexDataIn) {
+        var depth = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 0;
+
 
         var hasContrain = false;
 
@@ -775,7 +793,7 @@ var ReflexContainer = function (_React$Component) {
           });
         });
 
-        return hasContrain ? computeFlexDataRec(flexDataOut) : flexDataOut;
+        return hasContrain && depth < _this8.props.maxRecDepth ? computeFlexDataRec(flexDataOut, depth + 1) : flexDataOut;
       };
 
       var flexData = computeFlexDataRec(flexDataInit);
@@ -869,25 +887,16 @@ var ReflexContainer = function (_React$Component) {
   return ReflexContainer;
 }(React.Component);
 
-/////////////////////////////////////////////////////////
-//
-//
-/////////////////////////////////////////////////////////
-
-
 ReflexContainer.propTypes = {
   orientation: PropTypes.oneOf(['horizontal', 'vertical']),
+  maxRecDepth: PropTypes.number,
   className: PropTypes.string,
-  style: PropTypes.object
-
-  /////////////////////////////////////////////////////////
-  //
-  //
-  /////////////////////////////////////////////////////////
-};ReflexContainer.defaultProps = {
+  style: PropTypes.object };
+ReflexContainer.defaultProps = {
   orientation: 'horizontal',
+  maxRecDepth: 100,
   className: '',
-  style: {}
-};
+  style: {} };
+
 
 export default ReflexContainer;
