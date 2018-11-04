@@ -22,12 +22,13 @@ export default class ReflexContainer extends React.Component {
   // style: allows passing inline style to the container
   /////////////////////////////////////////////////////////
   static propTypes = {
+    windowResizeAware: PropTypes.bool,
     orientation: PropTypes.oneOf([
       'horizontal', 'vertical'
     ]),
     maxRecDepth: PropTypes.number,
     className: PropTypes.string,
-    style: PropTypes.object,
+    style: PropTypes.object
   }
 
   /////////////////////////////////////////////////////////
@@ -36,6 +37,7 @@ export default class ReflexContainer extends React.Component {
   /////////////////////////////////////////////////////////
   static defaultProps = {
     orientation: 'horizontal',
+    windowResizeAware: false,
     maxRecDepth: 100,
     className: '',
     style: {}
@@ -129,10 +131,6 @@ export default class ReflexContainer extends React.Component {
       (children.length !== this.state.flexData.length)
 
     if (childCountHasChanged || this.flexHasChanged(props)) {
-
-      // attempts to preserve current flex
-      // only if child count has not changed
-      const preserveFlex = !childCountHasChanged
 
       const flexData = this.computeFlexData(children)
 

@@ -116,6 +116,10 @@ Re-F|ex is the most powerful resizeable React layout component out there ... Don
   * `maxRecDepth`: Maximun recursion depth to solve initial flex of layout elements based on user provided values. This prevents infinite recursion in case the constraints solver cannot find suitable dimensions on the elements to satisfy initial inputs.  
   Type: `number`.
   Default value: `100`.
+
+  * `windowResizeAware`: When set to true, this flag will update the layout upon a window resize event to attempt to satisfy `minSize`/`maxSize` constraints on each element. If your elements do not have those constraints, this is not needed. 
+  Type: `bool`.
+  Default value: `false`.
   
   * `className`: Space separated classnames to apply custom styles on the component. Type: `string`.
   Default value: `empty string ''`. 
@@ -145,6 +149,18 @@ Re-F|ex is the most powerful resizeable React layout component out there ... Don
   * `size`: Allows to control the size in pixel of an element. The main use-case is to allow to perform animations programmatically on an element (shrinking/expanding). See [Controlled elements demo](https://leefsmp.github.io/Re-Flex/index.html#demo6) for more details. 
   Type: `number`.
   Default value: `true`. 
+
+  * `minSize`: Creates a constraint on the minimum size in pixel to which the element can be resized to by the user.
+  Type: `number`.
+  Default value: `true`. 
+
+  * `maxSize`: Creates a constraint on the maximun size in pixel to which the element can be resized to by the user.
+  Type: `number`.
+  Default value: `true`. 
+
+  * `flex`: Specifiy the initial `flex` of an element. By default all element will get evenly displayed inside a layout, unless some of them have `minSize`, `maxSize` or `size` specified.
+  Type: `number`.
+  Default value: `true`.
 
   * `direction`: Allows to control in which direction(s) the element will shrink/expand when its `size` property is modified. See [Controlled elements demo](https://leefsmp.github.io/Re-Flex/index.html#demo6) for more details. 
   Type: `-1, 1 or [-1, 1]`.
