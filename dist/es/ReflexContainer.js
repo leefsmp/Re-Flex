@@ -25,10 +25,8 @@ export default class ReflexContainer extends React.Component {
     super(props);
 
     _defineProperty(this, "onWindowResize", () => {
-      const children = this.getValidChildren();
-      const flexData = this.computeFlexData(children, true);
       this.setState({
-        flexData
+        flexData: this.computeFlexData()
       });
     });
 
@@ -183,9 +181,6 @@ export default class ReflexContainer extends React.Component {
     const childCountHasChanged = children.length !== this.state.flexData.length;
 
     if (childCountHasChanged || this.flexHasChanged(props)) {
-      // attempts to preserve current flex
-      // only if child count has not changed
-      const preserveFlex = !childCountHasChanged;
       const flexData = this.computeFlexData(children);
       this.setState({
         flexData
@@ -500,7 +495,7 @@ export default class ReflexContainer extends React.Component {
   /////////////////////////////////////////////////////////
 
 
-  computeFlexData(children = this.getValidChildren(), preserveFlex) {
+  computeFlexData(children = this.getValidChildren()) {
     const pixelFlex = this.computePixelFlex();
 
     const computeFreeFlex = flexData => {
@@ -545,8 +540,7 @@ export default class ReflexContainer extends React.Component {
           return entry;
         }
 
-        const currentFlex = this.state.flexData.length > idx && preserveFlex ? this.state.flexData[idx].flex : 0;
-        const proposedFlex = !entry.constrained ? currentFlex || freeFlex / freeElements : entry.flex;
+        const proposedFlex = !entry.constrained ? freeFlex / freeElements : entry.flex;
         const constrainedFlex = Math.min(entry.sizeFlex, Math.min(entry.maxFlex, Math.max(entry.minFlex, proposedFlex)));
         const constrained = constrainedFlex !== proposedFlex;
         hasContrain = hasContrain || constrained;
@@ -623,6 +617,7 @@ export default class ReflexContainer extends React.Component {
 }
 
 _defineProperty(ReflexContainer, "propTypes", {
+  windowResizeAware: PropTypes.bool,
   orientation: PropTypes.oneOf(['horizontal', 'vertical']),
   maxRecDepth: PropTypes.number,
   className: PropTypes.string,
@@ -635,6 +630,7 @@ _defineProperty(ReflexContainer, "propTypes", {
 
 _defineProperty(ReflexContainer, "defaultProps", {
   orientation: 'horizontal',
+  windowResizeAware: false,
   maxRecDepth: 100,
   className: '',
   style: {} /////////////////////////////////////////////////////////

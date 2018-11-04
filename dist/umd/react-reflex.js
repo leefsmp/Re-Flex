@@ -4239,12 +4239,8 @@ function (_React$Component) {
     _this = _babel_runtime_helpers_possibleConstructorReturn__WEBPACK_IMPORTED_MODULE_4___default()(this, _babel_runtime_helpers_getPrototypeOf__WEBPACK_IMPORTED_MODULE_5___default()(ReflexContainer).call(this, props));
 
     _babel_runtime_helpers_defineProperty__WEBPACK_IMPORTED_MODULE_8___default()(_babel_runtime_helpers_assertThisInitialized__WEBPACK_IMPORTED_MODULE_7___default()(_babel_runtime_helpers_assertThisInitialized__WEBPACK_IMPORTED_MODULE_7___default()(_this)), "onWindowResize", function () {
-      var children = _this.getValidChildren();
-
-      var flexData = _this.computeFlexData(children, true);
-
       _this.setState({
-        flexData: flexData
+        flexData: _this.computeFlexData()
       });
     });
 
@@ -4418,9 +4414,6 @@ function (_React$Component) {
       var childCountHasChanged = children.length !== this.state.flexData.length;
 
       if (childCountHasChanged || this.flexHasChanged(props)) {
-        // attempts to preserve current flex
-        // only if child count has not changed
-        var preserveFlex = !childCountHasChanged;
         var flexData = this.computeFlexData(children);
         this.setState({
           flexData: flexData
@@ -4760,7 +4753,6 @@ function (_React$Component) {
       var _this4 = this;
 
       var children = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : this.getValidChildren();
-      var preserveFlex = arguments.length > 1 ? arguments[1] : undefined;
       var pixelFlex = this.computePixelFlex();
 
       var computeFreeFlex = function computeFreeFlex(flexData) {
@@ -4806,8 +4798,7 @@ function (_React$Component) {
             return entry;
           }
 
-          var currentFlex = _this4.state.flexData.length > idx && preserveFlex ? _this4.state.flexData[idx].flex : 0;
-          var proposedFlex = !entry.constrained ? currentFlex || freeFlex / freeElements : entry.flex;
+          var proposedFlex = !entry.constrained ? freeFlex / freeElements : entry.flex;
           var constrainedFlex = Math.min(entry.sizeFlex, Math.min(entry.maxFlex, Math.max(entry.minFlex, proposedFlex)));
           var constrained = constrainedFlex !== proposedFlex;
           hasContrain = hasContrain || constrained;
@@ -4899,6 +4890,7 @@ function (_React$Component) {
 }(react__WEBPACK_IMPORTED_MODULE_13___default.a.Component);
 
 _babel_runtime_helpers_defineProperty__WEBPACK_IMPORTED_MODULE_8___default()(ReflexContainer, "propTypes", {
+  windowResizeAware: prop_types__WEBPACK_IMPORTED_MODULE_11___default.a.bool,
   orientation: prop_types__WEBPACK_IMPORTED_MODULE_11___default.a.oneOf(['horizontal', 'vertical']),
   maxRecDepth: prop_types__WEBPACK_IMPORTED_MODULE_11___default.a.number,
   className: prop_types__WEBPACK_IMPORTED_MODULE_11___default.a.string,
@@ -4911,6 +4903,7 @@ _babel_runtime_helpers_defineProperty__WEBPACK_IMPORTED_MODULE_8___default()(Ref
 
 _babel_runtime_helpers_defineProperty__WEBPACK_IMPORTED_MODULE_8___default()(ReflexContainer, "defaultProps", {
   orientation: 'horizontal',
+  windowResizeAware: false,
   maxRecDepth: 100,
   className: '',
   style: {} /////////////////////////////////////////////////////////

@@ -167,13 +167,8 @@ export default class ReflexContainer extends React.Component {
   /////////////////////////////////////////////////////////
   onWindowResize = () => {
 
-    const children = this.getValidChildren()
-
-    const flexData = this.computeFlexData(
-      children, true)
-
     this.setState({
-      flexData
+      flexData: this.computeFlexData()
     })
   }
 
@@ -729,7 +724,7 @@ export default class ReflexContainer extends React.Component {
   // evenly arranged within its container
   //
   /////////////////////////////////////////////////////////
-  computeFlexData (children = this.getValidChildren(), preserveFlex) {
+  computeFlexData (children = this.getValidChildren()) {
 
     const pixelFlex = this.computePixelFlex()
 
@@ -782,13 +777,8 @@ export default class ReflexContainer extends React.Component {
           return entry
         }
 
-        const currentFlex = 
-          (this.state.flexData.length > idx && preserveFlex)
-            ? this.state.flexData[idx].flex
-            : 0
-
         const proposedFlex = !entry.constrained
-          ? currentFlex || freeFlex/freeElements
+          ? freeFlex/freeElements
           : entry.flex
 
         const constrainedFlex =
@@ -835,8 +825,7 @@ export default class ReflexContainer extends React.Component {
     let d = new Date().getTime()
 
     return format.replace(
-      /[xy]/g,
-      function (c) {
+      /[xy]/g, function (c) {
         var r = (d + Math.random() * 16) % 16 | 0
         d = Math.floor(d / 16)
         return (c == 'x' ? r : (r & 0x7 | 0x8)).toString(16)
@@ -849,7 +838,6 @@ export default class ReflexContainer extends React.Component {
   //
   /////////////////////////////////////////////////////////
   toArray (obj) {
-
     return obj ? (Array.isArray(obj) ? obj : [obj]) : []
   }
 
