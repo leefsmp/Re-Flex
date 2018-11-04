@@ -3,7 +3,7 @@
 // Re-Flex Container
 //
 /////////////////////////////////////////////////////////
-.reflex-layout.reflex-container {
+.reflex-container {
   justify-content: flex-start; /* align items in Main Axis */
   align-items: stretch;        /* align items in Cross Axis */
   align-content: stretch;
@@ -17,11 +17,11 @@
   width: 100%;
 }
 
-.reflex-layout.reflex-container.horizontal {
+.reflex-container.horizontal {
   flex-direction: column;
 }
 
-.reflex-layout.reflex-container.vertical {
+.reflex-container.vertical {
   flex-direction: row;
 }
 
@@ -29,9 +29,19 @@
 //Re-Flex Element
 //
 /////////////////////////////////////////////////////////
-.reflex-layout > .reflex-element {
+.reflex-container > .reflex-element {
   position: relative;
   overflow: auto;
+  height: 100%;
+  width: 100%;
+}
+
+.reflex-container.reflex-resizing > .reflex-element {
+  pointer-events: none;
+  user-select: none;
+}
+
+.reflex-container > .reflex-element > .reflex-size-aware {
   height: 100%;
   width: 100%;
 }
@@ -40,18 +50,18 @@
 //Re-Flex Splitter
 //
 /////////////////////////////////////////////////////////
-.reflex-layout > .reflex-splitter {
+.reflex-container > .reflex-splitter {
   background-color: #eeeeee;
   z-index: 100;
 }
 
-.reflex-layout > .reflex-splitter.active,
-.reflex-layout > .reflex-splitter:hover {
+.reflex-container > .reflex-splitter.active,
+.reflex-container > .reflex-splitter:hover {
   background-color: #c6c6c6;
   transition: all 1s ease;
 }
 
-.reflex-layout.horizontal > .reflex-splitter {
+.horizontal > .reflex-splitter {
   border-bottom: 1px solid #c6c6c6;
   border-top: 1px solid #c6c6c6;
   cursor: row-resize;
@@ -59,17 +69,18 @@
   height: 2px;
 }
 
-.reflex-layout.horizontal .reflex-handle {
+.reflex-container.horizontal .reflex-handle {
   cursor: row-resize;
+  user-select: none;
 }
 
-.reflex-layout.horizontal > .reflex-splitter:hover,
-.reflex-layout.horizontal > .reflex-splitter.active {
+.reflex-container.horizontal > .reflex-splitter:hover,
+.reflex-container.horizontal > .reflex-splitter.active {
   border-bottom: 1px solid #eeeeee;
   border-top: 1px solid #eeeeee;
 }
 
-.reflex-layout.vertical > .reflex-splitter {
+.reflex-container.vertical > .reflex-splitter {
   border-right: 1px solid #c6c6c6;
   border-left: 1px solid #c6c6c6;
   cursor: col-resize;
@@ -77,12 +88,12 @@
   width: 2px;
 }
 
-.reflex-layout.vertical .reflex-handle {
+.reflex-container.vertical .reflex-handle {
   cursor: col-resize;
 }
 
-.reflex-layout.vertical > .reflex-splitter:hover,
-.reflex-layout.vertical > .reflex-splitter.active {
+.reflex-container.vertical > .reflex-splitter:hover,
+.reflex-container.vertical > .reflex-splitter.active {
   border-right: 1px solid #eeeeee;
   border-left: 1px solid #eeeeee;
 }
@@ -91,11 +102,10 @@
 //Re-Flex Splitter reflex-thin
 //
 /////////////////////////////////////////////////////////
-.reflex-layout > .reflex-splitter.reflex-thin {
+.reflex-container > .reflex-splitter.reflex-thin {
   -moz-box-sizing: border-box;
   -webkit-box-sizing: border-box;
   box-sizing: border-box;
-  background: #000;
   -moz-background-clip: padding;
   -webkit-background-clip: padding;
   background-clip: padding-box;
@@ -103,13 +113,13 @@
   z-index: 100;
 }
 
-.reflex-layout > .reflex-splitter.reflex-thin.active
-.reflex-layout > .reflex-splitter.reflex-thin:hover {
+.reflex-container > .reflex-splitter.reflex-thin.active
+.reflex-container > .reflex-splitter.reflex-thin:hover {
   transition: all 1.5s ease;
   opacity: 0.5;
 }
 
-.reflex-layout.horizontal > .reflex-splitter.reflex-thin {
+.reflex-container.horizontal > .reflex-splitter.reflex-thin {
   border-bottom: 8px solid rgba(255, 255, 255, 0);
   border-top: 8px solid rgba(255, 255, 255, 0);
   height: 17px !important;
@@ -118,13 +128,13 @@
   width: 100%;
 }
 
-.reflex-layout.horizontal > .reflex-splitter.reflex-thin.active,
-.reflex-layout.horizontal > .reflex-splitter.reflex-thin:hover {
+.reflex-container.horizontal > .reflex-splitter.reflex-thin.active,
+.reflex-container.horizontal > .reflex-splitter.reflex-thin:hover {
   border-bottom: 8px solid rgba(228, 228, 228, 1);
   border-top: 8px solid rgba(228, 228, 228, 1);
 }
 
-.reflex-layout.vertical > .reflex-splitter.reflex-thin {
+.reflex-container.vertical > .reflex-splitter.reflex-thin {
   border-right: 8px solid rgba(255, 255, 255, 0);
   border-left: 8px solid rgba(255, 255, 255, 0);
   width: 17px !important;
@@ -133,8 +143,8 @@
   height: 100%;
 }
 
-.reflex-layout.vertical > .reflex-splitter.reflex-thin.active,
-.reflex-layout.vertical > .reflex-splitter.reflex-thin:hover {
+.reflex-container.vertical > .reflex-splitter.reflex-thin.active,
+.reflex-container.vertical > .reflex-splitter.reflex-thin:hover {
   border-right: 8px solid rgba(228, 228, 228, 1);
   border-left: 8px solid rgba(228, 228, 228, 1);
 }

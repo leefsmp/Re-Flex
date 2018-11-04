@@ -1,9 +1,4 @@
-import _toConsumableArray from 'babel-runtime/helpers/toConsumableArray';
-import _Object$getPrototypeOf from 'babel-runtime/core-js/object/get-prototype-of';
-import _classCallCheck from 'babel-runtime/helpers/classCallCheck';
-import _createClass from 'babel-runtime/helpers/createClass';
-import _possibleConstructorReturn from 'babel-runtime/helpers/possibleConstructorReturn';
-import _inherits from 'babel-runtime/helpers/inherits';
+import _defineProperty from "@babel/runtime/helpers/defineProperty";
 ///////////////////////////////////////////////////////////
 // ReflexHandle
 // By Philippe Leefsma
@@ -13,118 +8,31 @@ import _inherits from 'babel-runtime/helpers/inherits';
 import PropTypes from 'prop-types';
 import ReactDOM from 'react-dom';
 import React from 'react';
-
-var ReflexHandle = function (_React$Component) {
-  _inherits(ReflexHandle, _React$Component);
-
+export default class ReflexHandle extends React.Component {
   /////////////////////////////////////////////////////////
+  //
+  //
+  /////////////////////////////////////////////////////////
+  static isA(element) {
+    //https://github.com/leefsmp/Re-Flex/issues/49
+    return process.env.NODE_ENV === 'development' ? element.type === React.createElement(ReflexHandle, null).type : element.type === ReflexHandle;
+  } /////////////////////////////////////////////////////////
   //
   //
   /////////////////////////////////////////////////////////
 
 
-  /////////////////////////////////////////////////////////
-  //
-  //
-  /////////////////////////////////////////////////////////
-  function ReflexHandle(props) {
-    _classCallCheck(this, ReflexHandle);
+  constructor(props) {
+    super(props);
 
-    var _this = _possibleConstructorReturn(this, (ReflexHandle.__proto__ || _Object$getPrototypeOf(ReflexHandle)).call(this, props));
-
-    _this.state = {
-      active: false
-    };
-
-    _this.onMouseMove = _this.onMouseMove.bind(_this);
-    _this.onMouseDown = _this.onMouseDown.bind(_this);
-    _this.onMouseUp = _this.onMouseUp.bind(_this);
-
-    _this.document = props.document;
-    return _this;
-  }
-
-  /////////////////////////////////////////////////////////
-  //
-  //
-  /////////////////////////////////////////////////////////
-
-
-  /////////////////////////////////////////////////////////
-  //
-  //
-  /////////////////////////////////////////////////////////
-
-
-  _createClass(ReflexHandle, [{
-    key: 'componentDidMount',
-    value: function componentDidMount() {
-
-      if (!this.document) {
-        return;
-      }
-
-      this.document.addEventListener('touchend', this.onMouseUp);
-
-      this.document.addEventListener('mouseup', this.onMouseUp);
-
-      this.document.addEventListener('mousemove', this.onMouseMove, {
-        passive: false
-      });
-
-      this.document.addEventListener('touchmove', this.onMouseMove, {
-        passive: false
-      });
-    }
-
-    /////////////////////////////////////////////////////////
-    //
-    //
-    /////////////////////////////////////////////////////////
-
-  }, {
-    key: 'componentWillUnmount',
-    value: function componentWillUnmount() {
-
-      if (!this.document) {
-        return;
-      }
-
-      this.document.removeEventListener('mouseup', this.onMouseUp);
-
-      this.document.removeEventListener('touchend', this.onMouseUp);
-
-      this.document.removeEventListener('mousemove', this.onMouseMove);
-
-      this.document.removeEventListener('touchmove', this.onMouseMove);
-
+    _defineProperty(this, "onMouseMove", event => {
       if (this.state.active) {
-
-        this.props.events.emit('stopResize', {
-          index: this.props.index,
-          event: null
-        });
-      }
-    }
-
-    /////////////////////////////////////////////////////////
-    //
-    //
-    /////////////////////////////////////////////////////////
-
-  }, {
-    key: 'onMouseMove',
-    value: function onMouseMove(event) {
-
-      if (this.state.active) {
-
         this.props.events.emit('resize', {
           index: this.props.index,
-          event: event
+          event
         });
 
         if (this.props.onResize) {
-
           this.props.onResize({
             domElement: ReactDOM.findDOMNode(this),
             component: this
@@ -134,23 +42,14 @@ var ReflexHandle = function (_React$Component) {
         event.stopPropagation();
         event.preventDefault();
       }
-    }
+    });
 
-    /////////////////////////////////////////////////////////
-    //
-    //
-    /////////////////////////////////////////////////////////
-
-  }, {
-    key: 'onMouseDown',
-    value: function onMouseDown(event) {
-
+    _defineProperty(this, "onMouseDown", event => {
       this.setState({
         active: true
       });
 
       if (this.props.onStartResize) {
-
         // cancels resize from controller
         // if needed by returning true
         // to onStartResize
@@ -158,34 +57,23 @@ var ReflexHandle = function (_React$Component) {
           domElement: ReactDOM.findDOMNode(this),
           component: this
         })) {
-
           return;
         }
       }
 
       this.props.events.emit('startResize', {
         index: this.props.index,
-        event: event
+        event
       });
-    }
+    });
 
-    /////////////////////////////////////////////////////////
-    //
-    //
-    /////////////////////////////////////////////////////////
-
-  }, {
-    key: 'onMouseUp',
-    value: function onMouseUp(event) {
-
+    _defineProperty(this, "onMouseUp", event => {
       if (this.state.active) {
-
         this.setState({
           active: false
         });
 
         if (this.props.onStopResize) {
-
           this.props.onStopResize({
             domElement: ReactDOM.findDOMNode(this),
             component: this
@@ -194,56 +82,103 @@ var ReflexHandle = function (_React$Component) {
 
         this.props.events.emit('stopResize', {
           index: this.props.index,
-          event: event
+          event
         });
       }
+    });
+
+    this.state = {
+      active: false
+    };
+    this.document = props.document;
+  } /////////////////////////////////////////////////////////
+  //
+  //
+  /////////////////////////////////////////////////////////
+
+
+  componentDidMount() {
+    if (!this.document) {
+      return;
     }
 
-    /////////////////////////////////////////////////////////
-    //
-    //
-    /////////////////////////////////////////////////////////
+    this.document.addEventListener('touchend', this.onMouseUp);
+    this.document.addEventListener('mouseup', this.onMouseUp);
+    this.document.addEventListener('mousemove', this.onMouseMove, {
+      passive: false
+    });
+    this.document.addEventListener('touchmove', this.onMouseMove, {
+      passive: false
+    });
+  } /////////////////////////////////////////////////////////
+  //
+  //
+  /////////////////////////////////////////////////////////
 
-  }, {
-    key: 'render',
-    value: function render() {
 
-      var classNames = ['reflex-handle'].concat(_toConsumableArray(this.props.className.split(' ')));
-
-      if (this.state.active) {
-
-        classNames.push('active');
-      }
-
-      return React.createElement(
-        'div',
-        { className: classNames.join(' '),
-          onTouchStart: this.onMouseDown,
-          onMouseDown: this.onMouseDown,
-          style: this.props.style,
-          id: this.props.id },
-        this.props.children
-      );
+  componentWillUnmount() {
+    if (!this.document) {
+      return;
     }
-  }]);
 
-  return ReflexHandle;
-}(React.Component);
+    this.document.removeEventListener('mouseup', this.onMouseUp);
+    this.document.removeEventListener('touchend', this.onMouseUp);
+    this.document.removeEventListener('mousemove', this.onMouseMove);
+    this.document.removeEventListener('touchmove', this.onMouseMove);
 
-ReflexHandle.propTypes = {
+    if (this.state.active) {
+      this.props.events.emit('stopResize', {
+        index: this.props.index,
+        event: null
+      });
+    }
+  } /////////////////////////////////////////////////////////
+  //
+  //
+  /////////////////////////////////////////////////////////
+
+
+  /////////////////////////////////////////////////////////
+  //
+  //
+  /////////////////////////////////////////////////////////
+  render() {
+    const className = [...this.props.className.split(' '), this.state.active ? 'active' : '', 'reflex-handle'].join(' ');
+    return React.createElement("div", {
+      onTouchStart: this.onMouseDown,
+      onMouseDown: this.onMouseDown,
+      style: this.props.style,
+      className: className,
+      id: this.props.id
+    }, this.props.children);
+  }
+
+}
+
+_defineProperty(ReflexHandle, "propTypes", {
   children: PropTypes.oneOfType([PropTypes.arrayOf(PropTypes.node), PropTypes.node]),
   onStartResize: PropTypes.func,
   onStopResize: PropTypes.func,
   className: PropTypes.string,
   propagate: PropTypes.bool,
   onResize: PropTypes.func,
-  style: PropTypes.object };
-ReflexHandle.defaultProps = {
+  style: PropTypes.object /////////////////////////////////////////////////////////
+  //
+  //
+  /////////////////////////////////////////////////////////
+
+});
+
+_defineProperty(ReflexHandle, "defaultProps", {
   document: typeof document === 'undefined' ? null : document,
   onStartResize: null,
   onStopResize: null,
   propagate: false,
   onResize: null,
   className: '',
-  style: {} };
-export default ReflexHandle;
+  style: {} /////////////////////////////////////////////////////////
+  //
+  //
+  /////////////////////////////////////////////////////////
+
+});

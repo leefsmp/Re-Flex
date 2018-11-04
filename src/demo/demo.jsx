@@ -664,9 +664,8 @@ class ReflexSizeAwareDemo
         <ReflexContainer orientation="horizontal">
 
           <ReflexElement
+            propagateDimensionsRate={200}
             propagateDimensions={true}
-            renderOnResizeRate={50}
-            renderOnResize={true}
             flex={0.8}>
 
             <SizeAwareElement/>

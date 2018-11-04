@@ -2,9 +2,11 @@ var path = require('path')
 
 module.exports = {
 
+  context: path.join(__dirname, '../..'),
+
   devtool: 'source-map',
 
-  context: path.join(__dirname, '../..'),
+  mode: 'development',
 
   entry: {
     'react-reflex': [
@@ -22,15 +24,21 @@ module.exports = {
   module: {
     rules: [
       {
-        test: /\.(js|jsx)$/,
-        exclude: /(node_modules)/,
-        use: {
-          loader: 'babel-loader',
-          options: {
-            forceEnv: 'es'
-          }
-        }
-      }
+        test: /\.jsx?$/,
+        exclude: /node_modules/,
+        use: [{
+            loader: 'babel-loader',
+            options: {
+              presets: ['@babel/react', '@babel/env'],
+              plugins: [
+                "react-hot-loader/babel",
+                "@babel/plugin-proposal-class-properties",
+                "@babel/plugin-syntax-dynamic-import",
+                '@babel/transform-runtime'
+              ]
+            }
+        }]
+      },
     ]
   },
 

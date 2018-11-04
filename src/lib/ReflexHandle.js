@@ -47,6 +47,17 @@ export default class ReflexHandle extends React.Component {
   //
   //
   /////////////////////////////////////////////////////////
+  static isA (element) {
+    //https://github.com/leefsmp/Re-Flex/issues/49
+    return (process.env.NODE_ENV === 'development')
+    ? (element.type === (<ReflexHandle/>).type)
+    : (element.type === ReflexHandle)
+  }
+
+  /////////////////////////////////////////////////////////
+  //
+  //
+  /////////////////////////////////////////////////////////
   constructor (props) {
 
     super (props)
@@ -54,10 +65,6 @@ export default class ReflexHandle extends React.Component {
     this.state = {
       active: false
     }
-
-    this.onMouseMove = this.onMouseMove.bind(this)
-    this.onMouseDown = this.onMouseDown.bind(this)
-    this.onMouseUp   = this.onMouseUp.bind(this)
 
     this.document = props.document
   }
@@ -69,7 +76,7 @@ export default class ReflexHandle extends React.Component {
   componentDidMount () {
     
     if (!this.document) {
-      return;
+      return
     }
 
     this.document.addEventListener(
@@ -100,7 +107,7 @@ export default class ReflexHandle extends React.Component {
   componentWillUnmount () {
 
     if (!this.document) {
-      return;
+      return
     }
 
     this.document.removeEventListener(
@@ -132,7 +139,7 @@ export default class ReflexHandle extends React.Component {
   //
   //
   /////////////////////////////////////////////////////////
-  onMouseMove (event) {
+  onMouseMove = (event) => {
 
     if (this.state.active) {
 
@@ -159,7 +166,7 @@ export default class ReflexHandle extends React.Component {
   //
   //
   /////////////////////////////////////////////////////////
-  onMouseDown (event) {
+  onMouseDown = (event) => {
 
     this.setState({
       active: true
@@ -189,7 +196,7 @@ export default class ReflexHandle extends React.Component {
   //
   //
   /////////////////////////////////////////////////////////
-  onMouseUp (event) {
+  onMouseUp = (event) => {
 
     if (this.state.active) {
 
@@ -218,21 +225,18 @@ export default class ReflexHandle extends React.Component {
   /////////////////////////////////////////////////////////
   render () {
 
-    const classNames = [
-      'reflex-handle',
-      ...this.props.className.split(' ')
-    ]
-
-    if (this.state.active) {
-
-      classNames.push('active')
-    }
+    const className = [
+      ...this.props.className.split(' '),
+      this.state.active? 'active' : '',
+      'reflex-handle'
+    ].join(' ')
 
     return (
-      <div className={classNames.join(' ')}
+      <div 
         onTouchStart={this.onMouseDown}
         onMouseDown={this.onMouseDown}
         style={this.props.style}
+        className={className}
         id={this.props.id}>
         {this.props.children}
       </div>

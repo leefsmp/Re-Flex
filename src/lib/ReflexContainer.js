@@ -10,7 +10,7 @@ import PropTypes from 'prop-types'
 import ReactDOM from 'react-dom'
 import React from 'react'
 
-class ReflexContainer extends React.Component {
+export default class ReflexContainer extends React.Component {
 
   /////////////////////////////////////////////////////////
   // orientation: Orientation of the layout container
@@ -55,34 +55,7 @@ class ReflexContainer extends React.Component {
 
     this.events = new ReflexEvents()
 
-    this.onStartResize =
-      this.onStartResize.bind(this)
-
-    this.onStopResize =
-      this.onStopResize.bind(this)
-
-    this.onResize =
-      this.onResize.bind(this)
-
-    this.onElementSize =
-      this.onElementSize.bind(this)
-
     this.children = []
-  }
-
-  /////////////////////////////////////////////////////////
-  //
-  //
-  /////////////////////////////////////////////////////////
-  setPartialState (partialState) {
-
-    return new Promise((resolve) => {
-
-      this.setState(Object.assign({}, this.state,
-        partialState), () => {
-        resolve()
-      })
-    })
   }
 
   /////////////////////////////////////////////////////////
@@ -93,25 +66,29 @@ class ReflexContainer extends React.Component {
 
     const flexData = this.computeFlexData()
 
-    this.setPartialState ({
+    const {windowResizeAware} = this.props
+
+    if (windowResizeAware) {
+      window.addEventListener(
+        'resize', this.onWindowResize)
+    }
+
+    this.setState ({
+      windowResizeAware,
       flexData
     })
 
     this.events.on(
-      'startResize',
-      this.onStartResize)
+      'element.size', this.onElementSize)
 
     this.events.on(
-      'stopResize',
-      this.onStopResize)
+      'startResize', this.onStartResize)
 
     this.events.on(
-      'resize',
-      this.onResize)
+      'stopResize', this.onStopResize)
 
     this.events.on(
-      'element.size',
-      this.onElementSize)
+      'resize', this.onResize)
   }
 
   /////////////////////////////////////////////////////////
@@ -121,6 +98,11 @@ class ReflexContainer extends React.Component {
   componentWillUnmount () {
 
     this.events.off()
+
+    if (this.state.windowResizeAware) {
+      window.removeEventListener(
+        'resize', this.onWindowResize)
+    }
   }
 
   /////////////////////////////////////////////////////////
@@ -143,15 +125,58 @@ class ReflexContainer extends React.Component {
 
     const children = this.getValidChildren (props)
 
-    if (children.length !== this.state.flexData.length ||
-      this.flexHasChanged(props)) {
+    const childCountHasChanged = 
+      (children.length !== this.state.flexData.length)
+
+    if (childCountHasChanged || this.flexHasChanged(props)) {
+
+      // attempts to preserve current flex
+      // only if child count has not changed
+      const preserveFlex = !childCountHasChanged
 
       const flexData = this.computeFlexData(children)
 
-      this.setPartialState({
+      this.setState({
         flexData
       })
     }
+
+    if (props.windowResizeAware !== this.state.windowResizeAware) {
+      if (props.windowResizeAware) {
+        window.addEventListener(
+          'resize', this.onWindowResize)
+      } else {
+        window.removeEventListener(
+          'resize', this.onWindowResize)
+      }
+      this.setState({
+        windowResizeAware: props.windowResizeAware
+      })
+    }
+  }
+
+  /////////////////////////////////////////////////////////
+  //
+  //
+  /////////////////////////////////////////////////////////
+  // static getDerivedStateFromProps (nextProps, prevState) {
+  //   TODO: implement when migrating to React 16+
+  // }
+
+  /////////////////////////////////////////////////////////
+  // attempts to preserve current flex on window resize
+  //
+  /////////////////////////////////////////////////////////
+  onWindowResize = () => {
+
+    const children = this.getValidChildren()
+
+    const flexData = this.computeFlexData(
+      children, true)
+
+    this.setState({
+      flexData
+    })
   }
 
   /////////////////////////////////////////////////////////
@@ -164,18 +189,15 @@ class ReflexContainer extends React.Component {
 
     const nextChildrenFlex =
       this.getValidChildren(props).map((child) => {
-
         return child.props.flex || 0
       })
 
     const childrenFlex =
       this.getValidChildren().map((child) => {
-
         return child.props.flex || 0
       })
 
     return !childrenFlex.every((flex, idx) => {
-
       return flex === nextChildrenFlex[idx]
     })
   }
@@ -228,7 +250,7 @@ class ReflexContainer extends React.Component {
   // Handles startResize event
   //
   /////////////////////////////////////////////////////////
-  onStartResize (data) {
+  onStartResize = (data) => {
 
     const pos = data.event.changedTouches ?
       data.event.changedTouches[0] :
@@ -261,7 +283,7 @@ class ReflexContainer extends React.Component {
   // Handles splitter resize event
   //
   /////////////////////////////////////////////////////////
-  onResize (data) {
+  onResize = (data) => {
 
     const offset = this.getOffset(data.event)
 
@@ -292,8 +314,9 @@ class ReflexContainer extends React.Component {
 
       this.adjustFlex(this.elements)
 
-      this.setPartialState(this.state).then(() => {
-
+      this.setState({
+        resizing: true
+      }, () => {
         this.emitElementsEvent(
           this.elements, 'onResize')
       })
@@ -301,45 +324,35 @@ class ReflexContainer extends React.Component {
   }
 
   /////////////////////////////////////////////////////////
-  // Determines if element is a splitter
-  // or wraps a splitter
-  //
-  /////////////////////////////////////////////////////////
-  isSplitterElement (element) {
-
-    //https://github.com/leefsmp/Re-Flex/issues/49
-    return (process.env.NODE_ENV === 'development')
-      ? (element.type === (<ReflexSplitter/>).type)
-      : (element.type === ReflexSplitter)
-  }
-
-  /////////////////////////////////////////////////////////
   // Handles stopResize event
   //
   /////////////////////////////////////////////////////////
-  onStopResize (data) {
+  onStopResize = (data) => {
 
     document.body.style.cursor = 'auto'
 
     const resizedRefs = this.elements.map((element) => {
-
       return element.ref
     })
 
     const elements = this.children.filter((child) => {
-
-      return !this.isSplitterElement(child) &&
+      return !ReflexSplitter.isA(child) &&
         resizedRefs.includes(child.ref)
     })
 
-    this.emitElementsEvent(elements, 'onStopResize')
+    this.emitElementsEvent(
+      elements, 'onStopResize')
+
+    this.setState({
+      resizing: false
+    })
   }
 
   /////////////////////////////////////////////////////////
   // Handles element size modified event
   //
   /////////////////////////////////////////////////////////
-  onElementSize (data) {
+  onElementSize = (data) => {
 
     return new Promise((resolve) => {
 
@@ -369,17 +382,16 @@ class ReflexContainer extends React.Component {
           this.adjustFlex(this.elements)
         }
 
-        this.setPartialState(this.state).then(() => {
-
+        this.setState(this.state, () => {
           this.emitElementsEvent(
             this.elements, 'onResize')
-
           resolve()
         })
 
       } catch (ex) {
 
         // TODO handle exception ...
+        console.log(ex)
       }
     })
   }
@@ -446,7 +458,7 @@ class ReflexContainer extends React.Component {
 
         const child = this.children[idx + 2]
 
-        const typeCheck = this.isSplitterElement(child)
+        const typeCheck = ReflexSplitter.isA(child)
 
         return typeCheck && child.props.propagate
       }
@@ -457,7 +469,7 @@ class ReflexContainer extends React.Component {
 
         const child = this.children[idx - 2]
 
-        const typeCheck = this.isSplitterElement(child)
+        const typeCheck = ReflexSplitter.isA(child)
 
         return typeCheck && child.props.propagate
       }
@@ -698,15 +710,16 @@ class ReflexContainer extends React.Component {
   /////////////////////////////////////////////////////////
   emitElementsEvent (elements, event) {
 
-    this.toArray(elements).forEach((element) => {
+    this.toArray(elements).forEach((component) => {
 
-      if (element.props[event]) {
+      if (component.props[event]) {
 
-        const ref = this.refs[element.ref]
+        const ref = this.refs[component.ref]
+        const domElement = ReactDOM.findDOMNode(ref)
 
-        element.props[event]({
-          domElement: ReactDOM.findDOMNode(ref),
-          component: element
+        component.props[event]({
+          domElement,
+          component
         })
       }
     })
@@ -718,28 +731,28 @@ class ReflexContainer extends React.Component {
   // evenly arranged within its container
   //
   /////////////////////////////////////////////////////////
-  computeFlexData (children = this.getValidChildren()) {
+  computeFlexData (children = this.getValidChildren(), preserveFlex) {
 
     const pixelFlex = this.computePixelFlex()
 
     const computeFreeFlex = (flexData) => {
       return flexData.reduce((sum, entry) => {
-        if (!this.isSplitterElement(entry)
+        if (!ReflexSplitter.isA(entry)
           && entry.constrained) {
           return sum - entry.flex
         }
         return sum
-      }, 1)
+      }, 1.0)
     }
 
     const computeFreeElements = (flexData) => {
       return flexData.reduce((sum, entry) => {
-        if (!this.isSplitterElement(entry)
+        if (!ReflexSplitter.isA(entry)
           && !entry.constrained) {
           return sum + 1
         }
         return sum
-      }, 0)
+      }, 0.0)
     }
 
     const flexDataInit = children.map((child) => {
@@ -765,14 +778,19 @@ class ReflexContainer extends React.Component {
 
       const freeFlex = computeFreeFlex(flexDataIn)
 
-      const flexDataOut = flexDataIn.map((entry) => {
+      const flexDataOut = flexDataIn.map((entry, idx) => {
 
-        if (this.isSplitterElement(entry)) {
+        if (ReflexSplitter.isA(entry)) {
           return entry
         }
 
+        const currentFlex = 
+          (this.state.flexData.length > idx && preserveFlex)
+            ? this.state.flexData[idx].flex
+            : 0
+
         const proposedFlex = !entry.constrained
-          ? freeFlex / freeElements
+          ? currentFlex || freeFlex/freeElements
           : entry.flex
 
         const constrainedFlex =
@@ -786,10 +804,11 @@ class ReflexContainer extends React.Component {
 
         hasContrain = hasContrain || constrained
 
-        return Object.assign({}, entry, {
+        return { 
+          ...entry,
           flex: constrainedFlex,
           constrained
-        })
+        }
       })
 
       return (hasContrain && depth < this.props.maxRecDepth)
@@ -802,7 +821,7 @@ class ReflexContainer extends React.Component {
     return flexData.map((entry) => {
 
       return {
-          flex: !this.isSplitterElement(entry)
+          flex: !ReflexSplitter.isA(entry)
             ? entry.flex : 0.0,
           guid: entry.guid
        }
@@ -844,12 +863,12 @@ class ReflexContainer extends React.Component {
   /////////////////////////////////////////////////////////
   render () {
 
-    const classNames = [
-      'reflex-layout',
-      'reflex-container',
-      this.props.orientation,
+    const className = [
+      this.state.resizing ? 'reflex-resizing':'',
       ...this.props.className.split(' '),
-    ]
+      this.props.orientation,
+      'reflex-container'
+    ].join(' ')
 
     this.children = React.Children.map(
       this.getValidChildren(), (child, index) => {
@@ -874,15 +893,13 @@ class ReflexContainer extends React.Component {
       })
 
     return (
-      <div className={classNames.join(' ')}
+      <div className={className}
         style={this.props.style}>
         { this.children }
       </div>
     )
   }
 }
-
-export default ReflexContainer
 
 
 

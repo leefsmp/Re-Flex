@@ -33,15 +33,27 @@ export default class ReflexSplitter extends React.Component {
   //
   /////////////////////////////////////////////////////////
   static defaultProps = {
-    document: typeof document === 'undefined' 
-      ? null 
-      : document,
+    document: typeof document !== 'undefined' 
+      ? document
+      : null,
     onStartResize: null,
     onStopResize: null,
     propagate: false,
     onResize:null,
     className: '',
     style: {}
+  }
+
+  /////////////////////////////////////////////////////////
+  // Determines if element is a splitter
+  // or wraps a splitter
+  //
+  /////////////////////////////////////////////////////////
+  static isA (element) {
+    //https://github.com/leefsmp/Re-Flex/issues/49
+    return (process.env.NODE_ENV === 'development')
+      ? (element.type === (<ReflexSplitter/>).type)
+      : (element.type === ReflexSplitter)
   }
 
   /////////////////////////////////////////////////////////
@@ -55,10 +67,6 @@ export default class ReflexSplitter extends React.Component {
     this.state = {
       active: false
     }
-
-    this.onMouseMove = this.onMouseMove.bind(this)
-    this.onMouseDown = this.onMouseDown.bind(this)
-    this.onMouseUp   = this.onMouseUp.bind(this)
 
     this.document = props.document
   }
@@ -121,7 +129,6 @@ export default class ReflexSplitter extends React.Component {
       this.onMouseMove)
 
     if (this.state.active) {
-    
       this.props.events.emit('stopResize', {
         index: this.props.index,
         event: null
@@ -133,7 +140,7 @@ export default class ReflexSplitter extends React.Component {
   //
   //
   /////////////////////////////////////////////////////////
-  onMouseMove (event) {
+  onMouseMove = (event) => {
 
     if (this.state.active) {
 
@@ -160,7 +167,7 @@ export default class ReflexSplitter extends React.Component {
   //
   //
   /////////////////////////////////////////////////////////
-  onMouseDown (event) {
+  onMouseDown = (event) => {
 
     this.setState({
       active: true
@@ -175,7 +182,6 @@ export default class ReflexSplitter extends React.Component {
           domElement: ReactDOM.findDOMNode(this),
           component: this
       })) {
-
         return
       }
     }
@@ -190,7 +196,7 @@ export default class ReflexSplitter extends React.Component {
   //
   //
   /////////////////////////////////////////////////////////
-  onMouseUp (event) {
+  onMouseUp = (event) => {
 
     if (this.state.active) {
 
@@ -199,7 +205,6 @@ export default class ReflexSplitter extends React.Component {
       })
 
       if (this.props.onStopResize) {
-
         this.props.onStopResize({
           domElement: ReactDOM.findDOMNode(this),
           component: this
@@ -219,26 +224,19 @@ export default class ReflexSplitter extends React.Component {
   /////////////////////////////////////////////////////////
   render () {
 
-    const classNames = [
-      'reflex-splitter',
-      ...this.props.className.split(' ')
-    ]
-
-    if (Browser.isMobile()) {
-
-      classNames.push('reflex-thin')
-    }
-
-    if (this.state.active) {
-
-      classNames.push('active')
-    }
+    const className = [
+      Browser.isMobile() ? 'reflex-thin' :'',
+      ...this.props.className.split(' '),
+      this.state.active? 'active' : '',
+      'reflex-splitter'
+    ].join(' ')
 
     return (
-      <div className={classNames.join(' ')}
+      <div 
         onTouchStart={this.onMouseDown}
         onMouseDown={this.onMouseDown}
         style={this.props.style}
+        className={className}
         id={this.props.id}>
         {this.props.children}
       </div>

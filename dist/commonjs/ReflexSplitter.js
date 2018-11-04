@@ -1,50 +1,35 @@
-'use strict';
+"use strict";
+
+var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
 
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
+exports.default = void 0;
 
-var _toConsumableArray2 = require('babel-runtime/helpers/toConsumableArray');
+var _toConsumableArray2 = _interopRequireDefault(require("@babel/runtime/helpers/toConsumableArray"));
 
-var _toConsumableArray3 = _interopRequireDefault(_toConsumableArray2);
+var _classCallCheck2 = _interopRequireDefault(require("@babel/runtime/helpers/classCallCheck"));
 
-var _getPrototypeOf = require('babel-runtime/core-js/object/get-prototype-of');
+var _possibleConstructorReturn2 = _interopRequireDefault(require("@babel/runtime/helpers/possibleConstructorReturn"));
 
-var _getPrototypeOf2 = _interopRequireDefault(_getPrototypeOf);
+var _getPrototypeOf2 = _interopRequireDefault(require("@babel/runtime/helpers/getPrototypeOf"));
 
-var _classCallCheck2 = require('babel-runtime/helpers/classCallCheck');
+var _createClass2 = _interopRequireDefault(require("@babel/runtime/helpers/createClass"));
 
-var _classCallCheck3 = _interopRequireDefault(_classCallCheck2);
+var _inherits2 = _interopRequireDefault(require("@babel/runtime/helpers/inherits"));
 
-var _createClass2 = require('babel-runtime/helpers/createClass');
+var _assertThisInitialized2 = _interopRequireDefault(require("@babel/runtime/helpers/assertThisInitialized"));
 
-var _createClass3 = _interopRequireDefault(_createClass2);
+var _defineProperty2 = _interopRequireDefault(require("@babel/runtime/helpers/defineProperty"));
 
-var _possibleConstructorReturn2 = require('babel-runtime/helpers/possibleConstructorReturn');
+var _propTypes = _interopRequireDefault(require("prop-types"));
 
-var _possibleConstructorReturn3 = _interopRequireDefault(_possibleConstructorReturn2);
+var _reactDom = _interopRequireDefault(require("react-dom"));
 
-var _inherits2 = require('babel-runtime/helpers/inherits');
+var _Browser = _interopRequireDefault(require("./Browser"));
 
-var _inherits3 = _interopRequireDefault(_inherits2);
-
-var _propTypes = require('prop-types');
-
-var _propTypes2 = _interopRequireDefault(_propTypes);
-
-var _reactDom = require('react-dom');
-
-var _reactDom2 = _interopRequireDefault(_reactDom);
-
-var _Browser = require('./Browser');
-
-var _Browser2 = _interopRequireDefault(_Browser);
-
-var _react = require('react');
-
-var _react2 = _interopRequireDefault(_react);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+var _react = _interopRequireDefault(require("react"));
 
 ///////////////////////////////////////////////////////////
 // ReflexSplitter
@@ -52,240 +37,189 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 // December 2016
 //
 ///////////////////////////////////////////////////////////
-var ReflexSplitter = function (_React$Component) {
-  (0, _inherits3.default)(ReflexSplitter, _React$Component);
+var ReflexSplitter =
+/*#__PURE__*/
+function (_React$Component) {
+  (0, _inherits2.default)(ReflexSplitter, _React$Component);
+  (0, _createClass2.default)(ReflexSplitter, null, [{
+    key: "isA",
+    /////////////////////////////////////////////////////////
+    //
+    //
+    /////////////////////////////////////////////////////////
+    value: function isA(element) {
+      //https://github.com/leefsmp/Re-Flex/issues/49
+      return process.env.NODE_ENV === 'development' ? element.type === _react.default.createElement(ReflexSplitter, null).type : element.type === ReflexSplitter;
+    } /////////////////////////////////////////////////////////
+    //
+    //
+    /////////////////////////////////////////////////////////
 
-  /////////////////////////////////////////////////////////
-  //
-  //
-  /////////////////////////////////////////////////////////
+  }]);
 
-
-  /////////////////////////////////////////////////////////
-  //
-  //
-  /////////////////////////////////////////////////////////
   function ReflexSplitter(props) {
-    (0, _classCallCheck3.default)(this, ReflexSplitter);
+    var _this;
 
-    var _this = (0, _possibleConstructorReturn3.default)(this, (ReflexSplitter.__proto__ || (0, _getPrototypeOf2.default)(ReflexSplitter)).call(this, props));
-
-    _this.state = {
-      active: false
-    };
-
-    _this.onMouseMove = _this.onMouseMove.bind(_this);
-    _this.onMouseDown = _this.onMouseDown.bind(_this);
-    _this.onMouseUp = _this.onMouseUp.bind(_this);
-
-    _this.document = props.document;
-    return _this;
-  }
-
-  /////////////////////////////////////////////////////////
-  //
-  //
-  /////////////////////////////////////////////////////////
-
-
-  /////////////////////////////////////////////////////////
-  //
-  //
-  /////////////////////////////////////////////////////////
-
-
-  (0, _createClass3.default)(ReflexSplitter, [{
-    key: 'componentDidMount',
-    value: function componentDidMount() {
-
-      if (!this.document) {
-        return;
-      }
-
-      this.document.addEventListener('touchend', this.onMouseUp);
-
-      this.document.addEventListener('mouseup', this.onMouseUp);
-
-      this.document.addEventListener('mousemove', this.onMouseMove, {
-        passive: false
-      });
-
-      this.document.addEventListener('touchmove', this.onMouseMove, {
-        passive: false
-      });
-    }
-
-    /////////////////////////////////////////////////////////
-    //
-    //
-    /////////////////////////////////////////////////////////
-
-  }, {
-    key: 'componentWillUnmount',
-    value: function componentWillUnmount() {
-
-      if (!this.document) {
-        return;
-      }
-
-      this.document.removeEventListener('mouseup', this.onMouseUp);
-
-      this.document.removeEventListener('touchend', this.onMouseUp);
-
-      this.document.removeEventListener('mousemove', this.onMouseMove);
-
-      this.document.removeEventListener('touchmove', this.onMouseMove);
-
-      if (this.state.active) {
-
-        this.props.events.emit('stopResize', {
-          index: this.props.index,
-          event: null
-        });
-      }
-    }
-
-    /////////////////////////////////////////////////////////
-    //
-    //
-    /////////////////////////////////////////////////////////
-
-  }, {
-    key: 'onMouseMove',
-    value: function onMouseMove(event) {
-
-      if (this.state.active) {
-
-        this.props.events.emit('resize', {
-          index: this.props.index,
+    (0, _classCallCheck2.default)(this, ReflexSplitter);
+    _this = (0, _possibleConstructorReturn2.default)(this, (0, _getPrototypeOf2.default)(ReflexSplitter).call(this, props));
+    (0, _defineProperty2.default)((0, _assertThisInitialized2.default)((0, _assertThisInitialized2.default)(_this)), "onMouseMove", function (event) {
+      if (_this.state.active) {
+        _this.props.events.emit('resize', {
+          index: _this.props.index,
           event: event
         });
 
-        if (this.props.onResize) {
-
-          this.props.onResize({
-            domElement: _reactDom2.default.findDOMNode(this),
-            component: this
+        if (_this.props.onResize) {
+          _this.props.onResize({
+            domElement: _reactDom.default.findDOMNode((0, _assertThisInitialized2.default)((0, _assertThisInitialized2.default)(_this))),
+            component: (0, _assertThisInitialized2.default)((0, _assertThisInitialized2.default)(_this))
           });
         }
 
         event.stopPropagation();
         event.preventDefault();
       }
-    }
-
-    /////////////////////////////////////////////////////////
-    //
-    //
-    /////////////////////////////////////////////////////////
-
-  }, {
-    key: 'onMouseDown',
-    value: function onMouseDown(event) {
-
-      this.setState({
+    });
+    (0, _defineProperty2.default)((0, _assertThisInitialized2.default)((0, _assertThisInitialized2.default)(_this)), "onMouseDown", function (event) {
+      _this.setState({
         active: true
       });
 
-      if (this.props.onStartResize) {
-
+      if (_this.props.onStartResize) {
         // cancels resize from controller
         // if needed by returning true
         // to onStartResize
-        if (this.props.onStartResize({
-          domElement: _reactDom2.default.findDOMNode(this),
-          component: this
+        if (_this.props.onStartResize({
+          domElement: _reactDom.default.findDOMNode((0, _assertThisInitialized2.default)((0, _assertThisInitialized2.default)(_this))),
+          component: (0, _assertThisInitialized2.default)((0, _assertThisInitialized2.default)(_this))
         })) {
-
           return;
         }
       }
 
-      this.props.events.emit('startResize', {
-        index: this.props.index,
+      _this.props.events.emit('startResize', {
+        index: _this.props.index,
         event: event
       });
-    }
-
-    /////////////////////////////////////////////////////////
-    //
-    //
-    /////////////////////////////////////////////////////////
-
-  }, {
-    key: 'onMouseUp',
-    value: function onMouseUp(event) {
-
-      if (this.state.active) {
-
-        this.setState({
+    });
+    (0, _defineProperty2.default)((0, _assertThisInitialized2.default)((0, _assertThisInitialized2.default)(_this)), "onMouseUp", function (event) {
+      if (_this.state.active) {
+        _this.setState({
           active: false
         });
 
-        if (this.props.onStopResize) {
-
-          this.props.onStopResize({
-            domElement: _reactDom2.default.findDOMNode(this),
-            component: this
+        if (_this.props.onStopResize) {
+          _this.props.onStopResize({
+            domElement: _reactDom.default.findDOMNode((0, _assertThisInitialized2.default)((0, _assertThisInitialized2.default)(_this))),
+            component: (0, _assertThisInitialized2.default)((0, _assertThisInitialized2.default)(_this))
           });
         }
 
-        this.props.events.emit('stopResize', {
-          index: this.props.index,
+        _this.props.events.emit('stopResize', {
+          index: _this.props.index,
           event: event
         });
       }
-    }
+    });
+    _this.state = {
+      active: false
+    };
+    _this.document = props.document;
+    return _this;
+  } /////////////////////////////////////////////////////////
+  //
+  //
+  /////////////////////////////////////////////////////////
 
-    /////////////////////////////////////////////////////////
+
+  (0, _createClass2.default)(ReflexSplitter, [{
+    key: "componentDidMount",
+    value: function componentDidMount() {
+      if (!this.document) {
+        return;
+      }
+
+      this.document.addEventListener('touchend', this.onMouseUp);
+      this.document.addEventListener('mouseup', this.onMouseUp);
+      this.document.addEventListener('mousemove', this.onMouseMove, {
+        passive: false
+      });
+      this.document.addEventListener('touchmove', this.onMouseMove, {
+        passive: false
+      });
+    } /////////////////////////////////////////////////////////
     //
     //
     /////////////////////////////////////////////////////////
 
   }, {
-    key: 'render',
-    value: function render() {
-
-      var classNames = ['reflex-splitter'].concat((0, _toConsumableArray3.default)(this.props.className.split(' ')));
-
-      if (_Browser2.default.isMobile()) {
-
-        classNames.push('reflex-thin');
+    key: "componentWillUnmount",
+    value: function componentWillUnmount() {
+      if (!this.document) {
+        return;
       }
+
+      this.document.removeEventListener('mouseup', this.onMouseUp);
+      this.document.removeEventListener('touchend', this.onMouseUp);
+      this.document.removeEventListener('mousemove', this.onMouseMove);
+      this.document.removeEventListener('touchmove', this.onMouseMove);
 
       if (this.state.active) {
-
-        classNames.push('active');
+        this.props.events.emit('stopResize', {
+          index: this.props.index,
+          event: null
+        });
       }
+    } /////////////////////////////////////////////////////////
+    //
+    //
+    /////////////////////////////////////////////////////////
 
-      return _react2.default.createElement(
-        'div',
-        { className: classNames.join(' '),
-          onTouchStart: this.onMouseDown,
-          onMouseDown: this.onMouseDown,
-          style: this.props.style,
-          id: this.props.id },
-        this.props.children
-      );
+  }, {
+    key: "render",
+    /////////////////////////////////////////////////////////
+    //
+    //
+    /////////////////////////////////////////////////////////
+    value: function render() {
+      var className = [_Browser.default.isMobile() ? 'reflex-thin' : ''].concat((0, _toConsumableArray2.default)(this.props.className.split(' ')), [this.state.active ? 'active' : '', 'reflex-splitter']).join(' ');
+      return _react.default.createElement("div", {
+        onTouchStart: this.onMouseDown,
+        onMouseDown: this.onMouseDown,
+        style: this.props.style,
+        className: className,
+        id: this.props.id
+      }, this.props.children);
     }
   }]);
   return ReflexSplitter;
-}(_react2.default.Component);
+}(_react.default.Component);
 
-ReflexSplitter.propTypes = {
-  children: _propTypes2.default.oneOfType([_propTypes2.default.arrayOf(_propTypes2.default.node), _propTypes2.default.node]),
-  onStartResize: _propTypes2.default.func,
-  onStopResize: _propTypes2.default.func,
-  className: _propTypes2.default.string,
-  propagate: _propTypes2.default.bool,
-  onResize: _propTypes2.default.func,
-  style: _propTypes2.default.object };
-ReflexSplitter.defaultProps = {
-  document: typeof document === 'undefined' ? null : document,
+exports.default = ReflexSplitter;
+(0, _defineProperty2.default)(ReflexSplitter, "propTypes", {
+  children: _propTypes.default.oneOfType([_propTypes.default.arrayOf(_propTypes.default.node), _propTypes.default.node]),
+  onStartResize: _propTypes.default.func,
+  onStopResize: _propTypes.default.func,
+  className: _propTypes.default.string,
+  propagate: _propTypes.default.bool,
+  onResize: _propTypes.default.func,
+  style: _propTypes.default.object /////////////////////////////////////////////////////////
+  //
+  //
+  /////////////////////////////////////////////////////////
+
+});
+(0, _defineProperty2.default)(ReflexSplitter, "defaultProps", {
+  document: typeof document !== 'undefined' ? document : null,
   onStartResize: null,
   onStopResize: null,
   propagate: false,
   onResize: null,
   className: '',
-  style: {} };
-exports.default = ReflexSplitter;
+  style: {} /////////////////////////////////////////////////////////
+  // Determines if element is a splitter
+  // or wraps a splitter
+  //
+  /////////////////////////////////////////////////////////
+
+});

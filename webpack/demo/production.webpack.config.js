@@ -5,7 +5,9 @@ var path = require('path')
 module.exports = {
 
   context: path.join(__dirname, '../..'),
-
+  
+  mode: 'production',
+  
   entry: {
     bundle: [
       './src/demo/index.js'
@@ -15,6 +17,10 @@ module.exports = {
   output: {
     path: path.join(__dirname, '../../dist/demo'),
     filename: "[name].js"
+  },
+
+  optimization: {
+    minimize: true
   },
 
   plugins: [
@@ -27,17 +33,6 @@ module.exports = {
 
     new webpack.optimize.MinChunkSizePlugin({
       minChunkSize: 51200
-    }),
-
-    new webpack.optimize.UglifyJsPlugin({
-      output: {
-        comments: false
-      },
-      compress: {
-        warnings: false
-      },
-      minimize: true,
-      mangle: true
     }),
 
     new webpack.DefinePlugin({
@@ -64,15 +59,34 @@ module.exports = {
         use: [{
           loader: "babel-loader",
           options: {
-            presets: ['react', 'env', 'stage-0'],
-            plugins: ['transform-runtime']
+            presets: ['@babel/react', '@babel/env'],
+            plugins: [
+              '@babel/plugin-proposal-class-properties',
+              '@babel/plugin-syntax-dynamic-import',
+              '@babel/transform-runtime'
+            ]
           }
         }]
       },
       {
         test: /\.(css|sass|scss)$/,
-        exclude: /node_modules/,
-        use: [ "style-loader", "css-loader", "sass-loader"]
+        use: [{
+          loader:'style-loader'
+        },  {
+          loader: 'css-loader'
+        }, {
+          loader: 'postcss-loader',
+          options: {
+            plugins: function () {
+              return [
+                require('precss'),
+                require('autoprefixer')
+              ]
+            }
+          }
+        }, {
+          loader:'sass-loader'
+        }]
       }
     ]
   }

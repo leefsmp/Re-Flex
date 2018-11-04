@@ -6,6 +6,8 @@ module.exports = {
 
   context: path.join(__dirname, '../..'),
 
+  mode: 'production',
+
   entry: {
     'react-reflex.min': [
       './src/lib/index.js'
@@ -19,6 +21,10 @@ module.exports = {
     libraryTarget: 'umd'
   },
 
+  optimization: {
+    minimize: true
+  },
+
   plugins: [
 
     new clean(['dist/umd'], {
@@ -29,17 +35,6 @@ module.exports = {
 
     new webpack.optimize.MinChunkSizePlugin({
       minChunkSize: 51200
-    }),
-
-    new webpack.optimize.UglifyJsPlugin({
-      output: {
-        comments: false
-      },
-      compress: {
-        warnings: false
-      },
-      minimize: true,
-      mangle: true
     }),
 
     new webpack.DefinePlugin({
@@ -57,7 +52,12 @@ module.exports = {
         use: {
           loader: 'babel-loader',
           options: {
-            forceEnv: 'es'
+            presets: ['@babel/react', '@babel/env'],
+            plugins: [
+              '@babel/plugin-proposal-class-properties',
+              '@babel/plugin-syntax-dynamic-import',
+              '@babel/transform-runtime'
+            ]
           }
         }
       }

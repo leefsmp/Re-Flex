@@ -2,9 +2,11 @@ var path = require('path')
 
 module.exports = {
 
-  devtool: 'source-map',
-
   context: path.join(__dirname, '../..'),
+
+  devtool: 'source-map',
+  
+  mode: 'development',
 
   entry: {
     bundle: [
@@ -32,15 +34,35 @@ module.exports = {
         use: [{
           loader: "babel-loader",
           options: {
-            presets: ['react', 'env', 'stage-0'],
-            plugins: ['transform-runtime']
+            presets: ['@babel/react', '@babel/env'],
+            plugins: [
+              'react-hot-loader/babel',
+              '@babel/plugin-proposal-class-properties',
+              '@babel/plugin-syntax-dynamic-import',
+              '@babel/transform-runtime'
+            ]
           }
         }]
       },
       {
         test: /\.(css|sass|scss)$/,
-        exclude: /node_modules/,
-        use: [ "style-loader", "css-loader", "sass-loader"]
+        use: [{
+          loader:'style-loader'
+        },  {
+          loader: 'css-loader'
+        }, {
+          loader: 'postcss-loader',
+          options: {
+            plugins: function () {
+              return [
+                require('precss'),
+                require('autoprefixer')
+              ]
+            }
+          }
+        }, {
+          loader:'sass-loader'
+        }]
       }
     ]
   }

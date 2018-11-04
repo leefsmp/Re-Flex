@@ -1,104 +1,75 @@
-import _classCallCheck from 'babel-runtime/helpers/classCallCheck';
-import _createClass from 'babel-runtime/helpers/createClass';
-
 ///////////////////////////////////////////////////////////
 // ReflexEvents
 // By Philippe Leefsma
 // December 2016
 //
 ///////////////////////////////////////////////////////////
-var ReflexEvents = function () {
-
+class ReflexEvents {
   /////////////////////////////////////////////////////////
   //
   //
   /////////////////////////////////////////////////////////
-  function ReflexEvents() {
-    _classCallCheck(this, ReflexEvents);
-
+  constructor() {
     this._events = {};
-  }
-
-  /////////////////////////////////////////////////////////
+  } /////////////////////////////////////////////////////////
   // Supports multiple events space-separated
   //
   /////////////////////////////////////////////////////////
 
 
-  _createClass(ReflexEvents, [{
-    key: 'on',
-    value: function on(events, fct) {
-      var _this = this;
+  on(events, fct) {
+    events.split(' ').forEach(event => {
+      this._events[event] = this._events[event] || [];
 
-      events.split(' ').forEach(function (event) {
+      this._events[event].push(fct);
+    });
+    return this;
+  } /////////////////////////////////////////////////////////
+  // Supports multiple events space-separated
+  //
+  /////////////////////////////////////////////////////////
 
-        _this._events[event] = _this._events[event] || [];
-        _this._events[event].push(fct);
-      });
 
-      return this;
+  off(events, fct) {
+    if (events == undefined) {
+      this._events = {};
+      return;
     }
 
-    /////////////////////////////////////////////////////////
-    // Supports multiple events space-separated
-    //
-    /////////////////////////////////////////////////////////
+    events.split(' ').forEach(event => {
+      if (event in this._events === false) return;
 
-  }, {
-    key: 'off',
-    value: function off(events, fct) {
-      var _this2 = this;
-
-      if (events == undefined) {
-
-        this._events = {};
-        return;
+      if (fct) {
+        this._events[event].splice(this._events[event].indexOf(fct), 1);
+      } else {
+        this._events[event] = [];
       }
+    });
+    return this;
+  } /////////////////////////////////////////////////////////
+  //
+  //
+  /////////////////////////////////////////////////////////
 
-      events.split(' ').forEach(function (event) {
 
-        if (event in _this2._events === false) return;
+  emit(event
+  /* , args... */
+  ) {
+    if (this._events[event] === undefined) return;
 
-        if (fct) {
+    var tmpArray = this._events[event].slice();
 
-          _this2._events[event].splice(_this2._events[event].indexOf(fct), 1);
-        } else {
+    for (var i = 0; i < tmpArray.length; ++i) {
+      var result = tmpArray[i].apply(this, Array.prototype.slice.call(arguments, 1));
 
-          _this2._events[event] = [];
-        }
-      });
-
-      return this;
-    }
-
-    /////////////////////////////////////////////////////////
-    //
-    //
-    /////////////////////////////////////////////////////////
-
-  }, {
-    key: 'emit',
-    value: function emit(event /* , args... */) {
-
-      if (this._events[event] === undefined) return;
-
-      var tmpArray = this._events[event].slice();
-
-      for (var i = 0; i < tmpArray.length; ++i) {
-
-        var result = tmpArray[i].apply(this, Array.prototype.slice.call(arguments, 1));
-
-        if (result !== undefined) {
-
-          return result;
-        }
+      if (result !== undefined) {
+        return result;
       }
-
-      return undefined;
     }
-  }]);
 
-  return ReflexEvents;
-}();
+    return undefined;
+  }
+
+}
 
 export default ReflexEvents;

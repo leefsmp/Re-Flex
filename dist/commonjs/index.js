@@ -1,29 +1,39 @@
-'use strict';
+"use strict";
+
+var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
 
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.ReflexHandle = exports.ReflexElement = exports.ReflexSplitter = exports.ReflexContainer = undefined;
+Object.defineProperty(exports, "ReflexContainer", {
+  enumerable: true,
+  get: function get() {
+    return _ReflexContainer.default;
+  }
+});
+Object.defineProperty(exports, "ReflexSplitter", {
+  enumerable: true,
+  get: function get() {
+    return _ReflexSplitter.default;
+  }
+});
+Object.defineProperty(exports, "ReflexElement", {
+  enumerable: true,
+  get: function get() {
+    return _ReflexElement.default;
+  }
+});
+Object.defineProperty(exports, "ReflexHandle", {
+  enumerable: true,
+  get: function get() {
+    return _ReflexHandle.default;
+  }
+});
 
-var _ReflexContainer = require('./ReflexContainer');
+var _ReflexContainer = _interopRequireDefault(require("./ReflexContainer"));
 
-var _ReflexContainer2 = _interopRequireDefault(_ReflexContainer);
+var _ReflexSplitter = _interopRequireDefault(require("./ReflexSplitter"));
 
-var _ReflexSplitter = require('./ReflexSplitter');
+var _ReflexElement = _interopRequireDefault(require("./ReflexElement"));
 
-var _ReflexSplitter2 = _interopRequireDefault(_ReflexSplitter);
-
-var _ReflexElement = require('./ReflexElement');
-
-var _ReflexElement2 = _interopRequireDefault(_ReflexElement);
-
-var _ReflexHandle = require('./ReflexHandle');
-
-var _ReflexHandle2 = _interopRequireDefault(_ReflexHandle);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-exports.ReflexContainer = _ReflexContainer2.default;
-exports.ReflexSplitter = _ReflexSplitter2.default;
-exports.ReflexElement = _ReflexElement2.default;
-exports.ReflexHandle = _ReflexHandle2.default;
+var _ReflexHandle = _interopRequireDefault(require("./ReflexHandle"));

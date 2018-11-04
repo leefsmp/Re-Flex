@@ -1,147 +1,128 @@
-'use strict';
+"use strict";
+
+var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
 
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
+exports.default = void 0;
 
-var _classCallCheck2 = require('babel-runtime/helpers/classCallCheck');
+var _classCallCheck2 = _interopRequireDefault(require("@babel/runtime/helpers/classCallCheck"));
 
-var _classCallCheck3 = _interopRequireDefault(_classCallCheck2);
-
-var _createClass2 = require('babel-runtime/helpers/createClass');
-
-var _createClass3 = _interopRequireDefault(_createClass2);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+var _createClass2 = _interopRequireDefault(require("@babel/runtime/helpers/createClass"));
 
 /////////////////////////////////////////////////////////
 // Browser Utils
 //
 /////////////////////////////////////////////////////////
-var Browser = function () {
+var Browser =
+/*#__PURE__*/
+function () {
   function Browser() {
-    (0, _classCallCheck3.default)(this, Browser);
+    (0, _classCallCheck2.default)(this, Browser);
   }
 
-  (0, _createClass3.default)(Browser, null, [{
-    key: 'isBrowser',
-
-
+  (0, _createClass2.default)(Browser, null, [{
+    key: "isBrowser",
     // Check if not running on server
     value: function isBrowser() {
       return typeof window !== 'undefined';
-    }
-
-    // Opera 8.0+ (UA detection to detect Blink/v8-powered Opera)
+    } // Opera 8.0+ (UA detection to detect Blink/v8-powered Opera)
 
   }, {
-    key: 'isOpera',
+    key: "isOpera",
     value: function isOpera() {
       return Browser.isBrowser() && (!!window.opera || navigator.userAgent.indexOf(' OPR/') >= 0);
-    }
-
-    // Firefox 1.0+
+    } // Firefox 1.0+
 
   }, {
-    key: 'isFirefox',
+    key: "isFirefox",
     value: function isFirefox() {
       return Browser.isBrowser() && typeof InstallTrigger !== 'undefined';
-    }
-
-    // Safari 3.0+
+    } // Safari 3.0+
 
   }, {
-    key: 'isSafari',
+    key: "isSafari",
     value: function isSafari() {
-
       if (!Browser.isBrowser()) {
         return false;
       }
 
-      return (/^((?!chrome|android).)*safari/i.test(navigator.userAgent)
-      );
-    }
-
-    // Internet Explorer 6-11
+      return /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
+    } // Internet Explorer 6-11
 
   }, {
-    key: 'isIE',
+    key: "isIE",
     value: function isIE() {
       /*@cc_on!@*/
       return Browser.isBrowser() && !!document.documentMode;
-    }
-
-    // Edge 20+
+    } // Edge 20+
 
   }, {
-    key: 'isEdge',
+    key: "isEdge",
     value: function isEdge() {
       return Browser.isBrowser() && !Browser.isIE() && !!window.StyleMedia;
-    }
-
-    // Chrome 1+
+    } // Chrome 1+
 
   }, {
-    key: 'isChrome',
+    key: "isChrome",
     value: function isChrome() {
       return Browser.isBrowser() && !!window.chrome && !!window.chrome.webstore;
-    }
-
-    // Blink engine detection
+    } // Blink engine detection
 
   }, {
-    key: 'isBlink',
+    key: "isBlink",
     value: function isBlink() {
       return Browser.isBrowser() && (Browser.isChrome() || Browser.isOpera()) && !!window.CSS;
     }
   }, {
-    key: 'getUserAgent',
+    key: "getUserAgent",
     value: function getUserAgent() {
       return typeof navigator === 'undefined' ? '' : navigator.userAgent;
     }
   }, {
-    key: 'isAndroid',
+    key: "isAndroid",
     value: function isAndroid() {
       return Browser.isBrowser() && Browser.getUserAgent().match(/Android/i);
     }
   }, {
-    key: 'isBlackBerry',
+    key: "isBlackBerry",
     value: function isBlackBerry() {
       return Browser.isBrowser() && Browser.getUserAgent().match(/BlackBerry/i);
     }
   }, {
-    key: 'isIOS',
+    key: "isIOS",
     value: function isIOS() {
       return Browser.isBrowser() && Browser.getUserAgent().match(/iPhone|iPad|iPod/i);
     }
   }, {
-    key: 'isOpera',
+    key: "isOpera",
     value: function isOpera() {
       return Browser.isBrowser() && Browser.getUserAgent().match(/Opera Mini/i);
     }
   }, {
-    key: 'isWindows',
+    key: "isWindows",
     value: function isWindows() {
       return Browser.isBrowser() && Browser.isWindowsDesktop() || Browser.isWindowsMobile();
     }
   }, {
-    key: 'isWindowsMobile',
+    key: "isWindowsMobile",
     value: function isWindowsMobile() {
       return Browser.isBrowser() && Browser.getUserAgent().match(/IEMobile/i);
     }
   }, {
-    key: 'isWindowsDesktop',
+    key: "isWindowsDesktop",
     value: function isWindowsDesktop() {
       return Browser.isBrowser() && Browser.getUserAgent().match(/WPDesktop/i);
     }
   }, {
-    key: 'isMobile',
+    key: "isMobile",
     value: function isMobile() {
-
       return Browser.isBrowser() && (Browser.isWindowsMobile() || Browser.isBlackBerry() || Browser.isAndroid() || Browser.isIOS());
     }
   }]);
   return Browser;
 }();
 
-exports.default = Browser;
+var _default = Browser;
+exports.default = _default;
