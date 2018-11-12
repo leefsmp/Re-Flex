@@ -5059,7 +5059,7 @@ function (_React$Component) {
       var _this2 = this;
 
       return react__WEBPACK_IMPORTED_MODULE_15___default.a.Children.map(this.props.children, function (child) {
-        if (_ReflexHandle__WEBPACK_IMPORTED_MODULE_11__["default"].isA(child)) {
+        if (_this2.props.withHandler || _ReflexHandle__WEBPACK_IMPORTED_MODULE_11__["default"].isA(child)) {
           return react__WEBPACK_IMPORTED_MODULE_15___default.a.cloneElement(child, _babel_runtime_helpers_objectSpread__WEBPACK_IMPORTED_MODULE_3___default()({}, child.props, {
             index: _this2.props.index - 1,
             events: _this2.props.events
@@ -5271,7 +5271,7 @@ function (_React$Component2) {
       var _this6 = this;
 
       return react__WEBPACK_IMPORTED_MODULE_15___default.a.Children.map(this.props.children, function (child) {
-        if (_ReflexHandle__WEBPACK_IMPORTED_MODULE_11__["default"].isA(child)) {
+        if (_this6.props.withHandle || _ReflexHandle__WEBPACK_IMPORTED_MODULE_11__["default"].isA(child)) {
           return react__WEBPACK_IMPORTED_MODULE_15___default.a.cloneElement(child, _babel_runtime_helpers_objectSpread__WEBPACK_IMPORTED_MODULE_3___default()({}, child.props, {
             index: _this6.props.index - 1,
             events: _this6.state.events

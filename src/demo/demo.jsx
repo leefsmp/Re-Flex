@@ -951,6 +951,23 @@ class ReflexCollapseDemo
 // Re-Flex handle element demo
 //
 /////////////////////////////////////////////////////////
+const HandleElement = (props) => {
+ 
+  return (
+    <div>
+      <ReflexHandle className="handle" {...props}>
+        Bottom Pane Header: I am a draggable handle! 
+        Drag me to resize ...
+      </ReflexHandle>
+      <div className="pane-content">
+        <label>
+          Bottom Pane
+        </label>  
+      </div>
+    </div>
+  )
+}
+
 class ReflexHandleDemo
   extends React.Component {
 
@@ -971,16 +988,8 @@ class ReflexHandleDemo
 
         <ReflexSplitter/>
 
-        <ReflexElement minSize={36}>
-          <ReflexHandle className="handle">
-            Bottom Pane Header: I am a draggable handle! 
-            Drag me to resize ...
-          </ReflexHandle>
-          <div className="pane-content">
-            <label>
-              Bottom Pane
-            </label>  
-          </div>
+        <ReflexElement minSize={36} withHandle={true}>
+          <HandleElement/>
         </ReflexElement>  
 
       </ReflexContainer>
