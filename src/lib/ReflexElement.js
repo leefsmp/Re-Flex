@@ -56,7 +56,7 @@ class SizeAwareReflexElement extends React.Component {
     return React.Children.map(
       this.props.children, (child) => {
 
-        if (this.props.withHandler || ReflexHandle.isA(child)) {
+        if (this.props.withHandle || ReflexHandle.isA(child)) {
           return React.cloneElement(child, {
             ...child.props,
             index: this.props.index - 1,

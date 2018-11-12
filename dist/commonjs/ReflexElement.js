@@ -96,7 +96,7 @@ function (_React$Component) {
       var _this2 = this;
 
       return _react.default.Children.map(this.props.children, function (child) {
-        if (_this2.props.withHandler || _ReflexHandle.default.isA(child)) {
+        if (_this2.props.withHandle || _ReflexHandle.default.isA(child)) {
           return _react.default.cloneElement(child, (0, _objectSpread2.default)({}, child.props, {
             index: _this2.props.index - 1,
             events: _this2.props.events
