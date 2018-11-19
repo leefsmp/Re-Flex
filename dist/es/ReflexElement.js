@@ -52,15 +52,20 @@ class SizeAwareReflexElement extends React.Component {
   //
   /////////////////////////////////////////////////////////
   renderChildren() {
+    const {
+      propagateDimensions
+    } = this.props;
     return React.Children.map(this.props.children, child => {
       if (this.props.withHandle || ReflexHandle.isA(child)) {
-        return React.cloneElement(child, _objectSpread({}, child.props, {
+        return React.cloneElement(child, _objectSpread({
+          dimensions: propagateDimensions && this.state
+        }, child.props, {
           index: this.props.index - 1,
           events: this.props.events
         }));
       }
 
-      if (this.props.propagateDimensions) {
+      if (propagateDimensions) {
         return React.cloneElement(child, _objectSpread({}, child.props, {
           dimensions: this.state
         }));
@@ -173,7 +178,7 @@ export default class ReflexElement extends React.Component {
 
 
   render() {
-    const className = [...this.props.className.split(' '), 'reflex-element'].join(' ');
+    const className = [...this.props.className.split(' '), this.props.orientation, 'reflex-element'].join(' ');
 
     const style = _objectSpread({}, this.props.style, {
       flex: this.props.flex

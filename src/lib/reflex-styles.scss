@@ -69,7 +69,7 @@
   height: 2px;
 }
 
-.reflex-container.horizontal .reflex-handle {
+.reflex-element.horizontal .reflex-handle {
   cursor: row-resize;
   user-select: none;
 }
@@ -88,8 +88,9 @@
   width: 2px;
 }
 
-.reflex-container.vertical .reflex-handle {
+.reflex-element.vertical .reflex-handle {
   cursor: col-resize;
+  user-select: none;
 }
 
 .reflex-container.vertical > .reflex-splitter:hover,

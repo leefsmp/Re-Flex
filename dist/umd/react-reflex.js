@@ -5058,15 +5058,18 @@ function (_React$Component) {
     value: function renderChildren() {
       var _this2 = this;
 
+      var propagateDimensions = this.props.propagateDimensions;
       return react__WEBPACK_IMPORTED_MODULE_15___default.a.Children.map(this.props.children, function (child) {
         if (_this2.props.withHandle || _ReflexHandle__WEBPACK_IMPORTED_MODULE_11__["default"].isA(child)) {
-          return react__WEBPACK_IMPORTED_MODULE_15___default.a.cloneElement(child, _babel_runtime_helpers_objectSpread__WEBPACK_IMPORTED_MODULE_3___default()({}, child.props, {
+          return react__WEBPACK_IMPORTED_MODULE_15___default.a.cloneElement(child, _babel_runtime_helpers_objectSpread__WEBPACK_IMPORTED_MODULE_3___default()({
+            dimensions: propagateDimensions && _this2.state
+          }, child.props, {
             index: _this2.props.index - 1,
             events: _this2.props.events
           }));
         }
 
-        if (_this2.props.propagateDimensions) {
+        if (propagateDimensions) {
           return react__WEBPACK_IMPORTED_MODULE_15___default.a.cloneElement(child, _babel_runtime_helpers_objectSpread__WEBPACK_IMPORTED_MODULE_3___default()({}, child.props, {
             dimensions: _this2.state
           }));
@@ -5288,7 +5291,7 @@ function (_React$Component2) {
   }, {
     key: "render",
     value: function render() {
-      var className = _babel_runtime_helpers_toConsumableArray__WEBPACK_IMPORTED_MODULE_0___default()(this.props.className.split(' ')).concat(['reflex-element']).join(' ');
+      var className = _babel_runtime_helpers_toConsumableArray__WEBPACK_IMPORTED_MODULE_0___default()(this.props.className.split(' ')).concat([this.props.orientation, 'reflex-element']).join(' ');
 
       var style = _babel_runtime_helpers_objectSpread__WEBPACK_IMPORTED_MODULE_3___default()({}, this.props.style, {
         flex: this.props.flex
