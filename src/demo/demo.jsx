@@ -382,10 +382,9 @@ class ControlledElement
 
       return new Promise((resolve) => {
 
-        this.setState(Object.assign({},
-          this.state, {
-            size: size < 25 ? 25 : size
-          }), () => resolve())
+        this.setState({
+          size: size < 25 ? 25 : size
+        }, () => resolve())
       })
     }
 
@@ -407,10 +406,9 @@ class ControlledElement
 
       return new Promise((resolve) => {
 
-        this.setState(Object.assign({},
-          this.state, {
-            size
-          }), () => resolve())
+        this.setState({
+          size
+        }, () => resolve())
       })
     }
 
@@ -545,7 +543,7 @@ class ReflexControlsDemo
       this.state[data.paneId].maxSize = Number.MAX_VALUE
     }
 
-    this.setState(Object.assign({}, this.state))
+    this.setState(this.state)
   }
 
   render () {

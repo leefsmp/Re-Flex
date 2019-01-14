@@ -865,7 +865,8 @@ export default class ReflexContainer extends React.Component {
 
         const flexData = this.state.flexData[index]
 
-        const newProps = Object.assign({}, child.props, {
+        const newProps = {
+          ...child.props,
           maxSize: child.props.maxSize || Number.MAX_VALUE,
           orientation: this.props.orientation,
           minSize: child.props.minSize || 1,
@@ -873,7 +874,7 @@ export default class ReflexContainer extends React.Component {
           flex: flexData.flex,
           ref: flexData.guid,
           index
-        })
+        }
 
         return React.cloneElement(child, newProps)
       })
