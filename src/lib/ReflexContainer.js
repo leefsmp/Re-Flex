@@ -10,6 +10,13 @@ import PropTypes from 'prop-types'
 import ReactDOM from 'react-dom'
 import React from 'react'
 
+// Polyfilling Math.sign for IE11 compatibility
+if (!Math.sign) {
+  Math.sign = function (x) { 
+    return ((x > 0) - (x < 0)) || +x
+  }
+}
+
 export default class ReflexContainer extends React.Component {
 
   /////////////////////////////////////////////////////////
