@@ -1,6 +1,6 @@
 import ReactDOM from 'react-dom'
+import p from 'es6-promise'
 import React from 'react'
-
 import {
   ReflexContainer,
   ReflexSplitter,
@@ -10,6 +10,8 @@ import {
 
 import '../../styles.css'
 import './demo.scss'
+
+p.polyfill()
 
 /////////////////////////////////////////////////////////
 // Re-Flex Basic vertical layout non-resizable
