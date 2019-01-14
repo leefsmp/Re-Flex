@@ -48,7 +48,11 @@ function (_React$Component) {
     //
     /////////////////////////////////////////////////////////
     value: function isA(element) {
-      //https://github.com/leefsmp/Re-Flex/issues/49
+      if (!element) {
+        return false;
+      } //https://github.com/leefsmp/Re-Flex/issues/49
+
+
       return process.env.NODE_ENV === 'development' ? element.type === _react.default.createElement(ReflexSplitter, null).type : element.type === ReflexSplitter;
     } /////////////////////////////////////////////////////////
     //

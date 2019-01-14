@@ -3,10 +3,10 @@ var webpack = require('webpack')
 var path = require('path')
 
 module.exports = {
-
-  context: path.join(__dirname, '../..'),
   
+  context: path.join(__dirname, '../..'),
   mode: 'production',
+  devtool: 'none',
   
   entry: {
     bundle: [
@@ -59,7 +59,17 @@ module.exports = {
         use: [{
           loader: "babel-loader",
           options: {
-            presets: ['@babel/react', '@babel/env'],
+            presets: [
+              '@babel/react', 
+              ["@babel/env", {
+                "targets": {
+                  "browsers": [
+                    "last 2 versions", 
+                    "ie >= 11"
+                  ]
+                }
+              }],
+            ],
             plugins: [
               '@babel/plugin-proposal-class-properties',
               '@babel/plugin-syntax-dynamic-import',

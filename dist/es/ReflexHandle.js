@@ -14,7 +14,11 @@ export default class ReflexHandle extends React.Component {
   //
   /////////////////////////////////////////////////////////
   static isA(element) {
-    //https://github.com/leefsmp/Re-Flex/issues/49
+    if (!element) {
+      return false;
+    } //https://github.com/leefsmp/Re-Flex/issues/49
+
+
     return process.env.NODE_ENV === 'development' ? element.type === React.createElement(ReflexHandle, null).type : element.type === ReflexHandle;
   } /////////////////////////////////////////////////////////
   //

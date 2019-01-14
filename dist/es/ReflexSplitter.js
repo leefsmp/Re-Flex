@@ -15,7 +15,11 @@ export default class ReflexSplitter extends React.Component {
   //
   /////////////////////////////////////////////////////////
   static isA(element) {
-    //https://github.com/leefsmp/Re-Flex/issues/49
+    if (!element) {
+      return false;
+    } //https://github.com/leefsmp/Re-Flex/issues/49
+
+
     return process.env.NODE_ENV === 'development' ? element.type === React.createElement(ReflexSplitter, null).type : element.type === ReflexSplitter;
   } /////////////////////////////////////////////////////////
   //

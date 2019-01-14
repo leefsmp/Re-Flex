@@ -4143,8 +4143,8 @@ var _default = Browser;
     return;
   }
 
-  reactHotLoader.register(Browser, "Browser", "/Users/leefsmp/Dropbox/projects/adn/re-flex/src/lib/Browser.js");
-  reactHotLoader.register(_default, "default", "/Users/leefsmp/Dropbox/projects/adn/re-flex/src/lib/Browser.js");
+  reactHotLoader.register(Browser, "Browser", "/Users/philippe/Dropbox/projects/adn/re-flex/src/lib/Browser.js");
+  reactHotLoader.register(_default, "default", "/Users/philippe/Dropbox/projects/adn/re-flex/src/lib/Browser.js");
   leaveModule(module);
 })();
 
@@ -4925,7 +4925,7 @@ _babel_runtime_helpers_defineProperty__WEBPACK_IMPORTED_MODULE_8___default()(Ref
     return;
   }
 
-  reactHotLoader.register(ReflexContainer, "ReflexContainer", "/Users/leefsmp/Dropbox/projects/adn/re-flex/src/lib/ReflexContainer.js");
+  reactHotLoader.register(ReflexContainer, "ReflexContainer", "/Users/philippe/Dropbox/projects/adn/re-flex/src/lib/ReflexContainer.js");
   leaveModule(module);
 })();
 
@@ -5352,8 +5352,8 @@ _babel_runtime_helpers_defineProperty__WEBPACK_IMPORTED_MODULE_10___default()(Re
     return;
   }
 
-  reactHotLoader.register(SizeAwareReflexElement, "SizeAwareReflexElement", "/Users/leefsmp/Dropbox/projects/adn/re-flex/src/lib/ReflexElement.js");
-  reactHotLoader.register(ReflexElement, "ReflexElement", "/Users/leefsmp/Dropbox/projects/adn/re-flex/src/lib/ReflexElement.js");
+  reactHotLoader.register(SizeAwareReflexElement, "SizeAwareReflexElement", "/Users/philippe/Dropbox/projects/adn/re-flex/src/lib/ReflexElement.js");
+  reactHotLoader.register(ReflexElement, "ReflexElement", "/Users/philippe/Dropbox/projects/adn/re-flex/src/lib/ReflexElement.js");
   leaveModule(module);
 })();
 
@@ -5492,8 +5492,8 @@ var _default = ReflexEvents;
     return;
   }
 
-  reactHotLoader.register(ReflexEvents, "ReflexEvents", "/Users/leefsmp/Dropbox/projects/adn/re-flex/src/lib/ReflexEvents.js");
-  reactHotLoader.register(_default, "default", "/Users/leefsmp/Dropbox/projects/adn/re-flex/src/lib/ReflexEvents.js");
+  reactHotLoader.register(ReflexEvents, "ReflexEvents", "/Users/philippe/Dropbox/projects/adn/re-flex/src/lib/ReflexEvents.js");
+  reactHotLoader.register(_default, "default", "/Users/philippe/Dropbox/projects/adn/re-flex/src/lib/ReflexEvents.js");
   leaveModule(module);
 })();
 
@@ -5571,7 +5571,11 @@ function (_React$Component) {
     //
     /////////////////////////////////////////////////////////
     value: function isA(element) {
-      //https://github.com/leefsmp/Re-Flex/issues/49
+      if (!element) {
+        return false;
+      } //https://github.com/leefsmp/Re-Flex/issues/49
+
+
       return  true ? element.type === react__WEBPACK_IMPORTED_MODULE_10___default.a.createElement(ReflexHandle, null).type : undefined;
     } /////////////////////////////////////////////////////////
     //
@@ -5772,7 +5776,7 @@ _babel_runtime_helpers_defineProperty__WEBPACK_IMPORTED_MODULE_7___default()(Ref
     return;
   }
 
-  reactHotLoader.register(ReflexHandle, "ReflexHandle", "/Users/leefsmp/Dropbox/projects/adn/re-flex/src/lib/ReflexHandle.js");
+  reactHotLoader.register(ReflexHandle, "ReflexHandle", "/Users/philippe/Dropbox/projects/adn/re-flex/src/lib/ReflexHandle.js");
   leaveModule(module);
 })();
 
@@ -5852,7 +5856,11 @@ function (_React$Component) {
     //
     /////////////////////////////////////////////////////////
     value: function isA(element) {
-      //https://github.com/leefsmp/Re-Flex/issues/49
+      if (!element) {
+        return false;
+      } //https://github.com/leefsmp/Re-Flex/issues/49
+
+
       return  true ? element.type === react__WEBPACK_IMPORTED_MODULE_11___default.a.createElement(ReflexSplitter, null).type : undefined;
     } /////////////////////////////////////////////////////////
     //
@@ -6053,7 +6061,7 @@ _babel_runtime_helpers_defineProperty__WEBPACK_IMPORTED_MODULE_7___default()(Ref
     return;
   }
 
-  reactHotLoader.register(ReflexSplitter, "ReflexSplitter", "/Users/leefsmp/Dropbox/projects/adn/re-flex/src/lib/ReflexSplitter.js");
+  reactHotLoader.register(ReflexSplitter, "ReflexSplitter", "/Users/philippe/Dropbox/projects/adn/re-flex/src/lib/ReflexSplitter.js");
   leaveModule(module);
 })();
 
