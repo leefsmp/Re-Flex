@@ -13,14 +13,14 @@ export type ReflexContainerProps = {
 
 export class ReflexContainer extends React.Component<ReflexContainerProps, any> { }
 
-type PosNeg = -1 | 1;
+export type PosNeg = -1 | 1;
 
-type HandlerProps = {
+export type HandlerProps = {
     domElement: Element | Text,
     component: React.ComponentElement<ReflexElementProps, ReflexElement>
 };
 
-type ReflexElementProps = {
+export type ReflexElementProps = {
     propagateDimensions?: boolean;
     propagateDimensionsRate?: number;
     resizeHeight?: boolean;
