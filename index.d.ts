@@ -9,7 +9,7 @@ export type ReflexContainerProps = {
     orientation?: "horizontal" | "vertical";
     maxRecDepth?: number;
     windowResizeAware?: boolean;
-};
+} & StyleAndClass;
 
 export class ReflexContainer extends React.Component<ReflexContainerProps, any> { }
 
