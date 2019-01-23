@@ -6,7 +6,7 @@ export type StyleAndClass = {
 };
 
 export type ReflexContainerProps = {
-    orientation?: "orizontal" | "vertical";
+    orientation?: "horizontal" | "vertical";
     maxRecDepth?: number;
     windowResizeAware?: boolean;
 };
