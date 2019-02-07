@@ -1,3 +1,14 @@
+/////////////////////////////////////////////////////////
+// Document body to handle resizing 
+// See: https://github.com/leefsmp/Re-Flex/issues/68
+/////////////////////////////////////////////////////////
+body.col-resize {
+  cursor: col-resize;
+}
+
+body.row-resize {
+  cursor: row-resize;
+}
 
 /////////////////////////////////////////////////////////
 // Re-Flex Container
@@ -13,16 +24,19 @@
   display: -webkit-flex;     /* NEW - Chrome */
   display: flex;
   position: relative;
+  
   height: 100%;
   width: 100%;
 }
 
 .reflex-container.horizontal {
   flex-direction: column;
+  min-height: 1px;
 }
 
 .reflex-container.vertical {
   flex-direction: row;
+  min-width: 1px;
 }
 
 /////////////////////////////////////////////////////////

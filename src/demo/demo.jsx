@@ -8,7 +8,7 @@ import {
   ReflexHandle
 } from '../../src/lib'
 
-import '../../styles.css'
+import '../../src/lib/reflex-styles.scss'
 import './demo.scss'
 
 p.polyfill()
