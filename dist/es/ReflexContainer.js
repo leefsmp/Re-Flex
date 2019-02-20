@@ -36,13 +36,13 @@ export default class ReflexContainer extends React.Component {
 
       switch (this.props.orientation) {
         case 'horizontal':
-          document.body.style.cursor = 'row-resize';
+          document.body.classList.add('row-resize');
           this.previousPos = pos.pageY;
           break;
 
         case 'vertical':
         default:
-          document.body.style.cursor = 'col-resize';
+          document.body.classList.add('col-resize');
           this.previousPos = pos.pageX;
           break;
       }
@@ -80,7 +80,8 @@ export default class ReflexContainer extends React.Component {
     });
 
     _defineProperty(this, "onStopResize", data => {
-      document.body.style.cursor = 'auto';
+      document.body.classList.remove('row-resize');
+      document.body.classList.remove('col-resize');
       const resizedRefs = this.elements.map(element => {
         return element.ref;
       });
@@ -179,10 +180,9 @@ export default class ReflexContainer extends React.Component {
 
   componentWillReceiveProps(props) {
     const children = this.getValidChildren(props);
-    const childCountHasChanged = children.length !== this.state.flexData.length;
 
-    if (childCountHasChanged || this.flexHasChanged(props)) {
-      const flexData = this.computeFlexData(children);
+    if (children.length !== this.state.flexData.length || props.orientation !== this.props.orientation || this.flexHasChanged(props)) {
+      const flexData = this.computeFlexData(children, props);
       this.setState({
         flexData
       });
@@ -372,10 +372,10 @@ export default class ReflexContainer extends React.Component {
   /////////////////////////////////////////////////////////
 
 
-  computePixelFlex() {
+  computePixelFlex(orientation = this.props.orientation) {
     const domElement = ReactDOM.findDOMNode(this);
 
-    switch (this.props.orientation) {
+    switch (orientation) {
       case 'horizontal':
         if (domElement.offsetHeight === 0.0) {
           console.warn('Found ReflexContainer with height=0, ' + 'this will cause invalid behavior...');
@@ -496,8 +496,8 @@ export default class ReflexContainer extends React.Component {
   /////////////////////////////////////////////////////////
 
 
-  computeFlexData(children = this.getValidChildren()) {
-    const pixelFlex = this.computePixelFlex();
+  computeFlexData(children = this.getValidChildren(), props = this.props) {
+    const pixelFlex = this.computePixelFlex(props.orientation);
 
     const computeFreeFlex = flexData => {
       return flexData.reduce((sum, entry) => {

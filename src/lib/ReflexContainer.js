@@ -128,12 +128,11 @@ export default class ReflexContainer extends React.Component {
 
     const children = this.getValidChildren (props)
 
-    const childCountHasChanged = 
-      (children.length !== this.state.flexData.length)
+    if ((children.length !== this.state.flexData.length) ||
+        (props.orientation !== this.props.orientation) || 
+        this.flexHasChanged(props)) {
 
-    if (childCountHasChanged || this.flexHasChanged(props)) {
-
-      const flexData = this.computeFlexData(children)
+      const flexData = this.computeFlexData(children, props)
 
       this.setState({
         flexData
@@ -546,11 +545,11 @@ export default class ReflexContainer extends React.Component {
   // Returns flex value for unit pixel
   //
   /////////////////////////////////////////////////////////
-  computePixelFlex () {
+  computePixelFlex (orientation = this.props.orientation) {
 
     const domElement = ReactDOM.findDOMNode(this)
 
-    switch (this.props.orientation) {
+    switch (orientation) {
 
       case 'horizontal':
 
@@ -726,9 +725,11 @@ export default class ReflexContainer extends React.Component {
   // evenly arranged within its container
   //
   /////////////////////////////////////////////////////////
-  computeFlexData (children = this.getValidChildren()) {
+  computeFlexData (
+    children = this.getValidChildren(), 
+    props = this.props) {
 
-    const pixelFlex = this.computePixelFlex()
+    const pixelFlex = this.computePixelFlex(props.orientation)
 
     const computeFreeFlex = (flexData) => {
       return flexData.reduce((sum, entry) => {

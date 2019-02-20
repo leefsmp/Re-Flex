@@ -72,13 +72,13 @@ function (_React$Component) {
 
       switch (_this.props.orientation) {
         case 'horizontal':
-          document.body.style.cursor = 'row-resize';
+          document.body.classList.add('row-resize');
           _this.previousPos = pos.pageY;
           break;
 
         case 'vertical':
         default:
-          document.body.style.cursor = 'col-resize';
+          document.body.classList.add('col-resize');
           _this.previousPos = pos.pageX;
           break;
       }
@@ -118,7 +118,8 @@ function (_React$Component) {
       }
     });
     (0, _defineProperty2.default)((0, _assertThisInitialized2.default)((0, _assertThisInitialized2.default)(_this)), "onStopResize", function (data) {
-      document.body.style.cursor = 'auto';
+      document.body.classList.remove('row-resize');
+      document.body.classList.remove('col-resize');
 
       var resizedRefs = _this.elements.map(function (element) {
         return element.ref;
@@ -230,10 +231,9 @@ function (_React$Component) {
     key: "componentWillReceiveProps",
     value: function componentWillReceiveProps(props) {
       var children = this.getValidChildren(props);
-      var childCountHasChanged = children.length !== this.state.flexData.length;
 
-      if (childCountHasChanged || this.flexHasChanged(props)) {
-        var flexData = this.computeFlexData(children);
+      if (children.length !== this.state.flexData.length || props.orientation !== this.props.orientation || this.flexHasChanged(props)) {
+        var flexData = this.computeFlexData(children, props);
         this.setState({
           flexData: flexData
         });
@@ -440,9 +440,11 @@ function (_React$Component) {
   }, {
     key: "computePixelFlex",
     value: function computePixelFlex() {
+      var orientation = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : this.props.orientation;
+
       var domElement = _reactDom.default.findDOMNode(this);
 
-      switch (this.props.orientation) {
+      switch (orientation) {
         case 'horizontal':
           if (domElement.offsetHeight === 0.0) {
             console.warn('Found ReflexContainer with height=0, ' + 'this will cause invalid behavior...');
@@ -577,7 +579,8 @@ function (_React$Component) {
       var _this4 = this;
 
       var children = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : this.getValidChildren();
-      var pixelFlex = this.computePixelFlex();
+      var props = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : this.props;
+      var pixelFlex = this.computePixelFlex(props.orientation);
 
       var computeFreeFlex = function computeFreeFlex(flexData) {
         return flexData.reduce(function (sum, entry) {
