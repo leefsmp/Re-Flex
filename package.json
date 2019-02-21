@@ -1,10 +1,10 @@
 {
   "name": "react-reflex",
-  "version": "3.0.10",
+  "version": "3.0.12",
   "description": "Flex layout component for advanced React web applications",
   "main": "dist/commonjs/index.js",
   "module": "dist/es/index.js",
-  "types": "./index.d.ts",
+  "types": "./dist/index.d.ts",
   "files": [
     "dist",
     "styles.css"
@@ -19,7 +19,8 @@
     "build-lib-es": "rimraf dist/es && BABEL_ENV=es babel src/lib --out-dir=dist/es",
     "prebuild-css": "rimraf styles.css && node-sass src/lib/reflex-styles.scss styles.css",
     "build-css": "npm run prebuild-css && postcss styles.css -u autoprefixer -r",
-    "build": "npm run build-css && npm run build-lib-commonjs && npm run build-lib-es && npm run build-lib-umd && npm run build-lib-umd-dev && npm run build-demo",
+    "build-dts": "copy ./index.d.ts ./dist",
+    "build": "npm run build-css && npm run build-lib-commonjs && npm run build-lib-es && npm run build-lib-umd && npm run build-lib-umd-dev && npm run build-dts && npm run build-demo",
     "prepublish": "npm run build"
   },
   "author": "Philippe Leefsma",
@@ -69,6 +70,8 @@
     "babel-loader": "8.0.4",
     "babel-plugin-istanbul": "^2.0.1",
     "clean-webpack-plugin": "0.1.19",
+    "copy": "^0.3.2",
+    "cp": "^0.2.0",
     "css-loader": "1.0.0",
     "es6-promise": "^4.2.5",
     "eslint": "^0.21.1",
