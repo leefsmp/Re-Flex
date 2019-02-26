@@ -31,6 +31,7 @@ export type ReflexElementProps = {
     flex?: number;
     direction?: PosNeg | [PosNeg, PosNeg];
     onStartResize?: (args: HandlerProps) => void;
+    onStopResize?: (args: HandlerProps) => void;
     onResize?: (args: HandlerProps) => void;
 } & StyleAndClass;
 
