@@ -235,7 +235,8 @@ export default class ReflexSplitter extends React.Component {
     ].join(' ')
 
     return (
-      <div 
+      <div
+        {...this.props}
         onTouchStart={this.onMouseDown}
         onMouseDown={this.onMouseDown}
         style={this.props.style}
