@@ -227,7 +227,7 @@ export default class ReflexElement extends React.Component {
       ...this.props.className.split(' '),
       this.props.orientation,
       'reflex-element'
-    ].join(' ')
+    ].join(' ').trim()
 
     const style = {
       ...this.props.style,

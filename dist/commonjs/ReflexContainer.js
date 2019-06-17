@@ -7,6 +7,8 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.default = void 0;
 
+var _extends2 = _interopRequireDefault(require("@babel/runtime/helpers/extends"));
+
 var _objectSpread2 = _interopRequireDefault(require("@babel/runtime/helpers/objectSpread"));
 
 var _toConsumableArray2 = _interopRequireDefault(require("@babel/runtime/helpers/toConsumableArray"));
@@ -681,7 +683,7 @@ function (_React$Component) {
     value: function render() {
       var _this5 = this;
 
-      var className = [this.state.resizing ? 'reflex-resizing' : ''].concat((0, _toConsumableArray2.default)(this.props.className.split(' ')), [this.props.orientation, 'reflex-container']).join(' ');
+      var className = [this.state.resizing ? 'reflex-resizing' : ''].concat((0, _toConsumableArray2.default)(this.props.className.split(' ')), [this.props.orientation, 'reflex-container']).join(' ').trim();
       this.children = _react.default.Children.map(this.getValidChildren(), function (child, index) {
         if (index > _this5.state.flexData.length - 1) {
           return _react.default.createElement("div", null);
@@ -699,10 +701,9 @@ function (_React$Component) {
         });
         return _react.default.cloneElement(child, newProps);
       });
-      return _react.default.createElement("div", {
-        className: className,
-        style: this.props.style
-      }, this.children);
+      return _react.default.createElement("div", (0, _extends2.default)({}, this.props, {
+        className: className
+      }), this.children);
     }
   }]);
   return ReflexContainer;

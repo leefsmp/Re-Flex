@@ -1,3 +1,4 @@
+import _extends from "@babel/runtime/helpers/extends";
 import _objectSpread from "@babel/runtime/helpers/objectSpread";
 import _defineProperty from "@babel/runtime/helpers/defineProperty";
 ///////////////////////////////////////////////////////////
@@ -591,7 +592,7 @@ export default class ReflexContainer extends React.Component {
 
 
   render() {
-    const className = [this.state.resizing ? 'reflex-resizing' : '', ...this.props.className.split(' '), this.props.orientation, 'reflex-container'].join(' ');
+    const className = [this.state.resizing ? 'reflex-resizing' : '', ...this.props.className.split(' '), this.props.orientation, 'reflex-container'].join(' ').trim();
     this.children = React.Children.map(this.getValidChildren(), (child, index) => {
       if (index > this.state.flexData.length - 1) {
         return React.createElement("div", null);
@@ -611,10 +612,9 @@ export default class ReflexContainer extends React.Component {
 
       return React.cloneElement(child, newProps);
     });
-    return React.createElement("div", {
-      className: className,
-      style: this.props.style
-    }, this.children);
+    return React.createElement("div", _extends({}, this.props, {
+      className: className
+    }), this.children);
   }
 
 }
