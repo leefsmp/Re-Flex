@@ -10,6 +10,7 @@ import PropTypes from 'prop-types'
 import ReactDOM from 'react-dom'
 import React from 'react'
 import './Polyfills'
+import getDataProps from './utilities';
 
 export default class ReflexContainer extends React.Component {
 
@@ -883,7 +884,8 @@ export default class ReflexContainer extends React.Component {
       })
 
     return (
-      <div {...this.props}
+      <div
+        {...getDataProps(this.props)}
         className={className}>
         { this.children }
       </div>

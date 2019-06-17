@@ -9,6 +9,7 @@ import throttle from 'lodash.throttle'
 import Measure from 'react-measure'
 import PropTypes from 'prop-types'
 import React from 'react'
+import getDataProps from './utilities';
 
 class SizeAwareReflexElement extends React.Component {
 
@@ -236,7 +237,7 @@ export default class ReflexElement extends React.Component {
 
     return (
       <div
-        {...this.props}
+        {...getDataProps(this.props)}
         className={className}
         style={style}>
       {
