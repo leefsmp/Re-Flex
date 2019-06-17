@@ -7,6 +7,8 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.default = void 0;
 
+var _extends2 = _interopRequireDefault(require("@babel/runtime/helpers/extends"));
+
 var _toConsumableArray2 = _interopRequireDefault(require("@babel/runtime/helpers/toConsumableArray"));
 
 var _regenerator = _interopRequireDefault(require("@babel/runtime/regenerator"));
@@ -319,14 +321,14 @@ function (_React$Component2) {
   }, {
     key: "render",
     value: function render() {
-      var className = (0, _toConsumableArray2.default)(this.props.className.split(' ')).concat([this.props.orientation, 'reflex-element']).join(' ');
+      var className = (0, _toConsumableArray2.default)(this.props.className.split(' ')).concat([this.props.orientation, 'reflex-element']).join(' ').trim();
       var style = (0, _objectSpread2.default)({}, this.props.style, {
         flex: this.props.flex
       });
-      return _react.default.createElement("div", {
+      return _react.default.createElement("div", (0, _extends2.default)({}, this.props, {
         className: className,
         style: style
-      }, this.props.propagateDimensions ? _react.default.createElement(SizeAwareReflexElement, this.props) : this.renderChildren());
+      }), this.props.propagateDimensions ? _react.default.createElement(SizeAwareReflexElement, this.props) : this.renderChildren());
     }
   }]);
   return ReflexElement;

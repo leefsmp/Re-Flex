@@ -232,14 +232,13 @@ export default class ReflexSplitter extends React.Component {
       ...this.props.className.split(' '),
       this.state.active? 'active' : '',
       'reflex-splitter'
-    ].join(' ')
+    ].join(' ').trim()
 
     return (
       <div
         {...this.props}
         onTouchStart={this.onMouseDown}
         onMouseDown={this.onMouseDown}
-        style={this.props.style}
         className={className}
         id={this.props.id}>
         {this.props.children}

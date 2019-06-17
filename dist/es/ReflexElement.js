@@ -1,3 +1,4 @@
+import _extends from "@babel/runtime/helpers/extends";
 import _objectSpread from "@babel/runtime/helpers/objectSpread";
 import _defineProperty from "@babel/runtime/helpers/defineProperty";
 ///////////////////////////////////////////////////////////
@@ -178,16 +179,16 @@ export default class ReflexElement extends React.Component {
 
 
   render() {
-    const className = [...this.props.className.split(' '), this.props.orientation, 'reflex-element'].join(' ');
+    const className = [...this.props.className.split(' '), this.props.orientation, 'reflex-element'].join(' ').trim();
 
     const style = _objectSpread({}, this.props.style, {
       flex: this.props.flex
     });
 
-    return React.createElement("div", {
+    return React.createElement("div", _extends({}, this.props, {
       className: className,
       style: style
-    }, this.props.propagateDimensions ? React.createElement(SizeAwareReflexElement, this.props) : this.renderChildren());
+    }), this.props.propagateDimensions ? React.createElement(SizeAwareReflexElement, this.props) : this.renderChildren());
   }
 
 }

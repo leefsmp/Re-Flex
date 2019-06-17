@@ -1,3 +1,4 @@
+import _extends from "@babel/runtime/helpers/extends";
 import _defineProperty from "@babel/runtime/helpers/defineProperty";
 ///////////////////////////////////////////////////////////
 // ReflexSplitter
@@ -148,14 +149,13 @@ export default class ReflexSplitter extends React.Component {
   //
   /////////////////////////////////////////////////////////
   render() {
-    const className = [Browser.isMobile() ? 'reflex-thin' : '', ...this.props.className.split(' '), this.state.active ? 'active' : '', 'reflex-splitter'].join(' ');
-    return React.createElement("div", {
+    const className = [Browser.isMobile() ? 'reflex-thin' : '', ...this.props.className.split(' '), this.state.active ? 'active' : '', 'reflex-splitter'].join(' ').trim();
+    return React.createElement("div", _extends({}, this.props, {
       onTouchStart: this.onMouseDown,
       onMouseDown: this.onMouseDown,
-      style: this.props.style,
       className: className,
       id: this.props.id
-    }, this.props.children);
+    }), this.props.children);
   }
 
 }

@@ -857,7 +857,7 @@ export default class ReflexContainer extends React.Component {
       ...this.props.className.split(' '),
       this.props.orientation,
       'reflex-container'
-    ].join(' ')
+    ].join(' ').trim()
 
     this.children = React.Children.map(
       this.getValidChildren(), (child, index) => {
@@ -883,10 +883,8 @@ export default class ReflexContainer extends React.Component {
       })
 
     return (
-      <div
-        {...this.props}
-        className={className}
-        style={this.props.style}>
+      <div {...this.props}
+        className={className}>
         { this.children }
       </div>
     )

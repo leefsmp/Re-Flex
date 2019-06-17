@@ -7,6 +7,8 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.default = void 0;
 
+var _extends2 = _interopRequireDefault(require("@babel/runtime/helpers/extends"));
+
 var _toConsumableArray2 = _interopRequireDefault(require("@babel/runtime/helpers/toConsumableArray"));
 
 var _classCallCheck2 = _interopRequireDefault(require("@babel/runtime/helpers/classCallCheck"));
@@ -184,14 +186,13 @@ function (_React$Component) {
     //
     /////////////////////////////////////////////////////////
     value: function render() {
-      var className = (0, _toConsumableArray2.default)(this.props.className.split(' ')).concat([this.state.active ? 'active' : '', 'reflex-handle']).join(' ');
-      return _react.default.createElement("div", {
+      var className = (0, _toConsumableArray2.default)(this.props.className.split(' ')).concat([this.state.active ? 'active' : '', 'reflex-handle']).join(' ').trim();
+      return _react.default.createElement("div", (0, _extends2.default)({}, this.props, {
         onTouchStart: this.onMouseDown,
         onMouseDown: this.onMouseDown,
-        style: this.props.style,
         className: className,
         id: this.props.id
-      }, this.props.children);
+      }), this.props.children);
     }
   }]);
   return ReflexHandle;
