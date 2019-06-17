@@ -883,7 +883,9 @@ export default class ReflexContainer extends React.Component {
       })
 
     return (
-      <div className={className}
+      <div
+        {...this.props}
+        className={className}
         style={this.props.style}>
         { this.children }
       </div>

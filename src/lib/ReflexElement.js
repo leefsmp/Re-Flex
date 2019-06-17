@@ -235,7 +235,10 @@ export default class ReflexElement extends React.Component {
     }
 
     return (
-      <div className={className} style={style}>
+      <div
+        {...this.props}
+        className={className}
+        style={style}>
       {
         this.props.propagateDimensions
           ? <SizeAwareReflexElement {...this.props}/>
