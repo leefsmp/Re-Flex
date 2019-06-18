@@ -6,6 +6,7 @@ import _defineProperty from "@babel/runtime/helpers/defineProperty";
 // June 2018
 //
 ///////////////////////////////////////////////////////////
+import { getDataProps } from './utilities';
 import PropTypes from 'prop-types';
 import ReactDOM from 'react-dom';
 import React from 'react';
@@ -149,9 +150,10 @@ export default class ReflexHandle extends React.Component {
   /////////////////////////////////////////////////////////
   render() {
     const className = [...this.props.className.split(' '), this.state.active ? 'active' : '', 'reflex-handle'].join(' ').trim();
-    return React.createElement("div", _extends({}, this.props, {
+    return React.createElement("div", _extends({}, getDataProps(this.props), {
       onTouchStart: this.onMouseDown,
       onMouseDown: this.onMouseDown,
+      style: this.props.style,
       className: className,
       id: this.props.id
     }), this.props.children);

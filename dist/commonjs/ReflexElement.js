@@ -33,6 +33,8 @@ var _defineProperty2 = _interopRequireDefault(require("@babel/runtime/helpers/de
 
 var _ReflexHandle = _interopRequireDefault(require("./ReflexHandle"));
 
+var _utilities = require("./utilities");
+
 var _lodash = _interopRequireDefault(require("lodash.throttle"));
 
 var _reactMeasure = _interopRequireDefault(require("react-measure"));
@@ -325,7 +327,7 @@ function (_React$Component2) {
       var style = (0, _objectSpread2.default)({}, this.props.style, {
         flex: this.props.flex
       });
-      return _react.default.createElement("div", (0, _extends2.default)({}, this.props, {
+      return _react.default.createElement("div", (0, _extends2.default)({}, (0, _utilities.getDataProps)(this.props), {
         className: className,
         style: style
       }), this.props.propagateDimensions ? _react.default.createElement(SizeAwareReflexElement, this.props) : this.renderChildren());

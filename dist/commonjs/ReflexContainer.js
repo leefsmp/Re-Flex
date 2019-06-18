@@ -31,6 +31,8 @@ var _ReflexSplitter = _interopRequireDefault(require("./ReflexSplitter"));
 
 var _ReflexEvents = _interopRequireDefault(require("./ReflexEvents"));
 
+var _utilities = require("./utilities");
+
 var _propTypes = _interopRequireDefault(require("prop-types"));
 
 var _reactDom = _interopRequireDefault(require("react-dom"));
@@ -701,7 +703,8 @@ function (_React$Component) {
         });
         return _react.default.cloneElement(child, newProps);
       });
-      return _react.default.createElement("div", (0, _extends2.default)({}, this.props, {
+      return _react.default.createElement("div", (0, _extends2.default)({}, (0, _utilities.getDataProps)(this.props), {
+        style: this.props.style,
         className: className
       }), this.children);
     }

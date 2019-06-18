@@ -6,11 +6,11 @@
 ///////////////////////////////////////////////////////////
 import ReflexSplitter from './ReflexSplitter'
 import ReflexEvents from './ReflexEvents'
+import {getDataProps} from './utilities'
 import PropTypes from 'prop-types'
 import ReactDOM from 'react-dom'
 import React from 'react'
 import './Polyfills'
-import getDataProps from './utilities';
 
 export default class ReflexContainer extends React.Component {
 
@@ -886,6 +886,7 @@ export default class ReflexContainer extends React.Component {
     return (
       <div
         {...getDataProps(this.props)}
+        style={this.props.style}
         className={className}>
         { this.children }
       </div>

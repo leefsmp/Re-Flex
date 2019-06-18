@@ -1,3 +1,5 @@
+import _objectSpread from "@babel/runtime/helpers/objectSpread";
+
 /////////////////////////////////////////////////////////
 // Browser Utils
 //
@@ -85,5 +87,19 @@ class Browser {
   }
 
 }
+/** Given some props, return only the props that start with "data-". */
 
-export default Browser;
+
+const getDataProps = props => {
+  return Object.keys(props).reduce((prev, key) => {
+    if (key.substr(0, 5) === 'data-') {
+      return _objectSpread({}, prev, {
+        [key]: props[key]
+      });
+    }
+
+    return prev;
+  }, {});
+};
+
+export { getDataProps, Browser };

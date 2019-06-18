@@ -8,6 +8,7 @@ import _defineProperty from "@babel/runtime/helpers/defineProperty";
 //
 ///////////////////////////////////////////////////////////
 import ReflexHandle from './ReflexHandle';
+import { getDataProps } from './utilities';
 import throttle from 'lodash.throttle';
 import Measure from 'react-measure';
 import PropTypes from 'prop-types';
@@ -185,7 +186,7 @@ export default class ReflexElement extends React.Component {
       flex: this.props.flex
     });
 
-    return React.createElement("div", _extends({}, this.props, {
+    return React.createElement("div", _extends({}, getDataProps(this.props), {
       className: className,
       style: style
     }), this.props.propagateDimensions ? React.createElement(SizeAwareReflexElement, this.props) : this.renderChildren());

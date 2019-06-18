@@ -4,11 +4,10 @@
 // December 2016
 //
 ///////////////////////////////////////////////////////////
+import {Browser,getDataProps} from './utilities'
 import PropTypes from 'prop-types'
 import ReactDOM from 'react-dom'
-import Browser from './Browser'
 import React from 'react'
-import getDataProps from './utilities';
 
 export default class ReflexSplitter extends React.Component {
 
@@ -240,6 +239,7 @@ export default class ReflexSplitter extends React.Component {
         {...getDataProps(this.props)}
         onTouchStart={this.onMouseDown}
         onMouseDown={this.onMouseDown}
+        style={this.props.style}
         className={className}
         id={this.props.id}>
         {this.props.children}

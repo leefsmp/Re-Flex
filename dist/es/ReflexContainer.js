@@ -9,6 +9,7 @@ import _defineProperty from "@babel/runtime/helpers/defineProperty";
 ///////////////////////////////////////////////////////////
 import ReflexSplitter from './ReflexSplitter';
 import ReflexEvents from './ReflexEvents';
+import { getDataProps } from './utilities';
 import PropTypes from 'prop-types';
 import ReactDOM from 'react-dom';
 import React from 'react';
@@ -612,7 +613,8 @@ export default class ReflexContainer extends React.Component {
 
       return React.cloneElement(child, newProps);
     });
-    return React.createElement("div", _extends({}, this.props, {
+    return React.createElement("div", _extends({}, getDataProps(this.props), {
+      style: this.props.style,
       className: className
     }), this.children);
   }

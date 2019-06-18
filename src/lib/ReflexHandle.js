@@ -4,10 +4,10 @@
 // June 2018
 //
 ///////////////////////////////////////////////////////////
+import {getDataProps} from './utilities'
 import PropTypes from 'prop-types'
 import ReactDOM from 'react-dom'
 import React from 'react'
-import getDataProps from './utilities';
 
 export default class ReflexHandle extends React.Component {
 
@@ -240,6 +240,7 @@ export default class ReflexHandle extends React.Component {
         {...getDataProps(this.props)}
         onTouchStart={this.onMouseDown}
         onMouseDown={this.onMouseDown}
+        style={this.props.style}
         className={className}
         id={this.props.id}>
         {this.props.children}

@@ -25,6 +25,8 @@ var _assertThisInitialized2 = _interopRequireDefault(require("@babel/runtime/hel
 
 var _defineProperty2 = _interopRequireDefault(require("@babel/runtime/helpers/defineProperty"));
 
+var _utilities = require("./utilities");
+
 var _propTypes = _interopRequireDefault(require("prop-types"));
 
 var _reactDom = _interopRequireDefault(require("react-dom"));
@@ -187,9 +189,10 @@ function (_React$Component) {
     /////////////////////////////////////////////////////////
     value: function render() {
       var className = (0, _toConsumableArray2.default)(this.props.className.split(' ')).concat([this.state.active ? 'active' : '', 'reflex-handle']).join(' ').trim();
-      return _react.default.createElement("div", (0, _extends2.default)({}, this.props, {
+      return _react.default.createElement("div", (0, _extends2.default)({}, (0, _utilities.getDataProps)(this.props), {
         onTouchStart: this.onMouseDown,
         onMouseDown: this.onMouseDown,
+        style: this.props.style,
         className: className,
         id: this.props.id
       }), this.props.children);

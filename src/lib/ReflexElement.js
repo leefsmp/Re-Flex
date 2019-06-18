@@ -5,11 +5,11 @@
 //
 ///////////////////////////////////////////////////////////
 import ReflexHandle from './ReflexHandle'
+import {getDataProps} from './utilities'
 import throttle from 'lodash.throttle'
 import Measure from 'react-measure'
 import PropTypes from 'prop-types'
 import React from 'react'
-import getDataProps from './utilities';
 
 class SizeAwareReflexElement extends React.Component {
 

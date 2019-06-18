@@ -5,7 +5,11 @@ var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefau
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.default = void 0;
+exports.Browser = exports.getDataProps = void 0;
+
+var _defineProperty2 = _interopRequireDefault(require("@babel/runtime/helpers/defineProperty"));
+
+var _objectSpread3 = _interopRequireDefault(require("@babel/runtime/helpers/objectSpread"));
 
 var _classCallCheck2 = _interopRequireDefault(require("@babel/runtime/helpers/classCallCheck"));
 
@@ -123,6 +127,19 @@ function () {
   }]);
   return Browser;
 }();
+/** Given some props, return only the props that start with "data-". */
 
-var _default = Browser;
-exports.default = _default;
+
+exports.Browser = Browser;
+
+var getDataProps = function getDataProps(props) {
+  return Object.keys(props).reduce(function (prev, key) {
+    if (key.substr(0, 5) === 'data-') {
+      return (0, _objectSpread3.default)({}, prev, (0, _defineProperty2.default)({}, key, props[key]));
+    }
+
+    return prev;
+  }, {});
+};
+
+exports.getDataProps = getDataProps;

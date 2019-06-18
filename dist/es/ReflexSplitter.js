@@ -6,9 +6,9 @@ import _defineProperty from "@babel/runtime/helpers/defineProperty";
 // December 2016
 //
 ///////////////////////////////////////////////////////////
+import { Browser, getDataProps } from './utilities';
 import PropTypes from 'prop-types';
 import ReactDOM from 'react-dom';
-import Browser from './Browser';
 import React from 'react';
 export default class ReflexSplitter extends React.Component {
   /////////////////////////////////////////////////////////
@@ -150,9 +150,10 @@ export default class ReflexSplitter extends React.Component {
   /////////////////////////////////////////////////////////
   render() {
     const className = [Browser.isMobile() ? 'reflex-thin' : '', ...this.props.className.split(' '), this.state.active ? 'active' : '', 'reflex-splitter'].join(' ').trim();
-    return React.createElement("div", _extends({}, this.props, {
+    return React.createElement("div", _extends({}, getDataProps(this.props), {
       onTouchStart: this.onMouseDown,
       onMouseDown: this.onMouseDown,
+      style: this.props.style,
       className: className,
       id: this.props.id
     }), this.props.children);

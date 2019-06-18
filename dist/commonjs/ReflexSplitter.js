@@ -25,11 +25,11 @@ var _assertThisInitialized2 = _interopRequireDefault(require("@babel/runtime/hel
 
 var _defineProperty2 = _interopRequireDefault(require("@babel/runtime/helpers/defineProperty"));
 
+var _utilities = require("./utilities");
+
 var _propTypes = _interopRequireDefault(require("prop-types"));
 
 var _reactDom = _interopRequireDefault(require("react-dom"));
-
-var _Browser = _interopRequireDefault(require("./Browser"));
 
 var _react = _interopRequireDefault(require("react"));
 
@@ -188,10 +188,11 @@ function (_React$Component) {
     //
     /////////////////////////////////////////////////////////
     value: function render() {
-      var className = [_Browser.default.isMobile() ? 'reflex-thin' : ''].concat((0, _toConsumableArray2.default)(this.props.className.split(' ')), [this.state.active ? 'active' : '', 'reflex-splitter']).join(' ').trim();
-      return _react.default.createElement("div", (0, _extends2.default)({}, this.props, {
+      var className = [_utilities.Browser.isMobile() ? 'reflex-thin' : ''].concat((0, _toConsumableArray2.default)(this.props.className.split(' ')), [this.state.active ? 'active' : '', 'reflex-splitter']).join(' ').trim();
+      return _react.default.createElement("div", (0, _extends2.default)({}, (0, _utilities.getDataProps)(this.props), {
         onTouchStart: this.onMouseDown,
         onMouseDown: this.onMouseDown,
+        style: this.props.style,
         className: className,
         id: this.props.id
       }), this.props.children);
