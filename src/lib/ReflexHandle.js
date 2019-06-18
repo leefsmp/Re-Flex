@@ -7,6 +7,7 @@
 import PropTypes from 'prop-types'
 import ReactDOM from 'react-dom'
 import React from 'react'
+import getDataProps from './utilities';
 
 export default class ReflexHandle extends React.Component {
 
@@ -236,7 +237,7 @@ export default class ReflexHandle extends React.Component {
 
     return (
       <div
-        {...this.props}
+        {...getDataProps(this.props)}
         onTouchStart={this.onMouseDown}
         onMouseDown={this.onMouseDown}
         className={className}
