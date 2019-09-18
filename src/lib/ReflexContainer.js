@@ -125,19 +125,17 @@ export default class ReflexContainer extends React.Component {
   //
   //
   /////////////////////////////////////////////////////////////
-  componentDidUpdate (props) {
+  static getDerivedStateFromProps (props) {
 
     const children = this.getValidChildren (props)
+    const newState = {};
 
     if ((children.length !== this.state.flexData.length) ||
         (props.orientation !== this.props.orientation) || 
         this.flexHasChanged(props)) {
 
       const flexData = this.computeFlexData(children, props)
-
-      this.setState({
-        flexData
-      })
+      newState.flexData = flexData;
     }
 
     if (props.windowResizeAware !== this.state.windowResizeAware) {
@@ -148,9 +146,14 @@ export default class ReflexContainer extends React.Component {
         window.removeEventListener(
           'resize', this.onWindowResize)
       }
-      this.setState({
-        windowResizeAware: props.windowResizeAware
-      })
+      newState.windowResizeAware = props.windowResizeAware;
+    }
+
+    if(Object.keys(newState).length === 0){
+      return null;
+    }
+    else{
+      return newState;
     }
   }
 
