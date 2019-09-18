@@ -125,7 +125,7 @@ export default class ReflexContainer extends React.Component {
   //
   //
   /////////////////////////////////////////////////////////////
-  componentWillReceiveProps (props) {
+  componentDidUpdate (props) {
 
     const children = this.getValidChildren (props)
 

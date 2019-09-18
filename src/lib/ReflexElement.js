@@ -160,7 +160,7 @@ export default class ReflexElement extends React.Component {
   //
   //
   /////////////////////////////////////////////////////////
-  async componentWillReceiveProps (props) {
+  async componentDidUpdate (props) {
 
     if (props.size !== this.state.size) {
 
