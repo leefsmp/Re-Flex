@@ -137,57 +137,46 @@ export default class ReflexElement extends React.Component {
   //
   /////////////////////////////////////////////////////////
   constructor (props) {
-
     super (props)
-
     this.state = {
-      events: props.events,
       size: props.size
     }
   }
 
-  /////////////////////////////////////////////////////////
+  /////////////////////////////////////////////////////////////
   //
   //
-  /////////////////////////////////////////////////////////
-  setStateAsync (state) {
-    return new Promise((resolve) => {
-      this.setState(state, () => resolve())
-    })
+  /////////////////////////////////////////////////////////////
+  static getDerivedStateFromProps (nextProps, prevState) {
+    if (nextProps.size !== prevState.size) {
+      return {
+        ...prevState,
+        size: nextProps.size
+      }
+    }
+    return null
   }
 
   /////////////////////////////////////////////////////////
   //
   //
   /////////////////////////////////////////////////////////
-  async componentWillReceiveProps (props) {
+  async componentDidUpdate (prevProps, prevState, snapshot) {
 
-    if (props.size !== this.state.size) {
+    if (prevState.size !== this.state.size) {
 
-      await this.setStateAsync({
-        size: props.size
-      })
+      const directions = this.toArray(this.props.direction)
 
-      const directions = this.toArray(props.direction)
+      for (let direction of directions) {
 
-      for (let dir of directions) {
-
-        await this.state.events.emit('element.size', {
-          index: props.index,
-          size: props.size,
-          direction: dir
+        await this.props.events.emit('element.size', {
+          index: this.props.index,
+          size: this.props.size,
+          direction
         })
       }
     }
   }
-
-  /////////////////////////////////////////////////////////////
-  //
-  //
-  /////////////////////////////////////////////////////////////
-  // static getDerivedStateFromProps (nextProps, prevState) {
-  //  TODO: implement when migrating to React 16+
-  // }
 
   /////////////////////////////////////////////////////////
   //
@@ -210,7 +199,7 @@ export default class ReflexElement extends React.Component {
           return React.cloneElement(child, {
             ...child.props,
             index: this.props.index - 1,
-            events: this.state.events
+            events: this.props.events
           })
         }
 

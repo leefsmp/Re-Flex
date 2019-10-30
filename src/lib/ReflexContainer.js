@@ -50,16 +50,12 @@ export default class ReflexContainer extends React.Component {
   //
   /////////////////////////////////////////////////////////
   constructor (props) {
-
     super (props)
-
+    this.events = new ReflexEvents()
+    this.children = []
     this.state = {
       flexData: []
     }
-
-    this.events = new ReflexEvents()
-
-    this.children = []
   }
 
   /////////////////////////////////////////////////////////
@@ -125,42 +121,57 @@ export default class ReflexContainer extends React.Component {
   //
   //
   /////////////////////////////////////////////////////////////
-  componentWillReceiveProps (props) {
+  // componentDidUpdate (prevProps, prevState) {
 
-    const children = this.getValidChildren (props)
+  //   const children = this.getValidChildren(this.props)
 
-    if ((children.length !== this.state.flexData.length) ||
-        (props.orientation !== this.props.orientation) || 
-        this.flexHasChanged(props)) {
+  //   if ((children.length !== this.state.flexData.length) ||
+  //       (this.props.orientation !== this.props.orientation) || 
+  //       this.flexHasChanged(this.props)) {
 
-      const flexData = this.computeFlexData(children, props)
+  //     const flexData = this.computeFlexData(
+  //       children, this.props)
+
+  //     this.setState({
+  //       flexData
+  //     })
+  //   }
+
+  //   if (this.props.windowResizeAware !== this.state.windowResizeAware) {
+  //     !this.props.windowResizeAware
+  //       ?  window.removeEventListener('resize', this.onWindowResize)
+  //       : window.addEventListener('resize', this.onWindowResize)
+  //     this.setState({
+  //       windowResizeAware: this.props.windowResizeAware
+  //     })
+  //   }
+  // }
+
+  UNSAFE_componentWillReceiveProps(props) {
+
+    const children = this.getValidChildren(props)
+
+    if (children.length !== this.state.flexData.length || 
+      props.orientation !== this.props.orientation || 
+      this.flexHasChanged(props)) 
+    {
+      const flexData = this.computeFlexData(
+        children, props)
 
       this.setState({
         flexData
-      })
+      });
     }
 
     if (props.windowResizeAware !== this.state.windowResizeAware) {
-      if (props.windowResizeAware) {
-        window.addEventListener(
-          'resize', this.onWindowResize)
-      } else {
-        window.removeEventListener(
-          'resize', this.onWindowResize)
-      }
+      !props.windowResizeAware
+        ? window.removeEventListener('resize', this.onWindowResize)
+        : window.addEventListener('resize', this.onWindowResize)
       this.setState({
         windowResizeAware: props.windowResizeAware
       })
     }
-  }
-
-  /////////////////////////////////////////////////////////
-  //
-  //
-  /////////////////////////////////////////////////////////
-  // static getDerivedStateFromProps (nextProps, prevState) {
-  //   TODO: implement when migrating to React 16+
-  // }
+  } 
 
   /////////////////////////////////////////////////////////
   // attempts to preserve current flex on window resize
@@ -893,6 +904,5 @@ export default class ReflexContainer extends React.Component {
     )
   }
 }
-
 
 
