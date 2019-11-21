@@ -39,13 +39,13 @@ export default class ReflexContainer extends React.Component {
       switch (this.props.orientation) {
         case 'horizontal':
           document.body.classList.add('row-resize');
-          this.previousPos = pos.pageY;
+          this.previousPos = pos.clientY;
           break;
 
         case 'vertical':
         default:
           document.body.classList.add('col-resize');
-          this.previousPos = pos.pageX;
+          this.previousPos = pos.clientX;
           break;
       }
 
@@ -54,30 +54,32 @@ export default class ReflexContainer extends React.Component {
     });
 
     _defineProperty(this, "onResize", data => {
-      const offset = this.getOffset(data.event);
-      const availableOffset = this.computeAvailableOffset(data.index, offset);
+      const pos = data.event.changedTouches ? data.event.changedTouches[0] : data.event;
+      const offset = this.getOffset(pos, data.domElement);
 
-      if (availableOffset) {
-        const pos = data.event.changedTouches ? data.event.changedTouches[0] : data.event;
+      switch (this.props.orientation) {
+        case 'horizontal':
+          this.previousPos = pos.clientY;
+          break;
 
-        switch (this.props.orientation) {
-          case 'horizontal':
-            this.previousPos = pos.pageY;
-            break;
+        case 'vertical':
+        default:
+          this.previousPos = pos.clientX;
+          break;
+      }
 
-          case 'vertical':
-          default:
-            this.previousPos = pos.pageX;
-            break;
+      if (offset) {
+        const availableOffset = this.computeAvailableOffset(data.index, offset);
+
+        if (availableOffset) {
+          this.elements = this.dispatchOffset(data.index, availableOffset);
+          this.adjustFlex(this.elements);
+          this.setState({
+            resizing: true
+          }, () => {
+            this.emitElementsEvent(this.elements, 'onResize');
+          });
         }
-
-        this.elements = this.dispatchOffset(data.index, availableOffset);
-        this.adjustFlex(this.elements);
-        this.setState({
-          resizing: true
-        }, () => {
-          this.emitElementsEvent(this.elements, 'onResize');
-        });
       }
     });
 
@@ -262,17 +264,51 @@ export default class ReflexContainer extends React.Component {
   /////////////////////////////////////////////////////////
 
 
-  getOffset(event) {
-    const pos = event.changedTouches ? event.changedTouches[0] : event;
+  getOffset(pos, domElement) {
+    const {
+      top,
+      bottom,
+      left,
+      right
+    } = domElement.getBoundingClientRect();
 
     switch (this.props.orientation) {
       case 'horizontal':
-        return pos.pageY - this.previousPos;
+        {
+          const offset = pos.clientY - this.previousPos;
+
+          if (offset > 0) {
+            if (pos.clientY >= top) {
+              return offset;
+            }
+          } else {
+            if (pos.clientY <= bottom) {
+              return offset;
+            }
+          }
+
+          break;
+        }
 
       case 'vertical':
       default:
-        return pos.pageX - this.previousPos;
+        {
+          const offset = pos.clientX - this.previousPos;
+
+          if (offset > 0) {
+            if (pos.clientX > left) {
+              return offset;
+            }
+          } else {
+            if (pos.clientX < right) {
+              return offset;
+            }
+          }
+        }
+        break;
     }
+
+    return 0;
   } /////////////////////////////////////////////////////////
   // Handles startResize event
   //

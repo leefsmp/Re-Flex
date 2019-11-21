@@ -234,21 +234,43 @@ export default class ReflexContainer extends React.Component {
   // Computes offset from pointer position
   //
   /////////////////////////////////////////////////////////
-  getOffset (event) {
+  getOffset (pos, domElement) {
 
-    const pos = event.changedTouches ?
-      event.changedTouches[0] :
-      event
+    const {
+      top, bottom,
+      left, right
+    } = domElement.getBoundingClientRect()
 
     switch (this.props.orientation) {
-
-      case 'horizontal':
-        return pos.pageY - this.previousPos
-
-      case 'vertical':
-      default:
-        return pos.pageX - this.previousPos
+      case 'horizontal': {
+        const offset = pos.clientY - this.previousPos
+        if (offset > 0) {
+          if (pos.clientY >= top) {
+            return offset
+          }
+        } else {
+          if (pos.clientY <= bottom) {
+            return offset
+          }
+        }
+        break
+      }
+      case 'vertical': 
+      default: {
+        const offset = pos.clientX - this.previousPos
+        if (offset > 0) {
+          if (pos.clientX > left) {
+            return offset
+          }
+        } else {
+          if (pos.clientX < right) {
+            return offset
+          }
+        }
+      }
+      break
     }
+    return 0
   }
 
   /////////////////////////////////////////////////////////
@@ -265,13 +287,13 @@ export default class ReflexContainer extends React.Component {
 
       case 'horizontal':
         document.body.classList.add('row-resize')
-        this.previousPos = pos.pageY
+        this.previousPos = pos.clientY
         break
 
       case 'vertical':
       default:
         document.body.classList.add('col-resize')
-        this.previousPos = pos.pageX
+        this.previousPos = pos.clientX
         break
     }
 
@@ -290,41 +312,43 @@ export default class ReflexContainer extends React.Component {
   /////////////////////////////////////////////////////////
   onResize = (data) => {
 
-    const offset = this.getOffset(data.event)
+    const pos = data.event.changedTouches 
+      ? data.event.changedTouches[0] 
+      : data.event
 
-    const availableOffset =
-      this.computeAvailableOffset(
-        data.index, offset)
+    const offset = this.getOffset(
+      pos, data.domElement)
 
-    if (availableOffset) {
+    switch (this.props.orientation) {
+      case 'horizontal':
+        this.previousPos = pos.clientY
+        break
+      case 'vertical':
+      default:
+        this.previousPos = pos.clientX
+        break
+    }
 
-      const pos = data.event.changedTouches ?
-        data.event.changedTouches[0] :
-        data.event
+    if (offset) {
+     
+      const availableOffset =
+        this.computeAvailableOffset(
+          data.index, offset)
 
-      switch (this.props.orientation) {
+      if (availableOffset) {
 
-        case 'horizontal':
-          this.previousPos = pos.pageY
-          break
+        this.elements = this.dispatchOffset(
+          data.index, availableOffset)
 
-        case 'vertical':
-        default:
-          this.previousPos = pos.pageX
-          break
+        this.adjustFlex(this.elements)
+
+        this.setState({
+          resizing: true
+        }, () => {
+          this.emitElementsEvent(
+            this.elements, 'onResize')
+        })
       }
-
-      this.elements = this.dispatchOffset(
-        data.index, availableOffset)
-
-      this.adjustFlex(this.elements)
-
-      this.setState({
-        resizing: true
-      }, () => {
-        this.emitElementsEvent(
-          this.elements, 'onResize')
-      })
     }
   }
 

@@ -4,7 +4,7 @@
 // December 2016
 //
 ///////////////////////////////////////////////////////////
-import {Browser,getDataProps} from './utilities'
+import {Browser, getDataProps} from './utilities'
 import PropTypes from 'prop-types'
 import ReactDOM from 'react-dom'
 import React from 'react'
@@ -147,17 +147,20 @@ export default class ReflexSplitter extends React.Component {
 
     if (this.state.active) {
 
+      const domElement = ReactDOM.findDOMNode(this)
+
       this.props.events.emit(
         'resize', {
           index: this.props.index,
+          domElement,
           event
         })
 
       if (this.props.onResize) {
 
         this.props.onResize({
-          domElement: ReactDOM.findDOMNode(this),
-          component: this
+          component: this,
+          domElement
         })
       }    
 
@@ -228,9 +231,9 @@ export default class ReflexSplitter extends React.Component {
   render () {
 
     const className = [
-      Browser.isMobile() ? 'reflex-thin' :'',
+      Browser.isMobile() ? 'reflex-thin' : '',
       ...this.props.className.split(' '),
-      this.state.active? 'active' : '',
+      this.state.active ? 'active' : '',
       'reflex-splitter'
     ].join(' ').trim()
 

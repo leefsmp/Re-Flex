@@ -93,17 +93,20 @@ class Browser {
   }
 }
 
-/** Given some props, return only the props that start with "data-". */
+/////////////////////////////////////////////////////////
+// Returns only the props that start with "data-"
+//
+/////////////////////////////////////////////////////////
 const getDataProps = (props) => {
-    return Object.keys(props).reduce((prev, key) => {
-        if (key.substr(0, 5) === 'data-') {
-            return {
-                ...prev,
-                [key]: props[key]
-            };
+  return Object.keys(props).reduce((prev, key) => {
+    if (key.substr(0, 5) === 'data-') {
+        return {
+          ...prev,
+          [key]: props[key]
         }
-        return prev
-    }, {})
+    }
+    return prev
+  }, {})
 }
 
 export {

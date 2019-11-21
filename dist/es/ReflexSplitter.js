@@ -33,15 +33,17 @@ export default class ReflexSplitter extends React.Component {
 
     _defineProperty(this, "onMouseMove", event => {
       if (this.state.active) {
+        const domElement = ReactDOM.findDOMNode(this);
         this.props.events.emit('resize', {
           index: this.props.index,
+          domElement,
           event
         });
 
         if (this.props.onResize) {
           this.props.onResize({
-            domElement: ReactDOM.findDOMNode(this),
-            component: this
+            component: this,
+            domElement
           });
         }
 

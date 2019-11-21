@@ -86,8 +86,10 @@ class Browser {
     return Browser.isBrowser() && (Browser.isWindowsMobile() || Browser.isBlackBerry() || Browser.isAndroid() || Browser.isIOS());
   }
 
-}
-/** Given some props, return only the props that start with "data-". */
+} /////////////////////////////////////////////////////////
+// Returns only the props that start with "data-"
+//
+/////////////////////////////////////////////////////////
 
 
 const getDataProps = props => {

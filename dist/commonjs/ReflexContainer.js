@@ -77,13 +77,13 @@ function (_React$Component) {
       switch (_this.props.orientation) {
         case 'horizontal':
           document.body.classList.add('row-resize');
-          _this.previousPos = pos.pageY;
+          _this.previousPos = pos.clientY;
           break;
 
         case 'vertical':
         default:
           document.body.classList.add('col-resize');
-          _this.previousPos = pos.pageX;
+          _this.previousPos = pos.clientX;
           break;
       }
 
@@ -92,33 +92,35 @@ function (_React$Component) {
       _this.emitElementsEvent(_this.elements, 'onStartResize');
     });
     (0, _defineProperty2.default)((0, _assertThisInitialized2.default)((0, _assertThisInitialized2.default)(_this)), "onResize", function (data) {
-      var offset = _this.getOffset(data.event);
+      var pos = data.event.changedTouches ? data.event.changedTouches[0] : data.event;
 
-      var availableOffset = _this.computeAvailableOffset(data.index, offset);
+      var offset = _this.getOffset(pos, data.domElement);
 
-      if (availableOffset) {
-        var pos = data.event.changedTouches ? data.event.changedTouches[0] : data.event;
+      switch (_this.props.orientation) {
+        case 'horizontal':
+          _this.previousPos = pos.clientY;
+          break;
 
-        switch (_this.props.orientation) {
-          case 'horizontal':
-            _this.previousPos = pos.pageY;
-            break;
+        case 'vertical':
+        default:
+          _this.previousPos = pos.clientX;
+          break;
+      }
 
-          case 'vertical':
-          default:
-            _this.previousPos = pos.pageX;
-            break;
+      if (offset) {
+        var availableOffset = _this.computeAvailableOffset(data.index, offset);
+
+        if (availableOffset) {
+          _this.elements = _this.dispatchOffset(data.index, availableOffset);
+
+          _this.adjustFlex(_this.elements);
+
+          _this.setState({
+            resizing: true
+          }, function () {
+            _this.emitElementsEvent(_this.elements, 'onResize');
+          });
         }
-
-        _this.elements = _this.dispatchOffset(data.index, availableOffset);
-
-        _this.adjustFlex(_this.elements);
-
-        _this.setState({
-          resizing: true
-        }, function () {
-          _this.emitElementsEvent(_this.elements, 'onResize');
-        });
       }
     });
     (0, _defineProperty2.default)((0, _assertThisInitialized2.default)((0, _assertThisInitialized2.default)(_this)), "onStopResize", function (data) {
@@ -319,17 +321,50 @@ function (_React$Component) {
 
   }, {
     key: "getOffset",
-    value: function getOffset(event) {
-      var pos = event.changedTouches ? event.changedTouches[0] : event;
+    value: function getOffset(pos, domElement) {
+      var _domElement$getBoundi = domElement.getBoundingClientRect(),
+          top = _domElement$getBoundi.top,
+          bottom = _domElement$getBoundi.bottom,
+          left = _domElement$getBoundi.left,
+          right = _domElement$getBoundi.right;
 
       switch (this.props.orientation) {
         case 'horizontal':
-          return pos.pageY - this.previousPos;
+          {
+            var offset = pos.clientY - this.previousPos;
+
+            if (offset > 0) {
+              if (pos.clientY >= top) {
+                return offset;
+              }
+            } else {
+              if (pos.clientY <= bottom) {
+                return offset;
+              }
+            }
+
+            break;
+          }
 
         case 'vertical':
         default:
-          return pos.pageX - this.previousPos;
+          {
+            var _offset = pos.clientX - this.previousPos;
+
+            if (_offset > 0) {
+              if (pos.clientX > left) {
+                return _offset;
+              }
+            } else {
+              if (pos.clientX < right) {
+                return _offset;
+              }
+            }
+          }
+          break;
       }
+
+      return 0;
     } /////////////////////////////////////////////////////////
     // Handles startResize event
     //

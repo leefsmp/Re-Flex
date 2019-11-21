@@ -126,8 +126,10 @@ function () {
     }
   }]);
   return Browser;
-}();
-/** Given some props, return only the props that start with "data-". */
+}(); /////////////////////////////////////////////////////////
+// Returns only the props that start with "data-"
+//
+/////////////////////////////////////////////////////////
 
 
 exports.Browser = Browser;
