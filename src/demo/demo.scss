@@ -1,18 +1,11 @@
 html {
-  overflow-style: none;
   box-sizing: border-box;
 }
 
-::-webkit-scrollbar {
-  width: 0 !important;
-  display: none;
-}
-
 html, body {
-  -ms-overflow-style: none;
-  margin: 0;
-  padding: 0;
   height: 100%;
+  padding: 0;
+  margin: 0; 
 }
 
 body {
