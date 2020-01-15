@@ -70,15 +70,18 @@ function (_React$Component) {
     _this = (0, _possibleConstructorReturn2.default)(this, (0, _getPrototypeOf2.default)(ReflexHandle).call(this, props));
     (0, _defineProperty2.default)((0, _assertThisInitialized2.default)((0, _assertThisInitialized2.default)(_this)), "onMouseMove", function (event) {
       if (_this.state.active) {
+        var domElement = _reactDom.default.findDOMNode((0, _assertThisInitialized2.default)((0, _assertThisInitialized2.default)(_this)));
+
         _this.props.events.emit('resize', {
           index: _this.props.index,
+          domElement: domElement,
           event: event
         });
 
         if (_this.props.onResize) {
           _this.props.onResize({
-            domElement: _reactDom.default.findDOMNode((0, _assertThisInitialized2.default)((0, _assertThisInitialized2.default)(_this))),
-            component: (0, _assertThisInitialized2.default)((0, _assertThisInitialized2.default)(_this))
+            component: (0, _assertThisInitialized2.default)((0, _assertThisInitialized2.default)(_this)),
+            domElement: domElement
           });
         }
 
