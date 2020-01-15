@@ -28,7 +28,7 @@ export type ReflexElementProps = {
     size?: number;
     minSize?: number;
     maxSize?: number;
-    flex?: number;
+    flex?: number | string;
     direction?: PosNeg | [PosNeg, PosNeg];
     onStartResize?: (args: HandlerProps) => void;
     onStopResize?: (args: HandlerProps) => void;
