@@ -582,14 +582,14 @@ export default class ReflexContainer extends React.Component {
       let hasContrain = false;
       const freeElements = computeFreeElements(flexDataIn);
       const freeFlex = computeFreeFlex(flexDataIn);
-      const flexDataOut = flexDataIn.map((entry, idx) => {
+      const flexDataOut = flexDataIn.map(entry => {
         if (ReflexSplitter.isA(entry)) {
           return entry;
         }
 
         const proposedFlex = !entry.constrained ? freeFlex / freeElements : entry.flex;
         const constrainedFlex = Math.min(entry.sizeFlex, Math.min(entry.maxFlex, Math.max(entry.minFlex, proposedFlex)));
-        const constrained = constrainedFlex !== proposedFlex;
+        const constrained = entry.constrained || constrainedFlex !== proposedFlex;
         hasContrain = hasContrain || constrained;
         return _objectSpread({}, entry, {
           flex: constrainedFlex,

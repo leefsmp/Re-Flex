@@ -788,9 +788,7 @@ export default class ReflexContainer extends React.Component {
     }
 
     const flexDataInit = children.map((child) => {
-
       const props = child.props
-
       return {
         maxFlex: (props.maxSize || Number.MAX_VALUE) * pixelFlex,
         sizeFlex: (props.size || Number.MAX_VALUE) * pixelFlex,
@@ -810,7 +808,7 @@ export default class ReflexContainer extends React.Component {
 
       const freeFlex = computeFreeFlex(flexDataIn)
 
-      const flexDataOut = flexDataIn.map((entry, idx) => {
+      const flexDataOut = flexDataIn.map((entry) => {
 
         if (ReflexSplitter.isA(entry)) {
           return entry
@@ -826,7 +824,7 @@ export default class ReflexContainer extends React.Component {
               Math.max(entry.minFlex,
                 proposedFlex)))
 
-        const constrained =
+        const constrained = entry.constrained ||
           (constrainedFlex !== proposedFlex)
 
         hasContrain = hasContrain || constrained
@@ -849,7 +847,8 @@ export default class ReflexContainer extends React.Component {
 
       return {
           flex: !ReflexSplitter.isA(entry)
-            ? entry.flex : 0.0,
+            ? entry.flex 
+            : 0.0,
           guid: entry.guid
        }
     })

@@ -667,14 +667,14 @@ function (_React$Component) {
         var hasContrain = false;
         var freeElements = computeFreeElements(flexDataIn);
         var freeFlex = computeFreeFlex(flexDataIn);
-        var flexDataOut = flexDataIn.map(function (entry, idx) {
+        var flexDataOut = flexDataIn.map(function (entry) {
           if (_ReflexSplitter.default.isA(entry)) {
             return entry;
           }
 
           var proposedFlex = !entry.constrained ? freeFlex / freeElements : entry.flex;
           var constrainedFlex = Math.min(entry.sizeFlex, Math.min(entry.maxFlex, Math.max(entry.minFlex, proposedFlex)));
-          var constrained = constrainedFlex !== proposedFlex;
+          var constrained = entry.constrained || constrainedFlex !== proposedFlex;
           hasContrain = hasContrain || constrained;
           return (0, _objectSpread2.default)({}, entry, {
             flex: constrainedFlex,
