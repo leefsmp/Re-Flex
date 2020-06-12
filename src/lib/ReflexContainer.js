@@ -285,13 +285,13 @@ export default class ReflexContainer extends React.Component {
     switch (this.props.orientation) {
 
       case 'horizontal':
-        document.body.classList.add('row-resize')
+        document.body.classList.add('reflex-row-resize')
         this.previousPos = pos.clientY
         break
 
       case 'vertical':
       default:
-        document.body.classList.add('col-resize')
+        document.body.classList.add('reflex-col-resize')
         this.previousPos = pos.clientX
         break
     }
@@ -357,8 +357,8 @@ export default class ReflexContainer extends React.Component {
   /////////////////////////////////////////////////////////
   onStopResize = (data) => {
 
-    document.body.classList.remove('row-resize')
-    document.body.classList.remove('col-resize')
+    document.body.classList.remove('reflex-row-resize')
+    document.body.classList.remove('reflex-col-resize')
 
     const resizedRefs = this.elements.map((element) => {
       return element.ref
