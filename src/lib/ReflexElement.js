@@ -125,7 +125,7 @@ export default class ReflexElement extends React.Component {
   /////////////////////////////////////////////////////////
   static defaultProps = {
     propagateDimensionsRate: 100,
-    propagateDimensions: false, 
+    propagateDimensions: false,
     resizeHeight: true,
     resizeWidth: true,
     direction: [1],
@@ -185,7 +185,7 @@ export default class ReflexElement extends React.Component {
   toArray (obj) {
     return obj ? (Array.isArray(obj) ? obj : [obj]) : []
   }
-  
+
   /////////////////////////////////////////////////////////
   //
   //
@@ -221,7 +221,9 @@ export default class ReflexElement extends React.Component {
 
     const style = {
       ...this.props.style,
-      flex: this.props.flex
+      flexGrow: this.props.flex,
+      flexShrink: 1,
+      flexBasis: '0%'
     }
 
     return (
@@ -235,6 +237,6 @@ export default class ReflexElement extends React.Component {
           : this.renderChildren()
       }
       </div>
-    ) 
+    )
   }
 }
