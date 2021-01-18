@@ -176,7 +176,9 @@ export default class ReflexElement extends React.Component {
     const className = [...this.props.className.split(' '), this.props.orientation, 'reflex-element'].join(' ').trim();
 
     const style = _objectSpread({}, this.props.style, {
-      flex: this.props.flex
+      flexGrow: this.props.flex,
+      flexShrink: 1,
+      flexBasis: '0%'
     });
 
     return React.createElement("div", _extends({}, getDataProps(this.props), {

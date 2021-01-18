@@ -76,13 +76,13 @@ function (_React$Component) {
 
       switch (_this.props.orientation) {
         case 'horizontal':
-          document.body.classList.add('row-resize');
+          document.body.classList.add('reflex-row-resize');
           _this.previousPos = pos.clientY;
           break;
 
         case 'vertical':
         default:
-          document.body.classList.add('col-resize');
+          document.body.classList.add('reflex-col-resize');
           _this.previousPos = pos.clientX;
           break;
       }
@@ -124,8 +124,8 @@ function (_React$Component) {
       }
     });
     (0, _defineProperty2.default)((0, _assertThisInitialized2.default)((0, _assertThisInitialized2.default)(_this)), "onStopResize", function (data) {
-      document.body.classList.remove('row-resize');
-      document.body.classList.remove('col-resize');
+      document.body.classList.remove('reflex-row-resize');
+      document.body.classList.remove('reflex-col-resize');
 
       var resizedRefs = _this.elements.map(function (element) {
         return element.ref;
@@ -178,6 +178,7 @@ function (_React$Component) {
     _this.state = {
       flexData: []
     };
+    _this.ref = _react.default.createRef();
     return _this;
   } /////////////////////////////////////////////////////////
   //
@@ -212,10 +213,7 @@ function (_React$Component) {
     key: "componentWillUnmount",
     value: function componentWillUnmount() {
       this.events.off();
-
-      if (this.state.windowResizeAware) {
-        window.removeEventListener('resize', this.onWindowResize);
-      }
+      window.removeEventListener('resize', this.onWindowResize);
     } /////////////////////////////////////////////////////////
     //
     //
@@ -489,27 +487,30 @@ function (_React$Component) {
     value: function computePixelFlex() {
       var orientation = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : this.props.orientation;
 
-      var domElement = _reactDom.default.findDOMNode(this);
+      if (!this.ref.current) {
+        console.warn('Unable to locate ReflexContainer dom node');
+        return 0.0;
+      }
 
       switch (orientation) {
         case 'horizontal':
-          if (domElement.offsetHeight === 0.0) {
+          if (this.ref.current.offsetHeight === 0.0) {
             console.warn('Found ReflexContainer with height=0, ' + 'this will cause invalid behavior...');
-            console.warn(domElement);
+            console.warn(this.ref.current);
             return 0.0;
           }
 
-          return 1.0 / domElement.offsetHeight;
+          return 1.0 / this.ref.current.offsetHeight;
 
         case 'vertical':
         default:
-          if (domElement.offsetWidth === 0.0) {
+          if (this.ref.current.offsetWidth === 0.0) {
             console.warn('Found ReflexContainer with width=0, ' + 'this will cause invalid behavior...');
-            console.warn(domElement);
+            console.warn(this.ref.current);
             return 0.0;
           }
 
-          return 1.0 / domElement.offsetWidth;
+          return 1.0 / this.ref.current.offsetWidth;
       }
     } /////////////////////////////////////////////////////////
     // Adds offset to a given ReflexElement
@@ -748,7 +749,8 @@ function (_React$Component) {
       });
       return _react.default.createElement("div", (0, _extends2.default)({}, (0, _utilities.getDataProps)(this.props), {
         style: this.props.style,
-        className: className
+        className: className,
+        ref: this.ref
       }), this.children);
     }
   }]);

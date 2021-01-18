@@ -300,7 +300,9 @@ function (_React$Component2) {
     value: function render() {
       var className = (0, _toConsumableArray2.default)(this.props.className.split(' ')).concat([this.props.orientation, 'reflex-element']).join(' ').trim();
       var style = (0, _objectSpread2.default)({}, this.props.style, {
-        flex: this.props.flex
+        flexGrow: this.props.flex,
+        flexShrink: 1,
+        flexBasis: '0%'
       });
       return _react.default.createElement("div", (0, _extends2.default)({}, (0, _utilities.getDataProps)(this.props), {
         className: className,

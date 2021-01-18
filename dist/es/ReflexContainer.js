@@ -38,13 +38,13 @@ export default class ReflexContainer extends React.Component {
 
       switch (this.props.orientation) {
         case 'horizontal':
-          document.body.classList.add('row-resize');
+          document.body.classList.add('reflex-row-resize');
           this.previousPos = pos.clientY;
           break;
 
         case 'vertical':
         default:
-          document.body.classList.add('col-resize');
+          document.body.classList.add('reflex-col-resize');
           this.previousPos = pos.clientX;
           break;
       }
@@ -84,8 +84,8 @@ export default class ReflexContainer extends React.Component {
     });
 
     _defineProperty(this, "onStopResize", data => {
-      document.body.classList.remove('row-resize');
-      document.body.classList.remove('col-resize');
+      document.body.classList.remove('reflex-row-resize');
+      document.body.classList.remove('reflex-col-resize');
       const resizedRefs = this.elements.map(element => {
         return element.ref;
       });
@@ -130,6 +130,7 @@ export default class ReflexContainer extends React.Component {
     this.state = {
       flexData: []
     };
+    this.ref = React.createRef();
   } /////////////////////////////////////////////////////////
   //
   //
@@ -162,10 +163,7 @@ export default class ReflexContainer extends React.Component {
 
   componentWillUnmount() {
     this.events.off();
-
-    if (this.state.windowResizeAware) {
-      window.removeEventListener('resize', this.onWindowResize);
-    }
+    window.removeEventListener('resize', this.onWindowResize);
   } /////////////////////////////////////////////////////////
   //
   //
@@ -419,27 +417,30 @@ export default class ReflexContainer extends React.Component {
 
 
   computePixelFlex(orientation = this.props.orientation) {
-    const domElement = ReactDOM.findDOMNode(this);
+    if (!this.ref.current) {
+      console.warn('Unable to locate ReflexContainer dom node');
+      return 0.0;
+    }
 
     switch (orientation) {
       case 'horizontal':
-        if (domElement.offsetHeight === 0.0) {
+        if (this.ref.current.offsetHeight === 0.0) {
           console.warn('Found ReflexContainer with height=0, ' + 'this will cause invalid behavior...');
-          console.warn(domElement);
+          console.warn(this.ref.current);
           return 0.0;
         }
 
-        return 1.0 / domElement.offsetHeight;
+        return 1.0 / this.ref.current.offsetHeight;
 
       case 'vertical':
       default:
-        if (domElement.offsetWidth === 0.0) {
+        if (this.ref.current.offsetWidth === 0.0) {
           console.warn('Found ReflexContainer with width=0, ' + 'this will cause invalid behavior...');
-          console.warn(domElement);
+          console.warn(this.ref.current);
           return 0.0;
         }
 
-        return 1.0 / domElement.offsetWidth;
+        return 1.0 / this.ref.current.offsetWidth;
     }
   } /////////////////////////////////////////////////////////
   // Adds offset to a given ReflexElement
@@ -659,7 +660,8 @@ export default class ReflexContainer extends React.Component {
     });
     return React.createElement("div", _extends({}, getDataProps(this.props), {
       style: this.props.style,
-      className: className
+      className: className,
+      ref: this.ref
     }), this.children);
   }
 

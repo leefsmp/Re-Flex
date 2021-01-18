@@ -4190,13 +4190,13 @@ function (_React$Component) {
 
       switch (_this.props.orientation) {
         case 'horizontal':
-          document.body.classList.add('row-resize');
+          document.body.classList.add('reflex-row-resize');
           _this.previousPos = pos.clientY;
           break;
 
         case 'vertical':
         default:
-          document.body.classList.add('col-resize');
+          document.body.classList.add('reflex-col-resize');
           _this.previousPos = pos.clientX;
           break;
       }
@@ -4240,8 +4240,8 @@ function (_React$Component) {
     });
 
     _babel_runtime_helpers_defineProperty__WEBPACK_IMPORTED_MODULE_9___default()(_babel_runtime_helpers_assertThisInitialized__WEBPACK_IMPORTED_MODULE_8___default()(_babel_runtime_helpers_assertThisInitialized__WEBPACK_IMPORTED_MODULE_8___default()(_this)), "onStopResize", function (data) {
-      document.body.classList.remove('row-resize');
-      document.body.classList.remove('col-resize');
+      document.body.classList.remove('reflex-row-resize');
+      document.body.classList.remove('reflex-col-resize');
 
       var resizedRefs = _this.elements.map(function (element) {
         return element.ref;
@@ -4296,6 +4296,7 @@ function (_React$Component) {
     _this.state = {
       flexData: []
     };
+    _this.ref = react__WEBPACK_IMPORTED_MODULE_15___default.a.createRef();
     return _this;
   } /////////////////////////////////////////////////////////
   //
@@ -4330,10 +4331,7 @@ function (_React$Component) {
     key: "componentWillUnmount",
     value: function componentWillUnmount() {
       this.events.off();
-
-      if (this.state.windowResizeAware) {
-        window.removeEventListener('resize', this.onWindowResize);
-      }
+      window.removeEventListener('resize', this.onWindowResize);
     } /////////////////////////////////////////////////////////
     //
     //
@@ -4603,27 +4601,31 @@ function (_React$Component) {
     key: "computePixelFlex",
     value: function computePixelFlex() {
       var orientation = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : this.props.orientation;
-      var domElement = react_dom__WEBPACK_IMPORTED_MODULE_14___default.a.findDOMNode(this);
+
+      if (!this.ref.current) {
+        console.warn('Unable to locate ReflexContainer dom node');
+        return 0.0;
+      }
 
       switch (orientation) {
         case 'horizontal':
-          if (domElement.offsetHeight === 0.0) {
+          if (this.ref.current.offsetHeight === 0.0) {
             console.warn('Found ReflexContainer with height=0, ' + 'this will cause invalid behavior...');
-            console.warn(domElement);
+            console.warn(this.ref.current);
             return 0.0;
           }
 
-          return 1.0 / domElement.offsetHeight;
+          return 1.0 / this.ref.current.offsetHeight;
 
         case 'vertical':
         default:
-          if (domElement.offsetWidth === 0.0) {
+          if (this.ref.current.offsetWidth === 0.0) {
             console.warn('Found ReflexContainer with width=0, ' + 'this will cause invalid behavior...');
-            console.warn(domElement);
+            console.warn(this.ref.current);
             return 0.0;
           }
 
-          return 1.0 / domElement.offsetWidth;
+          return 1.0 / this.ref.current.offsetWidth;
       }
     } /////////////////////////////////////////////////////////
     // Adds offset to a given ReflexElement
@@ -4862,7 +4864,8 @@ function (_React$Component) {
       });
       return react__WEBPACK_IMPORTED_MODULE_15___default.a.createElement("div", _babel_runtime_helpers_extends__WEBPACK_IMPORTED_MODULE_0___default()({}, Object(_utilities__WEBPACK_IMPORTED_MODULE_12__["getDataProps"])(this.props), {
         style: this.props.style,
-        className: className
+        className: className,
+        ref: this.ref
       }), this.children);
     }
   }, {
@@ -4913,7 +4916,7 @@ _babel_runtime_helpers_defineProperty__WEBPACK_IMPORTED_MODULE_9___default()(Ref
     return;
   }
 
-  reactHotLoader.register(ReflexContainer, "ReflexContainer", "/Users/philippe/Dropbox/projects/leefsmp/re-flex/src/lib/ReflexContainer.js");
+  reactHotLoader.register(ReflexContainer, "ReflexContainer", "/Users/phi11119/Documents/leefsmp/reflex/src/lib/ReflexContainer.js");
   leaveModule(module);
 })();
 
@@ -5262,7 +5265,9 @@ function (_React$Component2) {
       var className = _babel_runtime_helpers_toConsumableArray__WEBPACK_IMPORTED_MODULE_1___default()(this.props.className.split(' ')).concat([this.props.orientation, 'reflex-element']).join(' ').trim();
 
       var style = _babel_runtime_helpers_objectSpread__WEBPACK_IMPORTED_MODULE_4___default()({}, this.props.style, {
-        flex: this.props.flex
+        flexGrow: this.props.flex,
+        flexShrink: 1,
+        flexBasis: '0%'
       });
 
       return react__WEBPACK_IMPORTED_MODULE_17___default.a.createElement("div", _babel_runtime_helpers_extends__WEBPACK_IMPORTED_MODULE_0___default()({}, Object(_utilities__WEBPACK_IMPORTED_MODULE_13__["getDataProps"])(this.props), {
@@ -5331,8 +5336,8 @@ _babel_runtime_helpers_defineProperty__WEBPACK_IMPORTED_MODULE_11___default()(Re
     return;
   }
 
-  reactHotLoader.register(SizeAwareReflexElement, "SizeAwareReflexElement", "/Users/philippe/Dropbox/projects/leefsmp/re-flex/src/lib/ReflexElement.js");
-  reactHotLoader.register(ReflexElement, "ReflexElement", "/Users/philippe/Dropbox/projects/leefsmp/re-flex/src/lib/ReflexElement.js");
+  reactHotLoader.register(SizeAwareReflexElement, "SizeAwareReflexElement", "/Users/phi11119/Documents/leefsmp/reflex/src/lib/ReflexElement.js");
+  reactHotLoader.register(ReflexElement, "ReflexElement", "/Users/phi11119/Documents/leefsmp/reflex/src/lib/ReflexElement.js");
   leaveModule(module);
 })();
 
@@ -5471,8 +5476,8 @@ var _default = ReflexEvents;
     return;
   }
 
-  reactHotLoader.register(ReflexEvents, "ReflexEvents", "/Users/philippe/Dropbox/projects/leefsmp/re-flex/src/lib/ReflexEvents.js");
-  reactHotLoader.register(_default, "default", "/Users/philippe/Dropbox/projects/leefsmp/re-flex/src/lib/ReflexEvents.js");
+  reactHotLoader.register(ReflexEvents, "ReflexEvents", "/Users/phi11119/Documents/leefsmp/reflex/src/lib/ReflexEvents.js");
+  reactHotLoader.register(_default, "default", "/Users/phi11119/Documents/leefsmp/reflex/src/lib/ReflexEvents.js");
   leaveModule(module);
 })();
 
@@ -5763,7 +5768,7 @@ _babel_runtime_helpers_defineProperty__WEBPACK_IMPORTED_MODULE_8___default()(Ref
     return;
   }
 
-  reactHotLoader.register(ReflexHandle, "ReflexHandle", "/Users/philippe/Dropbox/projects/leefsmp/re-flex/src/lib/ReflexHandle.js");
+  reactHotLoader.register(ReflexHandle, "ReflexHandle", "/Users/phi11119/Documents/leefsmp/reflex/src/lib/ReflexHandle.js");
   leaveModule(module);
 })();
 
@@ -6054,7 +6059,7 @@ _babel_runtime_helpers_defineProperty__WEBPACK_IMPORTED_MODULE_8___default()(Ref
     return;
   }
 
-  reactHotLoader.register(ReflexSplitter, "ReflexSplitter", "/Users/philippe/Dropbox/projects/leefsmp/re-flex/src/lib/ReflexSplitter.js");
+  reactHotLoader.register(ReflexSplitter, "ReflexSplitter", "/Users/phi11119/Documents/leefsmp/reflex/src/lib/ReflexSplitter.js");
   leaveModule(module);
 })();
 
@@ -6262,8 +6267,8 @@ var getDataProps = function getDataProps(props) {
     return;
   }
 
-  reactHotLoader.register(Browser, "Browser", "/Users/philippe/Dropbox/projects/leefsmp/re-flex/src/lib/utilities.js");
-  reactHotLoader.register(getDataProps, "getDataProps", "/Users/philippe/Dropbox/projects/leefsmp/re-flex/src/lib/utilities.js");
+  reactHotLoader.register(Browser, "Browser", "/Users/phi11119/Documents/leefsmp/reflex/src/lib/utilities.js");
+  reactHotLoader.register(getDataProps, "getDataProps", "/Users/phi11119/Documents/leefsmp/reflex/src/lib/utilities.js");
   leaveModule(module);
 })();
 
