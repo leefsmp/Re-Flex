@@ -305,6 +305,7 @@ function (_React$Component2) {
         flexBasis: '0%'
       });
       return _react.default.createElement("div", (0, _extends2.default)({}, (0, _utilities.getDataProps)(this.props), {
+        ref: this.props.innerRef,
         className: className,
         style: style
       }), this.props.propagateDimensions ? _react.default.createElement(SizeAwareReflexElement, this.props) : this.renderChildren());
@@ -324,7 +325,6 @@ function (_React$Component2) {
   return ReflexElement;
 }(_react.default.Component);
 
-exports.default = ReflexElement;
 (0, _defineProperty2.default)(ReflexElement, "propTypes", {
   renderOnResizeRate: _propTypes.default.number,
   propagateDimensions: _propTypes.default.bool,
@@ -349,3 +349,11 @@ exports.default = ReflexElement;
   /////////////////////////////////////////////////////////
 
 });
+
+var _default = _react.default.forwardRef(function (props, ref) {
+  return _react.default.createElement(ReflexElement, (0, _extends2.default)({
+    innerRef: ref
+  }, props));
+});
+
+exports.default = _default;

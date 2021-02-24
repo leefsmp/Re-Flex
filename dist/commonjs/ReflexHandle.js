@@ -29,8 +29,6 @@ var _utilities = require("./utilities");
 
 var _propTypes = _interopRequireDefault(require("prop-types"));
 
-var _reactDom = _interopRequireDefault(require("react-dom"));
-
 var _react = _interopRequireDefault(require("react"));
 
 ///////////////////////////////////////////////////////////
@@ -68,9 +66,10 @@ function (_React$Component) {
 
     (0, _classCallCheck2.default)(this, ReflexHandle);
     _this = (0, _possibleConstructorReturn2.default)(this, (0, _getPrototypeOf2.default)(ReflexHandle).call(this, props));
+    (0, _defineProperty2.default)((0, _assertThisInitialized2.default)((0, _assertThisInitialized2.default)(_this)), "ref", _react.default.createRef());
     (0, _defineProperty2.default)((0, _assertThisInitialized2.default)((0, _assertThisInitialized2.default)(_this)), "onMouseMove", function (event) {
       if (_this.state.active) {
-        var domElement = _reactDom.default.findDOMNode((0, _assertThisInitialized2.default)((0, _assertThisInitialized2.default)(_this)));
+        var domElement = _this.ref.current;
 
         _this.props.events.emit('resize', {
           index: _this.props.index,
@@ -99,7 +98,7 @@ function (_React$Component) {
         // if needed by returning true
         // to onStartResize
         if (_this.props.onStartResize({
-          domElement: _reactDom.default.findDOMNode((0, _assertThisInitialized2.default)((0, _assertThisInitialized2.default)(_this))),
+          domElement: _this.ref.current,
           component: (0, _assertThisInitialized2.default)((0, _assertThisInitialized2.default)(_this))
         })) {
           return;
@@ -119,7 +118,7 @@ function (_React$Component) {
 
         if (_this.props.onStopResize) {
           _this.props.onStopResize({
-            domElement: _reactDom.default.findDOMNode((0, _assertThisInitialized2.default)((0, _assertThisInitialized2.default)(_this))),
+            domElement: _this.ref.current,
             component: (0, _assertThisInitialized2.default)((0, _assertThisInitialized2.default)(_this))
           });
         }
@@ -197,7 +196,8 @@ function (_React$Component) {
         onMouseDown: this.onMouseDown,
         style: this.props.style,
         className: className,
-        id: this.props.id
+        id: this.props.id,
+        ref: this.ref
       }), this.props.children);
     }
   }]);

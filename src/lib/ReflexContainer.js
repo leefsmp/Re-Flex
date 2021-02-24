@@ -120,57 +120,57 @@ export default class ReflexContainer extends React.Component {
   //
   //
   /////////////////////////////////////////////////////////////
-  // componentDidUpdate (prevProps, prevState) {
+  componentDidUpdate (prevProps, prevState) {
 
-  //   const children = this.getValidChildren(this.props)
+    const children = this.getValidChildren(this.props)
 
-  //   if ((children.length !== this.state.flexData.length) ||
-  //       (this.props.orientation !== this.props.orientation) || 
-  //       this.flexHasChanged(this.props)) {
+    if ((children.length !== this.state.flexData.length) ||
+        (this.props.orientation !== this.props.orientation) || 
+        this.flexHasChanged(this.props)) {
 
-  //     const flexData = this.computeFlexData(
-  //       children, this.props)
-
-  //     this.setState({
-  //       flexData
-  //     })
-  //   }
-
-  //   if (this.props.windowResizeAware !== this.state.windowResizeAware) {
-  //     !this.props.windowResizeAware
-  //       ?  window.removeEventListener('resize', this.onWindowResize)
-  //       : window.addEventListener('resize', this.onWindowResize)
-  //     this.setState({
-  //       windowResizeAware: this.props.windowResizeAware
-  //     })
-  //   }
-  // }
-
-  UNSAFE_componentWillReceiveProps(props) {
-
-    const children = this.getValidChildren(props)
-
-    if (children.length !== this.state.flexData.length || 
-      props.orientation !== this.props.orientation || 
-      this.flexHasChanged(props)) 
-    {
       const flexData = this.computeFlexData(
-        children, props)
+        children, this.props)
 
       this.setState({
         flexData
-      });
-    }
-
-    if (props.windowResizeAware !== this.state.windowResizeAware) {
-      !props.windowResizeAware
-        ? window.removeEventListener('resize', this.onWindowResize)
-        : window.addEventListener('resize', this.onWindowResize)
-      this.setState({
-        windowResizeAware: props.windowResizeAware
       })
     }
-  } 
+
+    if (this.props.windowResizeAware !== this.state.windowResizeAware) {
+      !this.props.windowResizeAware
+        ?  window.removeEventListener('resize', this.onWindowResize)
+        : window.addEventListener('resize', this.onWindowResize)
+      this.setState({
+        windowResizeAware: this.props.windowResizeAware
+      })
+    }
+  }
+
+  // UNSAFE_componentWillReceiveProps(props) {
+
+  //   const children = this.getValidChildren(props)
+
+  //   if (children.length !== this.state.flexData.length || 
+  //     props.orientation !== this.props.orientation || 
+  //     this.flexHasChanged(props)) 
+  //   {
+  //     const flexData = this.computeFlexData(
+  //       children, props)
+
+  //     this.setState({
+  //       flexData
+  //     });
+  //   }
+
+  //   if (props.windowResizeAware !== this.state.windowResizeAware) {
+  //     !props.windowResizeAware
+  //       ? window.removeEventListener('resize', this.onWindowResize)
+  //       : window.addEventListener('resize', this.onWindowResize)
+  //     this.setState({
+  //       windowResizeAware: props.windowResizeAware
+  //     })
+  //   }
+  // } 
 
   /////////////////////////////////////////////////////////
   // attempts to preserve current flex on window resize
@@ -210,19 +210,13 @@ export default class ReflexContainer extends React.Component {
   // Returns size of a ReflexElement
   //
   /////////////////////////////////////////////////////////
-  getSize (element) {
+  getSize (element) { 
 
-    const ref = element.ref
-      ? this.refs[element.ref]
-      : element
-
-    const domElement = ReactDOM.findDOMNode(ref)
+    const domElement = element.ref.current
 
     switch (this.props.orientation) {
-
       case 'horizontal':
         return domElement.offsetHeight
-
       case 'vertical':
       default:
         return domElement.offsetWidth
@@ -278,9 +272,9 @@ export default class ReflexContainer extends React.Component {
   /////////////////////////////////////////////////////////
   onStartResize = (data) => {
 
-    const pos = data.event.changedTouches ?
-      data.event.changedTouches[0] :
-      data.event
+    const pos = data.event.changedTouches 
+      ? data.event.changedTouches[0]
+      : data.event
 
     switch (this.props.orientation) {
 
@@ -302,7 +296,8 @@ export default class ReflexContainer extends React.Component {
     ]
 
     this.emitElementsEvent(
-      this.elements, 'onStartResize')
+      this.elements, 
+      'onStartResize')
   }
 
   /////////////////////////////////////////////////////////
@@ -360,11 +355,11 @@ export default class ReflexContainer extends React.Component {
     document.body.classList.remove('reflex-row-resize')
     document.body.classList.remove('reflex-col-resize')
 
-    const resizedRefs = this.elements.map((element) => {
+    const resizedRefs = this.elements.map(element => {
       return element.ref
     })
 
-    const elements = this.children.filter((child) => {
+    const elements = this.children.filter(child => {
       return !ReflexSplitter.isA(child) &&
         resizedRefs.includes(child.ref)
     })
@@ -727,7 +722,6 @@ export default class ReflexContainer extends React.Component {
   //
   /////////////////////////////////////////////////////////
   dispatchOffset (idx, offset) {
-
     return [
       ...this.dispatchStretch(idx, offset),
       ...this.dispatchShrink(idx, offset)
@@ -740,16 +734,10 @@ export default class ReflexContainer extends React.Component {
   //
   /////////////////////////////////////////////////////////
   emitElementsEvent (elements, event) {
-
-    this.toArray(elements).forEach((component) => {
-
+    this.toArray(elements).forEach(component => {
       if (component.props[event]) {
-
-        const ref = this.refs[component.ref]
-        const domElement = ReactDOM.findDOMNode(ref)
-
         component.props[event]({
-          domElement,
+          domElement: component.ref.current,
           component
         })
       }
@@ -795,7 +783,6 @@ export default class ReflexContainer extends React.Component {
         sizeFlex: (props.size || Number.MAX_VALUE) * pixelFlex,
         minFlex: (props.minSize || 1) * pixelFlex,
         constrained: props.flex !== undefined,
-        guid: props.ref || this.guid(),
         flex: props.flex || 0,
         type: child.type
       }
@@ -809,7 +796,7 @@ export default class ReflexContainer extends React.Component {
 
       const freeFlex = computeFreeFlex(flexDataIn)
 
-      const flexDataOut = flexDataIn.map((entry) => {
+      const flexDataOut = flexDataIn.map(entry => {
 
         if (ReflexSplitter.isA(entry)) {
           return entry
@@ -844,31 +831,14 @@ export default class ReflexContainer extends React.Component {
 
     const flexData = computeFlexDataRec(flexDataInit)
 
-    return flexData.map((entry) => {
-
+    return flexData.map(entry => {
       return {
           flex: !ReflexSplitter.isA(entry)
             ? entry.flex 
             : 0.0,
-          guid: entry.guid
+          ref: React.createRef()
        }
     })
-  }
-
-  /////////////////////////////////////////////////////////
-  // Utility method that generates a new unique GUID
-  //
-  /////////////////////////////////////////////////////////
-  guid (format = 'xxxx-xxxx') {
-
-    let d = new Date().getTime()
-
-    return format.replace(
-      /[xy]/g, function (c) {
-        var r = (d + Math.random() * 16) % 16 | 0
-        d = Math.floor(d / 16)
-        return (c == 'x' ? r : (r & 0x7 | 0x8)).toString(16)
-      })
   }
 
   /////////////////////////////////////////////////////////
@@ -911,7 +881,7 @@ export default class ReflexContainer extends React.Component {
           minSize: child.props.minSize || 1,
           events: this.events,
           flex: flexData.flex,
-          ref: flexData.guid,
+          ref: flexData.ref,
           index
         }
 

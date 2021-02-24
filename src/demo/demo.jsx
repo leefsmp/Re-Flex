@@ -346,7 +346,7 @@ class ReflexAdvancedDemo
 // Re-Flex Controlled element demo
 //
 /////////////////////////////////////////////////////////
-class ControlledElement
+class ControlledElementCls
   extends React.Component {
 
   constructor () {
@@ -489,6 +489,12 @@ class ControlledElement
     )
   }
 }
+
+const ControlledElement = React.forwardRef((props, ref) => {
+  return (
+    <ControlledElementCls innerRef={ref} {...props}/>
+  )
+})
 
 class ReflexControlsDemo
   extends React.Component {
@@ -806,7 +812,7 @@ class ReflexStorageDemo
 // Re-Flex Size Collapsible element demo
 //
 /////////////////////////////////////////////////////////
-class CollapsibleElement extends React.Component {
+class CollapsibleElementCls extends React.Component {
 
   componentWillReceiveProps (nextProps) {
 
@@ -848,6 +854,12 @@ class CollapsibleElement extends React.Component {
     )
   }
 }
+
+const CollapsibleElement = React.forwardRef((props, ref) => {
+  return (
+    <CollapsibleElementCls innerRef={ref} {...props}/>
+  )
+})
 
 class ReflexCollapseDemo
   extends React.Component {

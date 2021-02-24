@@ -178,45 +178,46 @@ export default class ReflexContainer extends React.Component {
   //
   //
   /////////////////////////////////////////////////////////////
-  // componentDidUpdate (prevProps, prevState) {
-  //   const children = this.getValidChildren(this.props)
-  //   if ((children.length !== this.state.flexData.length) ||
-  //       (this.props.orientation !== this.props.orientation) || 
-  //       this.flexHasChanged(this.props)) {
-  //     const flexData = this.computeFlexData(
-  //       children, this.props)
-  //     this.setState({
-  //       flexData
-  //     })
-  //   }
-  //   if (this.props.windowResizeAware !== this.state.windowResizeAware) {
-  //     !this.props.windowResizeAware
-  //       ?  window.removeEventListener('resize', this.onWindowResize)
-  //       : window.addEventListener('resize', this.onWindowResize)
-  //     this.setState({
-  //       windowResizeAware: this.props.windowResizeAware
-  //     })
-  //   }
-  // }
 
 
-  UNSAFE_componentWillReceiveProps(props) {
-    const children = this.getValidChildren(props);
+  componentDidUpdate(prevProps, prevState) {
+    const children = this.getValidChildren(this.props);
 
-    if (children.length !== this.state.flexData.length || props.orientation !== this.props.orientation || this.flexHasChanged(props)) {
-      const flexData = this.computeFlexData(children, props);
+    if (children.length !== this.state.flexData.length || this.props.orientation !== this.props.orientation || this.flexHasChanged(this.props)) {
+      const flexData = this.computeFlexData(children, this.props);
       this.setState({
         flexData
       });
     }
 
-    if (props.windowResizeAware !== this.state.windowResizeAware) {
-      !props.windowResizeAware ? window.removeEventListener('resize', this.onWindowResize) : window.addEventListener('resize', this.onWindowResize);
+    if (this.props.windowResizeAware !== this.state.windowResizeAware) {
+      !this.props.windowResizeAware ? window.removeEventListener('resize', this.onWindowResize) : window.addEventListener('resize', this.onWindowResize);
       this.setState({
-        windowResizeAware: props.windowResizeAware
+        windowResizeAware: this.props.windowResizeAware
       });
     }
-  } /////////////////////////////////////////////////////////
+  } // UNSAFE_componentWillReceiveProps(props) {
+  //   const children = this.getValidChildren(props)
+  //   if (children.length !== this.state.flexData.length || 
+  //     props.orientation !== this.props.orientation || 
+  //     this.flexHasChanged(props)) 
+  //   {
+  //     const flexData = this.computeFlexData(
+  //       children, props)
+  //     this.setState({
+  //       flexData
+  //     });
+  //   }
+  //   if (props.windowResizeAware !== this.state.windowResizeAware) {
+  //     !props.windowResizeAware
+  //       ? window.removeEventListener('resize', this.onWindowResize)
+  //       : window.addEventListener('resize', this.onWindowResize)
+  //     this.setState({
+  //       windowResizeAware: props.windowResizeAware
+  //     })
+  //   }
+  // } 
+  /////////////////////////////////////////////////////////
   // attempts to preserve current flex on window resize
   //
   /////////////////////////////////////////////////////////
@@ -245,8 +246,7 @@ export default class ReflexContainer extends React.Component {
 
 
   getSize(element) {
-    const ref = element.ref ? this.refs[element.ref] : element;
-    const domElement = ReactDOM.findDOMNode(ref);
+    const domElement = element.ref.current;
 
     switch (this.props.orientation) {
       case 'horizontal':
@@ -527,10 +527,8 @@ export default class ReflexContainer extends React.Component {
   emitElementsEvent(elements, event) {
     this.toArray(elements).forEach(component => {
       if (component.props[event]) {
-        const ref = this.refs[component.ref];
-        const domElement = ReactDOM.findDOMNode(ref);
         component.props[event]({
-          domElement,
+          domElement: component.ref.current,
           component
         });
       }
@@ -573,7 +571,6 @@ export default class ReflexContainer extends React.Component {
         sizeFlex: (props.size || Number.MAX_VALUE) * pixelFlex,
         minFlex: (props.minSize || 1) * pixelFlex,
         constrained: props.flex !== undefined,
-        guid: props.ref || this.guid(),
         flex: props.flex || 0,
         type: child.type
       };
@@ -604,21 +601,8 @@ export default class ReflexContainer extends React.Component {
     return flexData.map(entry => {
       return {
         flex: !ReflexSplitter.isA(entry) ? entry.flex : 0.0,
-        guid: entry.guid
+        ref: React.createRef()
       };
-    });
-  } /////////////////////////////////////////////////////////
-  // Utility method that generates a new unique GUID
-  //
-  /////////////////////////////////////////////////////////
-
-
-  guid(format = 'xxxx-xxxx') {
-    let d = new Date().getTime();
-    return format.replace(/[xy]/g, function (c) {
-      var r = (d + Math.random() * 16) % 16 | 0;
-      d = Math.floor(d / 16);
-      return (c == 'x' ? r : r & 0x7 | 0x8).toString(16);
     });
   } /////////////////////////////////////////////////////////
   // Utility method to ensure given argument is
@@ -652,7 +636,7 @@ export default class ReflexContainer extends React.Component {
         minSize: child.props.minSize || 1,
         events: this.events,
         flex: flexData.flex,
-        ref: flexData.guid,
+        ref: flexData.ref,
         index
       });
 

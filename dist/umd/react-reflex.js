@@ -4348,46 +4348,47 @@ function (_React$Component) {
     //
     //
     /////////////////////////////////////////////////////////////
-    // componentDidUpdate (prevProps, prevState) {
-    //   const children = this.getValidChildren(this.props)
-    //   if ((children.length !== this.state.flexData.length) ||
-    //       (this.props.orientation !== this.props.orientation) || 
-    //       this.flexHasChanged(this.props)) {
-    //     const flexData = this.computeFlexData(
-    //       children, this.props)
-    //     this.setState({
-    //       flexData
-    //     })
-    //   }
-    //   if (this.props.windowResizeAware !== this.state.windowResizeAware) {
-    //     !this.props.windowResizeAware
-    //       ?  window.removeEventListener('resize', this.onWindowResize)
-    //       : window.addEventListener('resize', this.onWindowResize)
-    //     this.setState({
-    //       windowResizeAware: this.props.windowResizeAware
-    //     })
-    //   }
-    // }
 
   }, {
-    key: "UNSAFE_componentWillReceiveProps",
-    value: function UNSAFE_componentWillReceiveProps(props) {
-      var children = this.getValidChildren(props);
+    key: "componentDidUpdate",
+    value: function componentDidUpdate(prevProps, prevState) {
+      var children = this.getValidChildren(this.props);
 
-      if (children.length !== this.state.flexData.length || props.orientation !== this.props.orientation || this.flexHasChanged(props)) {
-        var flexData = this.computeFlexData(children, props);
+      if (children.length !== this.state.flexData.length || this.props.orientation !== this.props.orientation || this.flexHasChanged(this.props)) {
+        var flexData = this.computeFlexData(children, this.props);
         this.setState({
           flexData: flexData
         });
       }
 
-      if (props.windowResizeAware !== this.state.windowResizeAware) {
-        !props.windowResizeAware ? window.removeEventListener('resize', this.onWindowResize) : window.addEventListener('resize', this.onWindowResize);
+      if (this.props.windowResizeAware !== this.state.windowResizeAware) {
+        !this.props.windowResizeAware ? window.removeEventListener('resize', this.onWindowResize) : window.addEventListener('resize', this.onWindowResize);
         this.setState({
-          windowResizeAware: props.windowResizeAware
+          windowResizeAware: this.props.windowResizeAware
         });
       }
-    } /////////////////////////////////////////////////////////
+    } // UNSAFE_componentWillReceiveProps(props) {
+    //   const children = this.getValidChildren(props)
+    //   if (children.length !== this.state.flexData.length || 
+    //     props.orientation !== this.props.orientation || 
+    //     this.flexHasChanged(props)) 
+    //   {
+    //     const flexData = this.computeFlexData(
+    //       children, props)
+    //     this.setState({
+    //       flexData
+    //     });
+    //   }
+    //   if (props.windowResizeAware !== this.state.windowResizeAware) {
+    //     !props.windowResizeAware
+    //       ? window.removeEventListener('resize', this.onWindowResize)
+    //       : window.addEventListener('resize', this.onWindowResize)
+    //     this.setState({
+    //       windowResizeAware: props.windowResizeAware
+    //     })
+    //   }
+    // } 
+    /////////////////////////////////////////////////////////
     // attempts to preserve current flex on window resize
     //
     /////////////////////////////////////////////////////////
@@ -4418,8 +4419,7 @@ function (_React$Component) {
   }, {
     key: "getSize",
     value: function getSize(element) {
-      var ref = element.ref ? this.refs[element.ref] : element;
-      var domElement = react_dom__WEBPACK_IMPORTED_MODULE_14___default.a.findDOMNode(ref);
+      var domElement = element.ref.current;
 
       switch (this.props.orientation) {
         case 'horizontal':
@@ -4715,14 +4715,10 @@ function (_React$Component) {
   }, {
     key: "emitElementsEvent",
     value: function emitElementsEvent(elements, event) {
-      var _this3 = this;
-
       this.toArray(elements).forEach(function (component) {
         if (component.props[event]) {
-          var ref = _this3.refs[component.ref];
-          var domElement = react_dom__WEBPACK_IMPORTED_MODULE_14___default.a.findDOMNode(ref);
           component.props[event]({
-            domElement: domElement,
+            domElement: component.ref.current,
             component: component
           });
         }
@@ -4737,7 +4733,7 @@ function (_React$Component) {
   }, {
     key: "computeFlexData",
     value: function computeFlexData() {
-      var _this4 = this;
+      var _this3 = this;
 
       var children = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : this.getValidChildren();
       var props = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : this.props;
@@ -4770,7 +4766,6 @@ function (_React$Component) {
           sizeFlex: (props.size || Number.MAX_VALUE) * pixelFlex,
           minFlex: (props.minSize || 1) * pixelFlex,
           constrained: props.flex !== undefined,
-          guid: props.ref || _this4.guid(),
           flex: props.flex || 0,
           type: child.type
         };
@@ -4795,30 +4790,15 @@ function (_React$Component) {
             constrained: constrained
           });
         });
-        return hasContrain && depth < _this4.props.maxRecDepth ? computeFlexDataRec(flexDataOut, depth + 1) : flexDataOut;
+        return hasContrain && depth < _this3.props.maxRecDepth ? computeFlexDataRec(flexDataOut, depth + 1) : flexDataOut;
       };
 
       var flexData = computeFlexDataRec(flexDataInit);
       return flexData.map(function (entry) {
         return {
           flex: !_ReflexSplitter__WEBPACK_IMPORTED_MODULE_10__["default"].isA(entry) ? entry.flex : 0.0,
-          guid: entry.guid
+          ref: react__WEBPACK_IMPORTED_MODULE_15___default.a.createRef()
         };
-      });
-    } /////////////////////////////////////////////////////////
-    // Utility method that generates a new unique GUID
-    //
-    /////////////////////////////////////////////////////////
-
-  }, {
-    key: "guid",
-    value: function guid() {
-      var format = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 'xxxx-xxxx';
-      var d = new Date().getTime();
-      return format.replace(/[xy]/g, function (c) {
-        var r = (d + Math.random() * 16) % 16 | 0;
-        d = Math.floor(d / 16);
-        return (c == 'x' ? r : r & 0x7 | 0x8).toString(16);
       });
     } /////////////////////////////////////////////////////////
     // Utility method to ensure given argument is
@@ -4840,23 +4820,23 @@ function (_React$Component) {
   }, {
     key: "render",
     value: function render() {
-      var _this5 = this;
+      var _this4 = this;
 
       var className = [this.state.resizing ? 'reflex-resizing' : ''].concat(_babel_runtime_helpers_toConsumableArray__WEBPACK_IMPORTED_MODULE_2___default()(this.props.className.split(' ')), [this.props.orientation, 'reflex-container']).join(' ').trim();
       this.children = react__WEBPACK_IMPORTED_MODULE_15___default.a.Children.map(this.getValidChildren(), function (child, index) {
-        if (index > _this5.state.flexData.length - 1) {
+        if (index > _this4.state.flexData.length - 1) {
           return react__WEBPACK_IMPORTED_MODULE_15___default.a.createElement("div", null);
         }
 
-        var flexData = _this5.state.flexData[index];
+        var flexData = _this4.state.flexData[index];
 
         var newProps = _babel_runtime_helpers_objectSpread__WEBPACK_IMPORTED_MODULE_1___default()({}, child.props, {
           maxSize: child.props.maxSize || Number.MAX_VALUE,
-          orientation: _this5.props.orientation,
+          orientation: _this4.props.orientation,
           minSize: child.props.minSize || 1,
-          events: _this5.events,
+          events: _this4.events,
           flex: flexData.flex,
-          ref: flexData.guid,
+          ref: flexData.ref,
           index: index
         });
 
@@ -4934,8 +4914,7 @@ _babel_runtime_helpers_defineProperty__WEBPACK_IMPORTED_MODULE_9___default()(Ref
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* WEBPACK VAR INJECTION */(function(module) {/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return ReflexElement; });
-/* harmony import */ var _babel_runtime_helpers_extends__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @babel/runtime/helpers/extends */ "./node_modules/@babel/runtime/helpers/extends.js");
+/* WEBPACK VAR INJECTION */(function(module) {/* harmony import */ var _babel_runtime_helpers_extends__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @babel/runtime/helpers/extends */ "./node_modules/@babel/runtime/helpers/extends.js");
 /* harmony import */ var _babel_runtime_helpers_extends__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_helpers_extends__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var _babel_runtime_helpers_toConsumableArray__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @babel/runtime/helpers/toConsumableArray */ "./node_modules/@babel/runtime/helpers/toConsumableArray.js");
 /* harmony import */ var _babel_runtime_helpers_toConsumableArray__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_helpers_toConsumableArray__WEBPACK_IMPORTED_MODULE_1__);
@@ -5271,6 +5250,7 @@ function (_React$Component2) {
       });
 
       return react__WEBPACK_IMPORTED_MODULE_17___default.a.createElement("div", _babel_runtime_helpers_extends__WEBPACK_IMPORTED_MODULE_0___default()({}, Object(_utilities__WEBPACK_IMPORTED_MODULE_13__["getDataProps"])(this.props), {
+        ref: this.props.innerRef,
         className: className,
         style: style
       }), this.props.propagateDimensions ? react__WEBPACK_IMPORTED_MODULE_17___default.a.createElement(SizeAwareReflexElement, this.props) : this.renderChildren());
@@ -5324,7 +5304,13 @@ _babel_runtime_helpers_defineProperty__WEBPACK_IMPORTED_MODULE_11___default()(Re
 
 });
 
+var _default = react__WEBPACK_IMPORTED_MODULE_17___default.a.forwardRef(function (props, ref) {
+  return react__WEBPACK_IMPORTED_MODULE_17___default.a.createElement(ReflexElement, _babel_runtime_helpers_extends__WEBPACK_IMPORTED_MODULE_0___default()({
+    innerRef: ref
+  }, props));
+});
 
+/* harmony default export */ __webpack_exports__["default"] = (_default);
 ;
 
 (function () {
@@ -5338,6 +5324,7 @@ _babel_runtime_helpers_defineProperty__WEBPACK_IMPORTED_MODULE_11___default()(Re
 
   reactHotLoader.register(SizeAwareReflexElement, "SizeAwareReflexElement", "/Users/phi11119/Documents/leefsmp/reflex/src/lib/ReflexElement.js");
   reactHotLoader.register(ReflexElement, "ReflexElement", "/Users/phi11119/Documents/leefsmp/reflex/src/lib/ReflexElement.js");
+  reactHotLoader.register(_default, "default", "/Users/phi11119/Documents/leefsmp/reflex/src/lib/ReflexElement.js");
   leaveModule(module);
 })();
 
@@ -5517,10 +5504,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _utilities__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ./utilities */ "./src/lib/utilities.js");
 /* harmony import */ var prop_types__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! prop-types */ "./node_modules/prop-types/index.js");
 /* harmony import */ var prop_types__WEBPACK_IMPORTED_MODULE_10___default = /*#__PURE__*/__webpack_require__.n(prop_types__WEBPACK_IMPORTED_MODULE_10__);
-/* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! react-dom */ "react-dom");
-/* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_11___default = /*#__PURE__*/__webpack_require__.n(react_dom__WEBPACK_IMPORTED_MODULE_11__);
-/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! react */ "react");
-/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_12___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_12__);
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! react */ "react");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_11___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_11__);
 
 
 
@@ -5547,7 +5532,6 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
-
 var ReflexHandle =
 /*#__PURE__*/
 function (_React$Component) {
@@ -5565,7 +5549,7 @@ function (_React$Component) {
       } //https://github.com/leefsmp/Re-Flex/issues/49
 
 
-      return  true ? element.type === react__WEBPACK_IMPORTED_MODULE_12___default.a.createElement(ReflexHandle, null).type : undefined;
+      return  true ? element.type === react__WEBPACK_IMPORTED_MODULE_11___default.a.createElement(ReflexHandle, null).type : undefined;
     } /////////////////////////////////////////////////////////
     //
     //
@@ -5580,9 +5564,11 @@ function (_React$Component) {
 
     _this = _babel_runtime_helpers_possibleConstructorReturn__WEBPACK_IMPORTED_MODULE_3___default()(this, _babel_runtime_helpers_getPrototypeOf__WEBPACK_IMPORTED_MODULE_4___default()(ReflexHandle).call(this, props));
 
+    _babel_runtime_helpers_defineProperty__WEBPACK_IMPORTED_MODULE_8___default()(_babel_runtime_helpers_assertThisInitialized__WEBPACK_IMPORTED_MODULE_7___default()(_babel_runtime_helpers_assertThisInitialized__WEBPACK_IMPORTED_MODULE_7___default()(_this)), "ref", react__WEBPACK_IMPORTED_MODULE_11___default.a.createRef());
+
     _babel_runtime_helpers_defineProperty__WEBPACK_IMPORTED_MODULE_8___default()(_babel_runtime_helpers_assertThisInitialized__WEBPACK_IMPORTED_MODULE_7___default()(_babel_runtime_helpers_assertThisInitialized__WEBPACK_IMPORTED_MODULE_7___default()(_this)), "onMouseMove", function (event) {
       if (_this.state.active) {
-        var domElement = react_dom__WEBPACK_IMPORTED_MODULE_11___default.a.findDOMNode(_babel_runtime_helpers_assertThisInitialized__WEBPACK_IMPORTED_MODULE_7___default()(_babel_runtime_helpers_assertThisInitialized__WEBPACK_IMPORTED_MODULE_7___default()(_this)));
+        var domElement = _this.ref.current;
 
         _this.props.events.emit('resize', {
           index: _this.props.index,
@@ -5612,7 +5598,7 @@ function (_React$Component) {
         // if needed by returning true
         // to onStartResize
         if (_this.props.onStartResize({
-          domElement: react_dom__WEBPACK_IMPORTED_MODULE_11___default.a.findDOMNode(_babel_runtime_helpers_assertThisInitialized__WEBPACK_IMPORTED_MODULE_7___default()(_babel_runtime_helpers_assertThisInitialized__WEBPACK_IMPORTED_MODULE_7___default()(_this))),
+          domElement: _this.ref.current,
           component: _babel_runtime_helpers_assertThisInitialized__WEBPACK_IMPORTED_MODULE_7___default()(_babel_runtime_helpers_assertThisInitialized__WEBPACK_IMPORTED_MODULE_7___default()(_this))
         })) {
           return;
@@ -5633,7 +5619,7 @@ function (_React$Component) {
 
         if (_this.props.onStopResize) {
           _this.props.onStopResize({
-            domElement: react_dom__WEBPACK_IMPORTED_MODULE_11___default.a.findDOMNode(_babel_runtime_helpers_assertThisInitialized__WEBPACK_IMPORTED_MODULE_7___default()(_babel_runtime_helpers_assertThisInitialized__WEBPACK_IMPORTED_MODULE_7___default()(_this))),
+            domElement: _this.ref.current,
             component: _babel_runtime_helpers_assertThisInitialized__WEBPACK_IMPORTED_MODULE_7___default()(_babel_runtime_helpers_assertThisInitialized__WEBPACK_IMPORTED_MODULE_7___default()(_this))
           });
         }
@@ -5708,12 +5694,13 @@ function (_React$Component) {
     value: function render() {
       var className = _babel_runtime_helpers_toConsumableArray__WEBPACK_IMPORTED_MODULE_1___default()(this.props.className.split(' ')).concat([this.state.active ? 'active' : '', 'reflex-handle']).join(' ').trim();
 
-      return react__WEBPACK_IMPORTED_MODULE_12___default.a.createElement("div", _babel_runtime_helpers_extends__WEBPACK_IMPORTED_MODULE_0___default()({}, Object(_utilities__WEBPACK_IMPORTED_MODULE_9__["getDataProps"])(this.props), {
+      return react__WEBPACK_IMPORTED_MODULE_11___default.a.createElement("div", _babel_runtime_helpers_extends__WEBPACK_IMPORTED_MODULE_0___default()({}, Object(_utilities__WEBPACK_IMPORTED_MODULE_9__["getDataProps"])(this.props), {
         onTouchStart: this.onMouseDown,
         onMouseDown: this.onMouseDown,
         style: this.props.style,
         className: className,
-        id: this.props.id
+        id: this.props.id,
+        ref: this.ref
       }), this.props.children);
     }
   }, {
@@ -5726,7 +5713,7 @@ function (_React$Component) {
   }]);
 
   return ReflexHandle;
-}(react__WEBPACK_IMPORTED_MODULE_12___default.a.Component);
+}(react__WEBPACK_IMPORTED_MODULE_11___default.a.Component);
 
 _babel_runtime_helpers_defineProperty__WEBPACK_IMPORTED_MODULE_8___default()(ReflexHandle, "propTypes", {
   children: prop_types__WEBPACK_IMPORTED_MODULE_10___default.a.oneOfType([prop_types__WEBPACK_IMPORTED_MODULE_10___default.a.arrayOf(prop_types__WEBPACK_IMPORTED_MODULE_10___default.a.node), prop_types__WEBPACK_IMPORTED_MODULE_10___default.a.node]),
@@ -5808,10 +5795,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _utilities__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ./utilities */ "./src/lib/utilities.js");
 /* harmony import */ var prop_types__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! prop-types */ "./node_modules/prop-types/index.js");
 /* harmony import */ var prop_types__WEBPACK_IMPORTED_MODULE_10___default = /*#__PURE__*/__webpack_require__.n(prop_types__WEBPACK_IMPORTED_MODULE_10__);
-/* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! react-dom */ "react-dom");
-/* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_11___default = /*#__PURE__*/__webpack_require__.n(react_dom__WEBPACK_IMPORTED_MODULE_11__);
-/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! react */ "react");
-/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_12___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_12__);
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! react */ "react");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_11___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_11__);
 
 
 
@@ -5838,7 +5823,6 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
-
 var ReflexSplitter =
 /*#__PURE__*/
 function (_React$Component) {
@@ -5856,7 +5840,7 @@ function (_React$Component) {
       } //https://github.com/leefsmp/Re-Flex/issues/49
 
 
-      return  true ? element.type === react__WEBPACK_IMPORTED_MODULE_12___default.a.createElement(ReflexSplitter, null).type : undefined;
+      return  true ? element.type === react__WEBPACK_IMPORTED_MODULE_11___default.a.createElement(ReflexSplitter, null).type : undefined;
     } /////////////////////////////////////////////////////////
     //
     //
@@ -5871,9 +5855,11 @@ function (_React$Component) {
 
     _this = _babel_runtime_helpers_possibleConstructorReturn__WEBPACK_IMPORTED_MODULE_3___default()(this, _babel_runtime_helpers_getPrototypeOf__WEBPACK_IMPORTED_MODULE_4___default()(ReflexSplitter).call(this, props));
 
+    _babel_runtime_helpers_defineProperty__WEBPACK_IMPORTED_MODULE_8___default()(_babel_runtime_helpers_assertThisInitialized__WEBPACK_IMPORTED_MODULE_7___default()(_babel_runtime_helpers_assertThisInitialized__WEBPACK_IMPORTED_MODULE_7___default()(_this)), "ref", react__WEBPACK_IMPORTED_MODULE_11___default.a.createRef());
+
     _babel_runtime_helpers_defineProperty__WEBPACK_IMPORTED_MODULE_8___default()(_babel_runtime_helpers_assertThisInitialized__WEBPACK_IMPORTED_MODULE_7___default()(_babel_runtime_helpers_assertThisInitialized__WEBPACK_IMPORTED_MODULE_7___default()(_this)), "onMouseMove", function (event) {
       if (_this.state.active) {
-        var domElement = react_dom__WEBPACK_IMPORTED_MODULE_11___default.a.findDOMNode(_babel_runtime_helpers_assertThisInitialized__WEBPACK_IMPORTED_MODULE_7___default()(_babel_runtime_helpers_assertThisInitialized__WEBPACK_IMPORTED_MODULE_7___default()(_this)));
+        var domElement = _this.ref.current;
 
         _this.props.events.emit('resize', {
           index: _this.props.index,
@@ -5903,7 +5889,7 @@ function (_React$Component) {
         // if needed by returning true
         // to onStartResize
         if (_this.props.onStartResize({
-          domElement: react_dom__WEBPACK_IMPORTED_MODULE_11___default.a.findDOMNode(_babel_runtime_helpers_assertThisInitialized__WEBPACK_IMPORTED_MODULE_7___default()(_babel_runtime_helpers_assertThisInitialized__WEBPACK_IMPORTED_MODULE_7___default()(_this))),
+          domElement: _this.ref.current,
           component: _babel_runtime_helpers_assertThisInitialized__WEBPACK_IMPORTED_MODULE_7___default()(_babel_runtime_helpers_assertThisInitialized__WEBPACK_IMPORTED_MODULE_7___default()(_this))
         })) {
           return;
@@ -5924,7 +5910,7 @@ function (_React$Component) {
 
         if (_this.props.onStopResize) {
           _this.props.onStopResize({
-            domElement: react_dom__WEBPACK_IMPORTED_MODULE_11___default.a.findDOMNode(_babel_runtime_helpers_assertThisInitialized__WEBPACK_IMPORTED_MODULE_7___default()(_babel_runtime_helpers_assertThisInitialized__WEBPACK_IMPORTED_MODULE_7___default()(_this))),
+            domElement: _this.ref.current,
             component: _babel_runtime_helpers_assertThisInitialized__WEBPACK_IMPORTED_MODULE_7___default()(_babel_runtime_helpers_assertThisInitialized__WEBPACK_IMPORTED_MODULE_7___default()(_this))
           });
         }
@@ -5998,12 +5984,13 @@ function (_React$Component) {
     /////////////////////////////////////////////////////////
     value: function render() {
       var className = [_utilities__WEBPACK_IMPORTED_MODULE_9__["Browser"].isMobile() ? 'reflex-thin' : ''].concat(_babel_runtime_helpers_toConsumableArray__WEBPACK_IMPORTED_MODULE_1___default()(this.props.className.split(' ')), [this.state.active ? 'active' : '', 'reflex-splitter']).join(' ').trim();
-      return react__WEBPACK_IMPORTED_MODULE_12___default.a.createElement("div", _babel_runtime_helpers_extends__WEBPACK_IMPORTED_MODULE_0___default()({}, Object(_utilities__WEBPACK_IMPORTED_MODULE_9__["getDataProps"])(this.props), {
+      return react__WEBPACK_IMPORTED_MODULE_11___default.a.createElement("div", _babel_runtime_helpers_extends__WEBPACK_IMPORTED_MODULE_0___default()({}, Object(_utilities__WEBPACK_IMPORTED_MODULE_9__["getDataProps"])(this.props), {
         onTouchStart: this.onMouseDown,
         onMouseDown: this.onMouseDown,
         style: this.props.style,
         className: className,
-        id: this.props.id
+        id: this.props.id,
+        ref: this.ref
       }), this.props.children);
     }
   }, {
@@ -6016,7 +6003,7 @@ function (_React$Component) {
   }]);
 
   return ReflexSplitter;
-}(react__WEBPACK_IMPORTED_MODULE_12___default.a.Component);
+}(react__WEBPACK_IMPORTED_MODULE_11___default.a.Component);
 
 _babel_runtime_helpers_defineProperty__WEBPACK_IMPORTED_MODULE_8___default()(ReflexSplitter, "propTypes", {
   children: prop_types__WEBPACK_IMPORTED_MODULE_10___default.a.oneOfType([prop_types__WEBPACK_IMPORTED_MODULE_10___default.a.arrayOf(prop_types__WEBPACK_IMPORTED_MODULE_10___default.a.node), prop_types__WEBPACK_IMPORTED_MODULE_10___default.a.node]),

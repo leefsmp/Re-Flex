@@ -230,46 +230,47 @@ function (_React$Component) {
     //
     //
     /////////////////////////////////////////////////////////////
-    // componentDidUpdate (prevProps, prevState) {
-    //   const children = this.getValidChildren(this.props)
-    //   if ((children.length !== this.state.flexData.length) ||
-    //       (this.props.orientation !== this.props.orientation) || 
-    //       this.flexHasChanged(this.props)) {
-    //     const flexData = this.computeFlexData(
-    //       children, this.props)
-    //     this.setState({
-    //       flexData
-    //     })
-    //   }
-    //   if (this.props.windowResizeAware !== this.state.windowResizeAware) {
-    //     !this.props.windowResizeAware
-    //       ?  window.removeEventListener('resize', this.onWindowResize)
-    //       : window.addEventListener('resize', this.onWindowResize)
-    //     this.setState({
-    //       windowResizeAware: this.props.windowResizeAware
-    //     })
-    //   }
-    // }
 
   }, {
-    key: "UNSAFE_componentWillReceiveProps",
-    value: function UNSAFE_componentWillReceiveProps(props) {
-      var children = this.getValidChildren(props);
+    key: "componentDidUpdate",
+    value: function componentDidUpdate(prevProps, prevState) {
+      var children = this.getValidChildren(this.props);
 
-      if (children.length !== this.state.flexData.length || props.orientation !== this.props.orientation || this.flexHasChanged(props)) {
-        var flexData = this.computeFlexData(children, props);
+      if (children.length !== this.state.flexData.length || this.props.orientation !== this.props.orientation || this.flexHasChanged(this.props)) {
+        var flexData = this.computeFlexData(children, this.props);
         this.setState({
           flexData: flexData
         });
       }
 
-      if (props.windowResizeAware !== this.state.windowResizeAware) {
-        !props.windowResizeAware ? window.removeEventListener('resize', this.onWindowResize) : window.addEventListener('resize', this.onWindowResize);
+      if (this.props.windowResizeAware !== this.state.windowResizeAware) {
+        !this.props.windowResizeAware ? window.removeEventListener('resize', this.onWindowResize) : window.addEventListener('resize', this.onWindowResize);
         this.setState({
-          windowResizeAware: props.windowResizeAware
+          windowResizeAware: this.props.windowResizeAware
         });
       }
-    } /////////////////////////////////////////////////////////
+    } // UNSAFE_componentWillReceiveProps(props) {
+    //   const children = this.getValidChildren(props)
+    //   if (children.length !== this.state.flexData.length || 
+    //     props.orientation !== this.props.orientation || 
+    //     this.flexHasChanged(props)) 
+    //   {
+    //     const flexData = this.computeFlexData(
+    //       children, props)
+    //     this.setState({
+    //       flexData
+    //     });
+    //   }
+    //   if (props.windowResizeAware !== this.state.windowResizeAware) {
+    //     !props.windowResizeAware
+    //       ? window.removeEventListener('resize', this.onWindowResize)
+    //       : window.addEventListener('resize', this.onWindowResize)
+    //     this.setState({
+    //       windowResizeAware: props.windowResizeAware
+    //     })
+    //   }
+    // } 
+    /////////////////////////////////////////////////////////
     // attempts to preserve current flex on window resize
     //
     /////////////////////////////////////////////////////////
@@ -300,9 +301,7 @@ function (_React$Component) {
   }, {
     key: "getSize",
     value: function getSize(element) {
-      var ref = element.ref ? this.refs[element.ref] : element;
-
-      var domElement = _reactDom.default.findDOMNode(ref);
+      var domElement = element.ref.current;
 
       switch (this.props.orientation) {
         case 'horizontal':
@@ -600,16 +599,10 @@ function (_React$Component) {
   }, {
     key: "emitElementsEvent",
     value: function emitElementsEvent(elements, event) {
-      var _this3 = this;
-
       this.toArray(elements).forEach(function (component) {
         if (component.props[event]) {
-          var ref = _this3.refs[component.ref];
-
-          var domElement = _reactDom.default.findDOMNode(ref);
-
           component.props[event]({
-            domElement: domElement,
+            domElement: component.ref.current,
             component: component
           });
         }
@@ -624,7 +617,7 @@ function (_React$Component) {
   }, {
     key: "computeFlexData",
     value: function computeFlexData() {
-      var _this4 = this;
+      var _this3 = this;
 
       var children = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : this.getValidChildren();
       var props = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : this.props;
@@ -657,7 +650,6 @@ function (_React$Component) {
           sizeFlex: (props.size || Number.MAX_VALUE) * pixelFlex,
           minFlex: (props.minSize || 1) * pixelFlex,
           constrained: props.flex !== undefined,
-          guid: props.ref || _this4.guid(),
           flex: props.flex || 0,
           type: child.type
         };
@@ -682,30 +674,15 @@ function (_React$Component) {
             constrained: constrained
           });
         });
-        return hasContrain && depth < _this4.props.maxRecDepth ? computeFlexDataRec(flexDataOut, depth + 1) : flexDataOut;
+        return hasContrain && depth < _this3.props.maxRecDepth ? computeFlexDataRec(flexDataOut, depth + 1) : flexDataOut;
       };
 
       var flexData = computeFlexDataRec(flexDataInit);
       return flexData.map(function (entry) {
         return {
           flex: !_ReflexSplitter.default.isA(entry) ? entry.flex : 0.0,
-          guid: entry.guid
+          ref: _react.default.createRef()
         };
-      });
-    } /////////////////////////////////////////////////////////
-    // Utility method that generates a new unique GUID
-    //
-    /////////////////////////////////////////////////////////
-
-  }, {
-    key: "guid",
-    value: function guid() {
-      var format = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 'xxxx-xxxx';
-      var d = new Date().getTime();
-      return format.replace(/[xy]/g, function (c) {
-        var r = (d + Math.random() * 16) % 16 | 0;
-        d = Math.floor(d / 16);
-        return (c == 'x' ? r : r & 0x7 | 0x8).toString(16);
       });
     } /////////////////////////////////////////////////////////
     // Utility method to ensure given argument is
@@ -727,22 +704,22 @@ function (_React$Component) {
   }, {
     key: "render",
     value: function render() {
-      var _this5 = this;
+      var _this4 = this;
 
       var className = [this.state.resizing ? 'reflex-resizing' : ''].concat((0, _toConsumableArray2.default)(this.props.className.split(' ')), [this.props.orientation, 'reflex-container']).join(' ').trim();
       this.children = _react.default.Children.map(this.getValidChildren(), function (child, index) {
-        if (index > _this5.state.flexData.length - 1) {
+        if (index > _this4.state.flexData.length - 1) {
           return _react.default.createElement("div", null);
         }
 
-        var flexData = _this5.state.flexData[index];
+        var flexData = _this4.state.flexData[index];
         var newProps = (0, _objectSpread2.default)({}, child.props, {
           maxSize: child.props.maxSize || Number.MAX_VALUE,
-          orientation: _this5.props.orientation,
+          orientation: _this4.props.orientation,
           minSize: child.props.minSize || 1,
-          events: _this5.events,
+          events: _this4.events,
           flex: flexData.flex,
-          ref: flexData.guid,
+          ref: flexData.ref,
           index: index
         });
         return _react.default.cloneElement(child, newProps);

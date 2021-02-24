@@ -6,10 +6,11 @@
 ///////////////////////////////////////////////////////////
 import {getDataProps} from './utilities'
 import PropTypes from 'prop-types'
-import ReactDOM from 'react-dom'
 import React from 'react'
 
 export default class ReflexHandle extends React.Component {
+
+  ref = React.createRef()
 
   /////////////////////////////////////////////////////////
   //
@@ -147,7 +148,7 @@ export default class ReflexHandle extends React.Component {
 
     if (this.state.active) {
 
-      const domElement = ReactDOM.findDOMNode(this)
+      const domElement = this.ref.current
 
       this.props.events.emit(
         'resize', {
@@ -185,7 +186,7 @@ export default class ReflexHandle extends React.Component {
       // if needed by returning true
       // to onStartResize
       if (this.props.onStartResize({
-          domElement: ReactDOM.findDOMNode(this),
+          domElement: this.ref.current,
           component: this
       })) {
 
@@ -214,7 +215,7 @@ export default class ReflexHandle extends React.Component {
       if (this.props.onStopResize) {
 
         this.props.onStopResize({
-          domElement: ReactDOM.findDOMNode(this),
+          domElement: this.ref.current,
           component: this
         })
       }
@@ -245,7 +246,8 @@ export default class ReflexHandle extends React.Component {
         onMouseDown={this.onMouseDown}
         style={this.props.style}
         className={className}
-        id={this.props.id}>
+        id={this.props.id}
+        ref={this.ref}>
         {this.props.children}
       </div>
     )

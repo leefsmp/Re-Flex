@@ -99,7 +99,7 @@ class SizeAwareReflexElement extends React.Component {
 
 }
 
-export default class ReflexElement extends React.Component {
+class ReflexElement extends React.Component {
   /////////////////////////////////////////////////////////
   //
   //
@@ -182,6 +182,7 @@ export default class ReflexElement extends React.Component {
     });
 
     return React.createElement("div", _extends({}, getDataProps(this.props), {
+      ref: this.props.innerRef,
       className: className,
       style: style
     }), this.props.propagateDimensions ? React.createElement(SizeAwareReflexElement, this.props) : this.renderChildren());
@@ -213,4 +214,10 @@ _defineProperty(ReflexElement, "defaultProps", {
   //
   /////////////////////////////////////////////////////////
 
+});
+
+export default React.forwardRef((props, ref) => {
+  return React.createElement(ReflexElement, _extends({
+    innerRef: ref
+  }, props));
 });

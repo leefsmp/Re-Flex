@@ -1,6 +1,6 @@
 {
   "name": "react-reflex",
-  "version": "3.1.1",
+  "version": "4.0.0",
   "description": "Flex layout component for advanced React web applications",
   "main": "dist/commonjs/index.js",
   "module": "dist/es/index.js",
@@ -96,7 +96,6 @@
     "react-measure": "^2.0.2"
   },
   "peerDependencies": {
-    "react": "^16.0.0 || ^17.0.0",
-    "react-dom": "^16.0.0 || ^17.0.0"
+    "react": "^16.0.0 || ^17.0.0"
   }
 }
