@@ -355,9 +355,9 @@ export default class ReflexContainer extends React.Component {
     document.body.classList.remove('reflex-row-resize')
     document.body.classList.remove('reflex-col-resize')
 
-    const resizedRefs = this.elements.map(element => {
+    const resizedRefs = this.elements ? this.elements.map(element => {
       return element.ref
-    })
+    }) : [];
 
     const elements = this.children.filter(child => {
       return !ReflexSplitter.isA(child) &&
