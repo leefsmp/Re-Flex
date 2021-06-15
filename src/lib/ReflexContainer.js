@@ -125,8 +125,8 @@ export default class ReflexContainer extends React.Component {
     const children = this.getValidChildren(this.props)
 
     if ((children.length !== this.state.flexData.length) ||
-        (this.props.orientation !== this.props.orientation) || 
-        this.flexHasChanged(this.props)) {
+        (prevProps.orientation !== this.props.orientation) || 
+        this.flexHasChanged(prevProps)) {
 
       const flexData = this.computeFlexData(
         children, this.props)
@@ -189,10 +189,10 @@ export default class ReflexContainer extends React.Component {
   // to one or several children
   //
   /////////////////////////////////////////////////////////
-  flexHasChanged (props) {
+  flexHasChanged (prevProps) {
 
-    const nextChildrenFlex =
-      this.getValidChildren(props).map((child) => {
+    const prevChildrenFlex =
+      this.getValidChildren(prevProps).map((child) => {
         return child.props.flex || 0
       })
 
@@ -202,7 +202,7 @@ export default class ReflexContainer extends React.Component {
       })
 
     return !childrenFlex.every((flex, idx) => {
-      return flex === nextChildrenFlex[idx]
+      return flex === prevChildrenFlex[idx]
     })
   }
 
