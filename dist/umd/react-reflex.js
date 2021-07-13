@@ -1,13 +1,13 @@
 (function webpackUniversalModuleDefinition(root, factory) {
 	if(typeof exports === 'object' && typeof module === 'object')
-		module.exports = factory(require("react"), require("react-dom"));
+		module.exports = factory(require("react"));
 	else if(typeof define === 'function' && define.amd)
-		define(["react", "react-dom"], factory);
+		define(["react"], factory);
 	else if(typeof exports === 'object')
-		exports["react-reflex"] = factory(require("react"), require("react-dom"));
+		exports["react-reflex"] = factory(require("react"));
 	else
-		root["react-reflex"] = factory(root["React"], root["ReactDOM"]);
-})(window, function(__WEBPACK_EXTERNAL_MODULE_react__, __WEBPACK_EXTERNAL_MODULE_react_dom__) {
+		root["react-reflex"] = factory(root["React"]);
+})(window, function(__WEBPACK_EXTERNAL_MODULE_react__) {
 return /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
 /******/ 	var installedModules = {};
@@ -4121,12 +4121,10 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _utilities__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! ./utilities */ "./src/lib/utilities.js");
 /* harmony import */ var prop_types__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! prop-types */ "./node_modules/prop-types/index.js");
 /* harmony import */ var prop_types__WEBPACK_IMPORTED_MODULE_13___default = /*#__PURE__*/__webpack_require__.n(prop_types__WEBPACK_IMPORTED_MODULE_13__);
-/* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! react-dom */ "react-dom");
-/* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_14___default = /*#__PURE__*/__webpack_require__.n(react_dom__WEBPACK_IMPORTED_MODULE_14__);
-/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_15__ = __webpack_require__(/*! react */ "react");
-/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_15___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_15__);
-/* harmony import */ var _Polyfills__WEBPACK_IMPORTED_MODULE_16__ = __webpack_require__(/*! ./Polyfills */ "./src/lib/Polyfills.js");
-/* harmony import */ var _Polyfills__WEBPACK_IMPORTED_MODULE_16___default = /*#__PURE__*/__webpack_require__.n(_Polyfills__WEBPACK_IMPORTED_MODULE_16__);
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! react */ "react");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_14___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_14__);
+/* harmony import */ var _Polyfills__WEBPACK_IMPORTED_MODULE_15__ = __webpack_require__(/*! ./Polyfills */ "./src/lib/Polyfills.js");
+/* harmony import */ var _Polyfills__WEBPACK_IMPORTED_MODULE_15___default = /*#__PURE__*/__webpack_require__.n(_Polyfills__WEBPACK_IMPORTED_MODULE_15__);
 
 
 
@@ -4150,7 +4148,6 @@ __webpack_require__.r(__webpack_exports__);
 // December 2016
 //
 ///////////////////////////////////////////////////////////
-
 
 
 
@@ -4242,10 +4239,9 @@ function (_React$Component) {
     _babel_runtime_helpers_defineProperty__WEBPACK_IMPORTED_MODULE_9___default()(_babel_runtime_helpers_assertThisInitialized__WEBPACK_IMPORTED_MODULE_8___default()(_babel_runtime_helpers_assertThisInitialized__WEBPACK_IMPORTED_MODULE_8___default()(_this)), "onStopResize", function (data) {
       document.body.classList.remove('reflex-row-resize');
       document.body.classList.remove('reflex-col-resize');
-
-      var resizedRefs = _this.elements.map(function (element) {
+      var resizedRefs = _this.elements ? _this.elements.map(function (element) {
         return element.ref;
-      });
+      }) : [];
 
       var elements = _this.children.filter(function (child) {
         return !_ReflexSplitter__WEBPACK_IMPORTED_MODULE_10__["default"].isA(child) && resizedRefs.includes(child.ref);
@@ -4296,7 +4292,7 @@ function (_React$Component) {
     _this.state = {
       flexData: []
     };
-    _this.ref = react__WEBPACK_IMPORTED_MODULE_15___default.a.createRef();
+    _this.ref = react__WEBPACK_IMPORTED_MODULE_14___default.a.createRef();
     return _this;
   } /////////////////////////////////////////////////////////
   //
@@ -4354,7 +4350,7 @@ function (_React$Component) {
     value: function componentDidUpdate(prevProps, prevState) {
       var children = this.getValidChildren(this.props);
 
-      if (children.length !== this.state.flexData.length || this.props.orientation !== this.props.orientation || this.flexHasChanged(this.props)) {
+      if (children.length !== this.state.flexData.length || prevProps.orientation !== this.props.orientation || this.flexHasChanged(prevProps)) {
         var flexData = this.computeFlexData(children, this.props);
         this.setState({
           flexData: flexData
@@ -4401,15 +4397,15 @@ function (_React$Component) {
     // to one or several children
     //
     /////////////////////////////////////////////////////////
-    value: function flexHasChanged(props) {
-      var nextChildrenFlex = this.getValidChildren(props).map(function (child) {
+    value: function flexHasChanged(prevProps) {
+      var prevChildrenFlex = this.getValidChildren(prevProps).map(function (child) {
         return child.props.flex || 0;
       });
       var childrenFlex = this.getValidChildren().map(function (child) {
         return child.props.flex || 0;
       });
       return !childrenFlex.every(function (flex, idx) {
-        return flex === nextChildrenFlex[idx];
+        return flex === prevChildrenFlex[idx];
       });
     } /////////////////////////////////////////////////////////
     // Returns size of a ReflexElement
@@ -4797,7 +4793,7 @@ function (_React$Component) {
       return flexData.map(function (entry) {
         return {
           flex: !_ReflexSplitter__WEBPACK_IMPORTED_MODULE_10__["default"].isA(entry) ? entry.flex : 0.0,
-          ref: react__WEBPACK_IMPORTED_MODULE_15___default.a.createRef()
+          ref: react__WEBPACK_IMPORTED_MODULE_14___default.a.createRef()
         };
       });
     } /////////////////////////////////////////////////////////
@@ -4823,9 +4819,9 @@ function (_React$Component) {
       var _this4 = this;
 
       var className = [this.state.resizing ? 'reflex-resizing' : ''].concat(_babel_runtime_helpers_toConsumableArray__WEBPACK_IMPORTED_MODULE_2___default()(this.props.className.split(' ')), [this.props.orientation, 'reflex-container']).join(' ').trim();
-      this.children = react__WEBPACK_IMPORTED_MODULE_15___default.a.Children.map(this.getValidChildren(), function (child, index) {
+      this.children = react__WEBPACK_IMPORTED_MODULE_14___default.a.Children.map(this.getValidChildren(), function (child, index) {
         if (index > _this4.state.flexData.length - 1) {
-          return react__WEBPACK_IMPORTED_MODULE_15___default.a.createElement("div", null);
+          return react__WEBPACK_IMPORTED_MODULE_14___default.a.createElement("div", null);
         }
 
         var flexData = _this4.state.flexData[index];
@@ -4840,9 +4836,9 @@ function (_React$Component) {
           index: index
         });
 
-        return react__WEBPACK_IMPORTED_MODULE_15___default.a.cloneElement(child, newProps);
+        return react__WEBPACK_IMPORTED_MODULE_14___default.a.cloneElement(child, newProps);
       });
-      return react__WEBPACK_IMPORTED_MODULE_15___default.a.createElement("div", _babel_runtime_helpers_extends__WEBPACK_IMPORTED_MODULE_0___default()({}, Object(_utilities__WEBPACK_IMPORTED_MODULE_12__["getDataProps"])(this.props), {
+      return react__WEBPACK_IMPORTED_MODULE_14___default.a.createElement("div", _babel_runtime_helpers_extends__WEBPACK_IMPORTED_MODULE_0___default()({}, Object(_utilities__WEBPACK_IMPORTED_MODULE_12__["getDataProps"])(this.props), {
         style: this.props.style,
         className: className,
         ref: this.ref
@@ -4858,7 +4854,7 @@ function (_React$Component) {
   }]);
 
   return ReflexContainer;
-}(react__WEBPACK_IMPORTED_MODULE_15___default.a.Component);
+}(react__WEBPACK_IMPORTED_MODULE_14___default.a.Component);
 
 _babel_runtime_helpers_defineProperty__WEBPACK_IMPORTED_MODULE_9___default()(ReflexContainer, "propTypes", {
   windowResizeAware: prop_types__WEBPACK_IMPORTED_MODULE_13___default.a.bool,
@@ -6284,17 +6280,6 @@ module.exports = __webpack_require__(/*! ./src/lib/index.js */"./src/lib/index.j
 /***/ (function(module, exports) {
 
 module.exports = __WEBPACK_EXTERNAL_MODULE_react__;
-
-/***/ }),
-
-/***/ "react-dom":
-/*!*****************************************************************************************************!*\
-  !*** external {"root":"ReactDOM","commonjs":"react-dom","commonjs2":"react-dom","amd":"react-dom"} ***!
-  \*****************************************************************************************************/
-/*! no static exports found */
-/***/ (function(module, exports) {
-
-module.exports = __WEBPACK_EXTERNAL_MODULE_react_dom__;
 
 /***/ })
 

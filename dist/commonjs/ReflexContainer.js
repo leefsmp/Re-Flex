@@ -35,8 +35,6 @@ var _utilities = require("./utilities");
 
 var _propTypes = _interopRequireDefault(require("prop-types"));
 
-var _reactDom = _interopRequireDefault(require("react-dom"));
-
 var _react = _interopRequireDefault(require("react"));
 
 require("./Polyfills");
@@ -126,10 +124,9 @@ function (_React$Component) {
     (0, _defineProperty2.default)((0, _assertThisInitialized2.default)((0, _assertThisInitialized2.default)(_this)), "onStopResize", function (data) {
       document.body.classList.remove('reflex-row-resize');
       document.body.classList.remove('reflex-col-resize');
-
-      var resizedRefs = _this.elements.map(function (element) {
+      var resizedRefs = _this.elements ? _this.elements.map(function (element) {
         return element.ref;
-      });
+      }) : [];
 
       var elements = _this.children.filter(function (child) {
         return !_ReflexSplitter.default.isA(child) && resizedRefs.includes(child.ref);
@@ -236,7 +233,7 @@ function (_React$Component) {
     value: function componentDidUpdate(prevProps, prevState) {
       var children = this.getValidChildren(this.props);
 
-      if (children.length !== this.state.flexData.length || this.props.orientation !== this.props.orientation || this.flexHasChanged(this.props)) {
+      if (children.length !== this.state.flexData.length || prevProps.orientation !== this.props.orientation || this.flexHasChanged(prevProps)) {
         var flexData = this.computeFlexData(children, this.props);
         this.setState({
           flexData: flexData
@@ -283,15 +280,15 @@ function (_React$Component) {
     // to one or several children
     //
     /////////////////////////////////////////////////////////
-    value: function flexHasChanged(props) {
-      var nextChildrenFlex = this.getValidChildren(props).map(function (child) {
+    value: function flexHasChanged(prevProps) {
+      var prevChildrenFlex = this.getValidChildren(prevProps).map(function (child) {
         return child.props.flex || 0;
       });
       var childrenFlex = this.getValidChildren().map(function (child) {
         return child.props.flex || 0;
       });
       return !childrenFlex.every(function (flex, idx) {
-        return flex === nextChildrenFlex[idx];
+        return flex === prevChildrenFlex[idx];
       });
     } /////////////////////////////////////////////////////////
     // Returns size of a ReflexElement

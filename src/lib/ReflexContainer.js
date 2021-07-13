@@ -8,7 +8,6 @@ import ReflexSplitter from './ReflexSplitter'
 import ReflexEvents from './ReflexEvents'
 import {getDataProps} from './utilities'
 import PropTypes from 'prop-types'
-import ReactDOM from 'react-dom'
 import React from 'react'
 import './Polyfills'
 
