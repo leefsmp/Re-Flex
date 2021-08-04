@@ -10,10 +10,6 @@ import { getDataProps } from './utilities';
 import PropTypes from 'prop-types';
 import React from 'react';
 export default class ReflexHandle extends React.Component {
-  /////////////////////////////////////////////////////////
-  //
-  //
-  /////////////////////////////////////////////////////////
   static isA(element) {
     if (!element) {
       return false;
@@ -21,11 +17,7 @@ export default class ReflexHandle extends React.Component {
 
 
     return process.env.NODE_ENV === 'development' ? element.type === React.createElement(ReflexHandle, null).type : element.type === ReflexHandle;
-  } /////////////////////////////////////////////////////////
-  //
-  //
-  /////////////////////////////////////////////////////////
-
+  }
 
   constructor(props) {
     super(props);
@@ -100,11 +92,7 @@ export default class ReflexHandle extends React.Component {
       active: false
     };
     this.document = props.document;
-  } /////////////////////////////////////////////////////////
-  //
-  //
-  /////////////////////////////////////////////////////////
-
+  }
 
   componentDidMount() {
     if (!this.document) {
@@ -119,11 +107,7 @@ export default class ReflexHandle extends React.Component {
     this.document.addEventListener('touchmove', this.onMouseMove, {
       passive: false
     });
-  } /////////////////////////////////////////////////////////
-  //
-  //
-  /////////////////////////////////////////////////////////
-
+  }
 
   componentWillUnmount() {
     if (!this.document) {
@@ -141,16 +125,8 @@ export default class ReflexHandle extends React.Component {
         event: null
       });
     }
-  } /////////////////////////////////////////////////////////
-  //
-  //
-  /////////////////////////////////////////////////////////
+  }
 
-
-  /////////////////////////////////////////////////////////
-  //
-  //
-  /////////////////////////////////////////////////////////
   render() {
     const className = [...this.props.className.split(' '), this.state.active ? 'active' : '', 'reflex-handle'].join(' ').trim();
     return React.createElement("div", _extends({}, getDataProps(this.props), {
@@ -172,11 +148,7 @@ _defineProperty(ReflexHandle, "propTypes", {
   className: PropTypes.string,
   propagate: PropTypes.bool,
   onResize: PropTypes.func,
-  style: PropTypes.object /////////////////////////////////////////////////////////
-  //
-  //
-  /////////////////////////////////////////////////////////
-
+  style: PropTypes.object
 });
 
 _defineProperty(ReflexHandle, "defaultProps", {
@@ -186,9 +158,5 @@ _defineProperty(ReflexHandle, "defaultProps", {
   propagate: false,
   onResize: null,
   className: '',
-  style: {} /////////////////////////////////////////////////////////
-  //
-  //
-  /////////////////////////////////////////////////////////
-
+  style: {}
 });

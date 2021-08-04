@@ -43,10 +43,6 @@ function (_React$Component) {
   (0, _inherits2.default)(ReflexHandle, _React$Component);
   (0, _createClass2.default)(ReflexHandle, null, [{
     key: "isA",
-    /////////////////////////////////////////////////////////
-    //
-    //
-    /////////////////////////////////////////////////////////
     value: function isA(element) {
       if (!element) {
         return false;
@@ -54,11 +50,7 @@ function (_React$Component) {
 
 
       return process.env.NODE_ENV === 'development' ? element.type === _react.default.createElement(ReflexHandle, null).type : element.type === ReflexHandle;
-    } /////////////////////////////////////////////////////////
-    //
-    //
-    /////////////////////////////////////////////////////////
-
+    }
   }]);
 
   function ReflexHandle(props) {
@@ -134,11 +126,7 @@ function (_React$Component) {
     };
     _this.document = props.document;
     return _this;
-  } /////////////////////////////////////////////////////////
-  //
-  //
-  /////////////////////////////////////////////////////////
-
+  }
 
   (0, _createClass2.default)(ReflexHandle, [{
     key: "componentDidMount",
@@ -155,11 +143,7 @@ function (_React$Component) {
       this.document.addEventListener('touchmove', this.onMouseMove, {
         passive: false
       });
-    } /////////////////////////////////////////////////////////
-    //
-    //
-    /////////////////////////////////////////////////////////
-
+    }
   }, {
     key: "componentWillUnmount",
     value: function componentWillUnmount() {
@@ -178,17 +162,9 @@ function (_React$Component) {
           event: null
         });
       }
-    } /////////////////////////////////////////////////////////
-    //
-    //
-    /////////////////////////////////////////////////////////
-
+    }
   }, {
     key: "render",
-    /////////////////////////////////////////////////////////
-    //
-    //
-    /////////////////////////////////////////////////////////
     value: function render() {
       var className = (0, _toConsumableArray2.default)(this.props.className.split(' ')).concat([this.state.active ? 'active' : '', 'reflex-handle']).join(' ').trim();
       return _react.default.createElement("div", (0, _extends2.default)({}, (0, _utilities.getDataProps)(this.props), {
@@ -212,11 +188,7 @@ exports.default = ReflexHandle;
   className: _propTypes.default.string,
   propagate: _propTypes.default.bool,
   onResize: _propTypes.default.func,
-  style: _propTypes.default.object /////////////////////////////////////////////////////////
-  //
-  //
-  /////////////////////////////////////////////////////////
-
+  style: _propTypes.default.object
 });
 (0, _defineProperty2.default)(ReflexHandle, "defaultProps", {
   document: typeof document === 'undefined' ? null : document,
@@ -225,9 +197,5 @@ exports.default = ReflexHandle;
   propagate: false,
   onResize: null,
   className: '',
-  style: {} /////////////////////////////////////////////////////////
-  //
-  //
-  /////////////////////////////////////////////////////////
-
+  style: {}
 });

@@ -10,10 +10,6 @@ import { Browser, getDataProps } from './utilities';
 import PropTypes from 'prop-types';
 import React from 'react';
 export default class ReflexSplitter extends React.Component {
-  /////////////////////////////////////////////////////////
-  //
-  //
-  /////////////////////////////////////////////////////////
   static isA(element) {
     if (!element) {
       return false;
@@ -21,11 +17,7 @@ export default class ReflexSplitter extends React.Component {
 
 
     return process.env.NODE_ENV === 'development' ? element.type === React.createElement(ReflexSplitter, null).type : element.type === ReflexSplitter;
-  } /////////////////////////////////////////////////////////
-  //
-  //
-  /////////////////////////////////////////////////////////
-
+  }
 
   constructor(props) {
     super(props);
@@ -100,11 +92,7 @@ export default class ReflexSplitter extends React.Component {
       active: false
     };
     this.document = props.document;
-  } /////////////////////////////////////////////////////////
-  //
-  //
-  /////////////////////////////////////////////////////////
-
+  }
 
   componentDidMount() {
     if (!this.document) {
@@ -119,11 +107,7 @@ export default class ReflexSplitter extends React.Component {
     this.document.addEventListener('touchmove', this.onMouseMove, {
       passive: false
     });
-  } /////////////////////////////////////////////////////////
-  //
-  //
-  /////////////////////////////////////////////////////////
-
+  }
 
   componentWillUnmount() {
     if (!this.document) {
@@ -141,16 +125,8 @@ export default class ReflexSplitter extends React.Component {
         event: null
       });
     }
-  } /////////////////////////////////////////////////////////
-  //
-  //
-  /////////////////////////////////////////////////////////
+  }
 
-
-  /////////////////////////////////////////////////////////
-  //
-  //
-  /////////////////////////////////////////////////////////
   render() {
     const className = [Browser.isMobile() ? 'reflex-thin' : '', ...this.props.className.split(' '), this.state.active ? 'active' : '', 'reflex-splitter'].join(' ').trim();
     return React.createElement("div", _extends({}, getDataProps(this.props), {
@@ -172,11 +148,7 @@ _defineProperty(ReflexSplitter, "propTypes", {
   className: PropTypes.string,
   propagate: PropTypes.bool,
   onResize: PropTypes.func,
-  style: PropTypes.object /////////////////////////////////////////////////////////
-  //
-  //
-  /////////////////////////////////////////////////////////
-
+  style: PropTypes.object
 });
 
 _defineProperty(ReflexSplitter, "defaultProps", {

@@ -20,10 +20,6 @@ var _createClass2 = _interopRequireDefault(require("@babel/runtime/helpers/creat
 var ReflexEvents =
 /*#__PURE__*/
 function () {
-  /////////////////////////////////////////////////////////
-  //
-  //
-  /////////////////////////////////////////////////////////
   function ReflexEvents() {
     (0, _classCallCheck2.default)(this, ReflexEvents);
     this._events = {};
@@ -69,11 +65,7 @@ function () {
         }
       });
       return this;
-    } /////////////////////////////////////////////////////////
-    //
-    //
-    /////////////////////////////////////////////////////////
-
+    }
   }, {
     key: "emit",
     value: function emit(event

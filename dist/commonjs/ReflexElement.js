@@ -54,10 +54,6 @@ var SizeAwareReflexElement =
 function (_React$Component) {
   (0, _inherits2.default)(SizeAwareReflexElement, _React$Component);
 
-  /////////////////////////////////////////////////////////
-  //
-  //
-  /////////////////////////////////////////////////////////
   function SizeAwareReflexElement(props) {
     var _this;
 
@@ -67,8 +63,9 @@ function (_React$Component) {
       var _this$props = _this.props,
           resizeHeight = _this$props.resizeHeight,
           resizeWidth = _this$props.resizeWidth;
-      var height = Math.floor(rect.bounds.height);
-      var width = Math.floor(rect.bounds.width);
+      var _rect$bounds = rect.bounds,
+          height = _rect$bounds.height,
+          width = _rect$bounds.width;
 
       _this.setDimensions((0, _objectSpread2.default)({}, resizeHeight && {
         height: height
@@ -84,18 +81,10 @@ function (_React$Component) {
       width: "100%"
     };
     return _this;
-  } /////////////////////////////////////////////////////////
-  //
-  //
-  /////////////////////////////////////////////////////////
-
+  }
 
   (0, _createClass2.default)(SizeAwareReflexElement, [{
     key: "renderChildren",
-    /////////////////////////////////////////////////////////
-    //
-    //
-    /////////////////////////////////////////////////////////
     value: function renderChildren() {
       var _this2 = this;
 
@@ -118,11 +107,7 @@ function (_React$Component) {
 
         return child;
       });
-    } /////////////////////////////////////////////////////////
-    //
-    //
-    /////////////////////////////////////////////////////////
-
+    }
   }, {
     key: "render",
     value: function render() {
@@ -150,10 +135,6 @@ var ReflexElement =
 function (_React$Component2) {
   (0, _inherits2.default)(ReflexElement, _React$Component2);
 
-  /////////////////////////////////////////////////////////
-  //
-  //
-  /////////////////////////////////////////////////////////
   function ReflexElement(props) {
     var _this4;
 
@@ -163,18 +144,10 @@ function (_React$Component2) {
       size: props.size
     };
     return _this4;
-  } /////////////////////////////////////////////////////////////
-  //
-  //
-  /////////////////////////////////////////////////////////////
-
+  }
 
   (0, _createClass2.default)(ReflexElement, [{
     key: "componentDidUpdate",
-    /////////////////////////////////////////////////////////
-    //
-    //
-    /////////////////////////////////////////////////////////
     value: function () {
       var _componentDidUpdate = (0, _asyncToGenerator2.default)(
       /*#__PURE__*/
@@ -261,20 +234,12 @@ function (_React$Component2) {
       return function componentDidUpdate(_x, _x2, _x3) {
         return _componentDidUpdate.apply(this, arguments);
       };
-    }() /////////////////////////////////////////////////////////
-    //
-    //
-    /////////////////////////////////////////////////////////
-
+    }()
   }, {
     key: "toArray",
     value: function toArray(obj) {
       return obj ? Array.isArray(obj) ? obj : [obj] : [];
-    } /////////////////////////////////////////////////////////
-    //
-    //
-    /////////////////////////////////////////////////////////
-
+    }
   }, {
     key: "renderChildren",
     value: function renderChildren() {
@@ -290,11 +255,7 @@ function (_React$Component2) {
 
         return child;
       });
-    } /////////////////////////////////////////////////////////
-    //
-    //
-    /////////////////////////////////////////////////////////
-
+    }
   }, {
     key: "render",
     value: function render() {
@@ -331,11 +292,7 @@ function (_React$Component2) {
   resizeHeight: _propTypes.default.bool,
   resizeWidth: _propTypes.default.bool,
   className: _propTypes.default.string,
-  size: _propTypes.default.number /////////////////////////////////////////////////////////
-  //
-  //
-  /////////////////////////////////////////////////////////
-
+  size: _propTypes.default.number
 });
 (0, _defineProperty2.default)(ReflexElement, "defaultProps", {
   propagateDimensionsRate: 100,
@@ -343,11 +300,7 @@ function (_React$Component2) {
   resizeHeight: true,
   resizeWidth: true,
   direction: [1],
-  className: '' /////////////////////////////////////////////////////////
-  //
-  //
-  /////////////////////////////////////////////////////////
-
+  className: ''
 });
 
 var _default = _react.default.forwardRef(function (props, ref) {

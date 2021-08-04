@@ -177,11 +177,7 @@ function (_React$Component) {
     };
     _this.ref = _react.default.createRef();
     return _this;
-  } /////////////////////////////////////////////////////////
-  //
-  //
-  /////////////////////////////////////////////////////////
-
+  }
 
   (0, _createClass2.default)(ReflexContainer, [{
     key: "componentDidMount",
@@ -201,21 +197,13 @@ function (_React$Component) {
       this.events.on('startResize', this.onStartResize);
       this.events.on('stopResize', this.onStopResize);
       this.events.on('resize', this.onResize);
-    } /////////////////////////////////////////////////////////
-    //
-    //
-    /////////////////////////////////////////////////////////
-
+    }
   }, {
     key: "componentWillUnmount",
     value: function componentWillUnmount() {
       this.events.off();
       window.removeEventListener('resize', this.onWindowResize);
-    } /////////////////////////////////////////////////////////
-    //
-    //
-    /////////////////////////////////////////////////////////
-
+    }
   }, {
     key: "getValidChildren",
     value: function getValidChildren() {
@@ -223,11 +211,7 @@ function (_React$Component) {
       return this.toArray(props.children).filter(function (child) {
         return !!child;
       });
-    } /////////////////////////////////////////////////////////////
-    //
-    //
-    /////////////////////////////////////////////////////////////
-
+    }
   }, {
     key: "componentDidUpdate",
     value: function componentDidUpdate(prevProps, prevState) {
@@ -737,20 +721,12 @@ exports.default = ReflexContainer;
   orientation: _propTypes.default.oneOf(['horizontal', 'vertical']),
   maxRecDepth: _propTypes.default.number,
   className: _propTypes.default.string,
-  style: _propTypes.default.object /////////////////////////////////////////////////////////
-  //
-  //
-  /////////////////////////////////////////////////////////
-
+  style: _propTypes.default.object
 });
 (0, _defineProperty2.default)(ReflexContainer, "defaultProps", {
   orientation: 'horizontal',
   windowResizeAware: false,
   maxRecDepth: 100,
   className: '',
-  style: {} /////////////////////////////////////////////////////////
-  //
-  //
-  /////////////////////////////////////////////////////////
-
+  style: {}
 });

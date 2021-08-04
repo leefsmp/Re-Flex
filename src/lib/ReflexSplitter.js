@@ -11,11 +11,7 @@ import React from 'react'
 export default class ReflexSplitter extends React.Component {
 
   ref = React.createRef()
-
-  /////////////////////////////////////////////////////////
-  //
-  //
-  /////////////////////////////////////////////////////////
+  
   static propTypes = {
     children: PropTypes.oneOfType([
       PropTypes.arrayOf(PropTypes.node),
@@ -29,10 +25,6 @@ export default class ReflexSplitter extends React.Component {
     style: PropTypes.object
   }
 
-  /////////////////////////////////////////////////////////
-  //
-  //
-  /////////////////////////////////////////////////////////
   static defaultProps = {
     document: typeof document !== 'undefined' 
       ? document
@@ -60,25 +52,14 @@ export default class ReflexSplitter extends React.Component {
       : (element.type === ReflexSplitter)
   }
 
-  /////////////////////////////////////////////////////////
-  //
-  //
-  /////////////////////////////////////////////////////////
   constructor (props) {
-
     super (props)
-
     this.state = {
       active: false
     }
-
     this.document = props.document
   }
-
-  /////////////////////////////////////////////////////////
-  //
-  //
-  /////////////////////////////////////////////////////////
+  
   componentDidMount () {
     
     if (!this.document) {
@@ -106,10 +87,6 @@ export default class ReflexSplitter extends React.Component {
       })
   }
 
-  /////////////////////////////////////////////////////////
-  //
-  //
-  /////////////////////////////////////////////////////////
   componentWillUnmount () {
 
     if (!this.document) {
@@ -139,11 +116,7 @@ export default class ReflexSplitter extends React.Component {
       })
     }
   }
-
-  /////////////////////////////////////////////////////////
-  //
-  //
-  /////////////////////////////////////////////////////////
+  
   onMouseMove = (event) => {
 
     if (this.state.active) {
@@ -170,10 +143,6 @@ export default class ReflexSplitter extends React.Component {
     }
   }
 
-  /////////////////////////////////////////////////////////
-  //
-  //
-  /////////////////////////////////////////////////////////
   onMouseDown = (event) => {
 
     this.setState({
@@ -198,11 +167,7 @@ export default class ReflexSplitter extends React.Component {
       event
     })
   }
-
-  /////////////////////////////////////////////////////////
-  //
-  //
-  /////////////////////////////////////////////////////////
+  
   onMouseUp = (event) => {
 
     if (this.state.active) {
@@ -224,11 +189,7 @@ export default class ReflexSplitter extends React.Component {
       })
     }
   }
-
-  /////////////////////////////////////////////////////////
-  //
-  //
-  /////////////////////////////////////////////////////////
+  
   render () {
 
     const className = [

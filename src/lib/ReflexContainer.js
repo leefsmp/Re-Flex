@@ -32,10 +32,6 @@ export default class ReflexContainer extends React.Component {
     style: PropTypes.object
   }
 
-  /////////////////////////////////////////////////////////
-  //
-  //
-  /////////////////////////////////////////////////////////
   static defaultProps = {
     orientation: 'horizontal',
     windowResizeAware: false,
@@ -44,10 +40,6 @@ export default class ReflexContainer extends React.Component {
     style: {}
   }
 
-  /////////////////////////////////////////////////////////
-  //
-  //
-  /////////////////////////////////////////////////////////
   constructor (props) {
     super (props)
     this.events = new ReflexEvents()
@@ -57,11 +49,7 @@ export default class ReflexContainer extends React.Component {
     }
     this.ref = React.createRef()
   }
-
-  /////////////////////////////////////////////////////////
-  //
-  //
-  /////////////////////////////////////////////////////////
+  
   componentDidMount () {
 
     const flexData = this.computeFlexData()
@@ -91,10 +79,6 @@ export default class ReflexContainer extends React.Component {
       'resize', this.onResize)
   }
 
-  /////////////////////////////////////////////////////////
-  //
-  //
-  /////////////////////////////////////////////////////////
   componentWillUnmount () {
 
     this.events.off()
@@ -103,10 +87,6 @@ export default class ReflexContainer extends React.Component {
       'resize', this.onWindowResize)
   }
 
-  /////////////////////////////////////////////////////////
-  //
-  //
-  /////////////////////////////////////////////////////////
   getValidChildren (props = this.props) {
 
     return this.toArray(props.children).filter((child) => {
@@ -115,10 +95,6 @@ export default class ReflexContainer extends React.Component {
     })
   }
 
-  /////////////////////////////////////////////////////////////
-  //
-  //
-  /////////////////////////////////////////////////////////////
   componentDidUpdate (prevProps, prevState) {
 
     const children = this.getValidChildren(this.props)

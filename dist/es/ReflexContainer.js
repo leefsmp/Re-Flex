@@ -130,11 +130,7 @@ export default class ReflexContainer extends React.Component {
       flexData: []
     };
     this.ref = React.createRef();
-  } /////////////////////////////////////////////////////////
-  //
-  //
-  /////////////////////////////////////////////////////////
-
+  }
 
   componentDidMount() {
     const flexData = this.computeFlexData();
@@ -154,30 +150,18 @@ export default class ReflexContainer extends React.Component {
     this.events.on('startResize', this.onStartResize);
     this.events.on('stopResize', this.onStopResize);
     this.events.on('resize', this.onResize);
-  } /////////////////////////////////////////////////////////
-  //
-  //
-  /////////////////////////////////////////////////////////
-
+  }
 
   componentWillUnmount() {
     this.events.off();
     window.removeEventListener('resize', this.onWindowResize);
-  } /////////////////////////////////////////////////////////
-  //
-  //
-  /////////////////////////////////////////////////////////
-
+  }
 
   getValidChildren(props = this.props) {
     return this.toArray(props.children).filter(child => {
       return !!child;
     });
-  } /////////////////////////////////////////////////////////////
-  //
-  //
-  /////////////////////////////////////////////////////////////
-
+  }
 
   componentDidUpdate(prevProps, prevState) {
     const children = this.getValidChildren(this.props);
@@ -655,11 +639,7 @@ _defineProperty(ReflexContainer, "propTypes", {
   orientation: PropTypes.oneOf(['horizontal', 'vertical']),
   maxRecDepth: PropTypes.number,
   className: PropTypes.string,
-  style: PropTypes.object /////////////////////////////////////////////////////////
-  //
-  //
-  /////////////////////////////////////////////////////////
-
+  style: PropTypes.object
 });
 
 _defineProperty(ReflexContainer, "defaultProps", {
@@ -667,9 +647,5 @@ _defineProperty(ReflexContainer, "defaultProps", {
   windowResizeAware: false,
   maxRecDepth: 100,
   className: '',
-  style: {} /////////////////////////////////////////////////////////
-  //
-  //
-  /////////////////////////////////////////////////////////
-
+  style: {}
 });

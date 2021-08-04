@@ -4294,11 +4294,7 @@ function (_React$Component) {
     };
     _this.ref = react__WEBPACK_IMPORTED_MODULE_14___default.a.createRef();
     return _this;
-  } /////////////////////////////////////////////////////////
-  //
-  //
-  /////////////////////////////////////////////////////////
-
+  }
 
   _babel_runtime_helpers_createClass__WEBPACK_IMPORTED_MODULE_4___default()(ReflexContainer, [{
     key: "componentDidMount",
@@ -4318,21 +4314,13 @@ function (_React$Component) {
       this.events.on('startResize', this.onStartResize);
       this.events.on('stopResize', this.onStopResize);
       this.events.on('resize', this.onResize);
-    } /////////////////////////////////////////////////////////
-    //
-    //
-    /////////////////////////////////////////////////////////
-
+    }
   }, {
     key: "componentWillUnmount",
     value: function componentWillUnmount() {
       this.events.off();
       window.removeEventListener('resize', this.onWindowResize);
-    } /////////////////////////////////////////////////////////
-    //
-    //
-    /////////////////////////////////////////////////////////
-
+    }
   }, {
     key: "getValidChildren",
     value: function getValidChildren() {
@@ -4340,11 +4328,7 @@ function (_React$Component) {
       return this.toArray(props.children).filter(function (child) {
         return !!child;
       });
-    } /////////////////////////////////////////////////////////////
-    //
-    //
-    /////////////////////////////////////////////////////////////
-
+    }
   }, {
     key: "componentDidUpdate",
     value: function componentDidUpdate(prevProps, prevState) {
@@ -4861,11 +4845,7 @@ _babel_runtime_helpers_defineProperty__WEBPACK_IMPORTED_MODULE_9___default()(Ref
   orientation: prop_types__WEBPACK_IMPORTED_MODULE_13___default.a.oneOf(['horizontal', 'vertical']),
   maxRecDepth: prop_types__WEBPACK_IMPORTED_MODULE_13___default.a.number,
   className: prop_types__WEBPACK_IMPORTED_MODULE_13___default.a.string,
-  style: prop_types__WEBPACK_IMPORTED_MODULE_13___default.a.object /////////////////////////////////////////////////////////
-  //
-  //
-  /////////////////////////////////////////////////////////
-
+  style: prop_types__WEBPACK_IMPORTED_MODULE_13___default.a.object
 });
 
 _babel_runtime_helpers_defineProperty__WEBPACK_IMPORTED_MODULE_9___default()(ReflexContainer, "defaultProps", {
@@ -4873,11 +4853,7 @@ _babel_runtime_helpers_defineProperty__WEBPACK_IMPORTED_MODULE_9___default()(Ref
   windowResizeAware: false,
   maxRecDepth: 100,
   className: '',
-  style: {} /////////////////////////////////////////////////////////
-  //
-  //
-  /////////////////////////////////////////////////////////
-
+  style: {}
 });
 
 
@@ -4981,10 +4957,6 @@ var SizeAwareReflexElement =
 function (_React$Component) {
   _babel_runtime_helpers_inherits__WEBPACK_IMPORTED_MODULE_9___default()(SizeAwareReflexElement, _React$Component);
 
-  /////////////////////////////////////////////////////////
-  //
-  //
-  /////////////////////////////////////////////////////////
   function SizeAwareReflexElement(props) {
     var _this;
 
@@ -4996,8 +4968,9 @@ function (_React$Component) {
       var _this$props = _this.props,
           resizeHeight = _this$props.resizeHeight,
           resizeWidth = _this$props.resizeWidth;
-      var height = Math.floor(rect.bounds.height);
-      var width = Math.floor(rect.bounds.width);
+      var _rect$bounds = rect.bounds,
+          height = _rect$bounds.height,
+          width = _rect$bounds.width;
 
       _this.setDimensions(_babel_runtime_helpers_objectSpread__WEBPACK_IMPORTED_MODULE_4___default()({}, resizeHeight && {
         height: height
@@ -5014,18 +4987,10 @@ function (_React$Component) {
       width: "100%"
     };
     return _this;
-  } /////////////////////////////////////////////////////////
-  //
-  //
-  /////////////////////////////////////////////////////////
-
+  }
 
   _babel_runtime_helpers_createClass__WEBPACK_IMPORTED_MODULE_6___default()(SizeAwareReflexElement, [{
     key: "renderChildren",
-    /////////////////////////////////////////////////////////
-    //
-    //
-    /////////////////////////////////////////////////////////
     value: function renderChildren() {
       var _this2 = this;
 
@@ -5048,11 +5013,7 @@ function (_React$Component) {
 
         return child;
       });
-    } /////////////////////////////////////////////////////////
-    //
-    //
-    /////////////////////////////////////////////////////////
-
+    }
   }, {
     key: "render",
     value: function render() {
@@ -5088,10 +5049,6 @@ var ReflexElement =
 function (_React$Component2) {
   _babel_runtime_helpers_inherits__WEBPACK_IMPORTED_MODULE_9___default()(ReflexElement, _React$Component2);
 
-  /////////////////////////////////////////////////////////
-  //
-  //
-  /////////////////////////////////////////////////////////
   function ReflexElement(props) {
     var _this4;
 
@@ -5102,18 +5059,10 @@ function (_React$Component2) {
       size: props.size
     };
     return _this4;
-  } /////////////////////////////////////////////////////////////
-  //
-  //
-  /////////////////////////////////////////////////////////////
-
+  }
 
   _babel_runtime_helpers_createClass__WEBPACK_IMPORTED_MODULE_6___default()(ReflexElement, [{
     key: "componentDidUpdate",
-    /////////////////////////////////////////////////////////
-    //
-    //
-    /////////////////////////////////////////////////////////
     value: function () {
       var _componentDidUpdate = _babel_runtime_helpers_asyncToGenerator__WEBPACK_IMPORTED_MODULE_3___default()(
       /*#__PURE__*/
@@ -5200,20 +5149,12 @@ function (_React$Component2) {
       return function componentDidUpdate(_x, _x2, _x3) {
         return _componentDidUpdate.apply(this, arguments);
       };
-    }() /////////////////////////////////////////////////////////
-    //
-    //
-    /////////////////////////////////////////////////////////
-
+    }()
   }, {
     key: "toArray",
     value: function toArray(obj) {
       return obj ? Array.isArray(obj) ? obj : [obj] : [];
-    } /////////////////////////////////////////////////////////
-    //
-    //
-    /////////////////////////////////////////////////////////
-
+    }
   }, {
     key: "renderChildren",
     value: function renderChildren() {
@@ -5229,11 +5170,7 @@ function (_React$Component2) {
 
         return child;
       });
-    } /////////////////////////////////////////////////////////
-    //
-    //
-    /////////////////////////////////////////////////////////
-
+    }
   }, {
     key: "render",
     value: function render() {
@@ -5280,11 +5217,7 @@ _babel_runtime_helpers_defineProperty__WEBPACK_IMPORTED_MODULE_11___default()(Re
   resizeHeight: prop_types__WEBPACK_IMPORTED_MODULE_16___default.a.bool,
   resizeWidth: prop_types__WEBPACK_IMPORTED_MODULE_16___default.a.bool,
   className: prop_types__WEBPACK_IMPORTED_MODULE_16___default.a.string,
-  size: prop_types__WEBPACK_IMPORTED_MODULE_16___default.a.number /////////////////////////////////////////////////////////
-  //
-  //
-  /////////////////////////////////////////////////////////
-
+  size: prop_types__WEBPACK_IMPORTED_MODULE_16___default.a.number
 });
 
 _babel_runtime_helpers_defineProperty__WEBPACK_IMPORTED_MODULE_11___default()(ReflexElement, "defaultProps", {
@@ -5293,11 +5226,7 @@ _babel_runtime_helpers_defineProperty__WEBPACK_IMPORTED_MODULE_11___default()(Re
   resizeHeight: true,
   resizeWidth: true,
   direction: [1],
-  className: '' /////////////////////////////////////////////////////////
-  //
-  //
-  /////////////////////////////////////////////////////////
-
+  className: ''
 });
 
 var _default = react__WEBPACK_IMPORTED_MODULE_17___default.a.forwardRef(function (props, ref) {
@@ -5360,10 +5289,6 @@ __webpack_require__.r(__webpack_exports__);
 var ReflexEvents =
 /*#__PURE__*/
 function () {
-  /////////////////////////////////////////////////////////
-  //
-  //
-  /////////////////////////////////////////////////////////
   function ReflexEvents() {
     _babel_runtime_helpers_classCallCheck__WEBPACK_IMPORTED_MODULE_0___default()(this, ReflexEvents);
 
@@ -5410,11 +5335,7 @@ function () {
         }
       });
       return this;
-    } /////////////////////////////////////////////////////////
-    //
-    //
-    /////////////////////////////////////////////////////////
-
+    }
   }, {
     key: "emit",
     value: function emit(event
@@ -5535,10 +5456,6 @@ function (_React$Component) {
 
   _babel_runtime_helpers_createClass__WEBPACK_IMPORTED_MODULE_5___default()(ReflexHandle, null, [{
     key: "isA",
-    /////////////////////////////////////////////////////////
-    //
-    //
-    /////////////////////////////////////////////////////////
     value: function isA(element) {
       if (!element) {
         return false;
@@ -5546,11 +5463,7 @@ function (_React$Component) {
 
 
       return  true ? element.type === react__WEBPACK_IMPORTED_MODULE_11___default.a.createElement(ReflexHandle, null).type : undefined;
-    } /////////////////////////////////////////////////////////
-    //
-    //
-    /////////////////////////////////////////////////////////
-
+    }
   }]);
 
   function ReflexHandle(props) {
@@ -5632,11 +5545,7 @@ function (_React$Component) {
     };
     _this.document = props.document;
     return _this;
-  } /////////////////////////////////////////////////////////
-  //
-  //
-  /////////////////////////////////////////////////////////
-
+  }
 
   _babel_runtime_helpers_createClass__WEBPACK_IMPORTED_MODULE_5___default()(ReflexHandle, [{
     key: "componentDidMount",
@@ -5653,11 +5562,7 @@ function (_React$Component) {
       this.document.addEventListener('touchmove', this.onMouseMove, {
         passive: false
       });
-    } /////////////////////////////////////////////////////////
-    //
-    //
-    /////////////////////////////////////////////////////////
-
+    }
   }, {
     key: "componentWillUnmount",
     value: function componentWillUnmount() {
@@ -5676,17 +5581,9 @@ function (_React$Component) {
           event: null
         });
       }
-    } /////////////////////////////////////////////////////////
-    //
-    //
-    /////////////////////////////////////////////////////////
-
+    }
   }, {
     key: "render",
-    /////////////////////////////////////////////////////////
-    //
-    //
-    /////////////////////////////////////////////////////////
     value: function render() {
       var className = _babel_runtime_helpers_toConsumableArray__WEBPACK_IMPORTED_MODULE_1___default()(this.props.className.split(' ')).concat([this.state.active ? 'active' : '', 'reflex-handle']).join(' ').trim();
 
@@ -5718,11 +5615,7 @@ _babel_runtime_helpers_defineProperty__WEBPACK_IMPORTED_MODULE_8___default()(Ref
   className: prop_types__WEBPACK_IMPORTED_MODULE_10___default.a.string,
   propagate: prop_types__WEBPACK_IMPORTED_MODULE_10___default.a.bool,
   onResize: prop_types__WEBPACK_IMPORTED_MODULE_10___default.a.func,
-  style: prop_types__WEBPACK_IMPORTED_MODULE_10___default.a.object /////////////////////////////////////////////////////////
-  //
-  //
-  /////////////////////////////////////////////////////////
-
+  style: prop_types__WEBPACK_IMPORTED_MODULE_10___default.a.object
 });
 
 _babel_runtime_helpers_defineProperty__WEBPACK_IMPORTED_MODULE_8___default()(ReflexHandle, "defaultProps", {
@@ -5732,11 +5625,7 @@ _babel_runtime_helpers_defineProperty__WEBPACK_IMPORTED_MODULE_8___default()(Ref
   propagate: false,
   onResize: null,
   className: '',
-  style: {} /////////////////////////////////////////////////////////
-  //
-  //
-  /////////////////////////////////////////////////////////
-
+  style: {}
 });
 
 
@@ -5826,10 +5715,6 @@ function (_React$Component) {
 
   _babel_runtime_helpers_createClass__WEBPACK_IMPORTED_MODULE_5___default()(ReflexSplitter, null, [{
     key: "isA",
-    /////////////////////////////////////////////////////////
-    //
-    //
-    /////////////////////////////////////////////////////////
     value: function isA(element) {
       if (!element) {
         return false;
@@ -5837,11 +5722,7 @@ function (_React$Component) {
 
 
       return  true ? element.type === react__WEBPACK_IMPORTED_MODULE_11___default.a.createElement(ReflexSplitter, null).type : undefined;
-    } /////////////////////////////////////////////////////////
-    //
-    //
-    /////////////////////////////////////////////////////////
-
+    }
   }]);
 
   function ReflexSplitter(props) {
@@ -5923,11 +5804,7 @@ function (_React$Component) {
     };
     _this.document = props.document;
     return _this;
-  } /////////////////////////////////////////////////////////
-  //
-  //
-  /////////////////////////////////////////////////////////
-
+  }
 
   _babel_runtime_helpers_createClass__WEBPACK_IMPORTED_MODULE_5___default()(ReflexSplitter, [{
     key: "componentDidMount",
@@ -5944,11 +5821,7 @@ function (_React$Component) {
       this.document.addEventListener('touchmove', this.onMouseMove, {
         passive: false
       });
-    } /////////////////////////////////////////////////////////
-    //
-    //
-    /////////////////////////////////////////////////////////
-
+    }
   }, {
     key: "componentWillUnmount",
     value: function componentWillUnmount() {
@@ -5967,17 +5840,9 @@ function (_React$Component) {
           event: null
         });
       }
-    } /////////////////////////////////////////////////////////
-    //
-    //
-    /////////////////////////////////////////////////////////
-
+    }
   }, {
     key: "render",
-    /////////////////////////////////////////////////////////
-    //
-    //
-    /////////////////////////////////////////////////////////
     value: function render() {
       var className = [_utilities__WEBPACK_IMPORTED_MODULE_9__["Browser"].isMobile() ? 'reflex-thin' : ''].concat(_babel_runtime_helpers_toConsumableArray__WEBPACK_IMPORTED_MODULE_1___default()(this.props.className.split(' ')), [this.state.active ? 'active' : '', 'reflex-splitter']).join(' ').trim();
       return react__WEBPACK_IMPORTED_MODULE_11___default.a.createElement("div", _babel_runtime_helpers_extends__WEBPACK_IMPORTED_MODULE_0___default()({}, Object(_utilities__WEBPACK_IMPORTED_MODULE_9__["getDataProps"])(this.props), {
@@ -6008,11 +5873,7 @@ _babel_runtime_helpers_defineProperty__WEBPACK_IMPORTED_MODULE_8___default()(Ref
   className: prop_types__WEBPACK_IMPORTED_MODULE_10___default.a.string,
   propagate: prop_types__WEBPACK_IMPORTED_MODULE_10___default.a.bool,
   onResize: prop_types__WEBPACK_IMPORTED_MODULE_10___default.a.func,
-  style: prop_types__WEBPACK_IMPORTED_MODULE_10___default.a.object /////////////////////////////////////////////////////////
-  //
-  //
-  /////////////////////////////////////////////////////////
-
+  style: prop_types__WEBPACK_IMPORTED_MODULE_10___default.a.object
 });
 
 _babel_runtime_helpers_defineProperty__WEBPACK_IMPORTED_MODULE_8___default()(ReflexSplitter, "defaultProps", {

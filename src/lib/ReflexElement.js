@@ -13,10 +13,6 @@ import React from 'react'
 
 class SizeAwareReflexElement extends React.Component {
 
-  /////////////////////////////////////////////////////////
-  //
-  //
-  /////////////////////////////////////////////////////////
   constructor (props) {
 
     super (props)
@@ -30,17 +26,12 @@ class SizeAwareReflexElement extends React.Component {
       width: "100%"
     }
   }
-
-  /////////////////////////////////////////////////////////
-  //
-  //
-  /////////////////////////////////////////////////////////
+  
   onResize = (rect) => {
 
     const { resizeHeight, resizeWidth } = this.props
 
-    const height = Math.floor(rect.bounds.height)
-    const width = Math.floor(rect.bounds.width)
+    const {height, width} = rect.bounds
 
     this.setDimensions({
       ...(resizeHeight && {height}),
@@ -48,10 +39,6 @@ class SizeAwareReflexElement extends React.Component {
     })
   }
 
-  /////////////////////////////////////////////////////////
-  //
-  //
-  /////////////////////////////////////////////////////////
   renderChildren () {
 
     const {propagateDimensions} = this.props
@@ -79,10 +66,6 @@ class SizeAwareReflexElement extends React.Component {
     })
   }
 
-  /////////////////////////////////////////////////////////
-  //
-  //
-  /////////////////////////////////////////////////////////
   render () {
 
     return (
@@ -105,11 +88,7 @@ class SizeAwareReflexElement extends React.Component {
 
 
 class ReflexElement extends React.Component {
-
-  /////////////////////////////////////////////////////////
-  //
-  //
-  /////////////////////////////////////////////////////////
+  
   static propTypes = {
     renderOnResizeRate: PropTypes.number,
     propagateDimensions: PropTypes.bool,
@@ -118,11 +97,7 @@ class ReflexElement extends React.Component {
     className: PropTypes.string,
     size: PropTypes.number
   }
-
-  /////////////////////////////////////////////////////////
-  //
-  //
-  /////////////////////////////////////////////////////////
+  
   static defaultProps = {
     propagateDimensionsRate: 100,
     propagateDimensions: false,
@@ -132,10 +107,6 @@ class ReflexElement extends React.Component {
     className: ''
   }
 
-  /////////////////////////////////////////////////////////
-  //
-  //
-  /////////////////////////////////////////////////////////
   constructor (props) {
     super (props)
     this.state = {
@@ -143,10 +114,6 @@ class ReflexElement extends React.Component {
     }
   }
 
-  /////////////////////////////////////////////////////////////
-  //
-  //
-  /////////////////////////////////////////////////////////////
   static getDerivedStateFromProps (nextProps, prevState) {
     if (nextProps.size !== prevState.size) {
       return {
@@ -157,10 +124,6 @@ class ReflexElement extends React.Component {
     return null
   }
 
-  /////////////////////////////////////////////////////////
-  //
-  //
-  /////////////////////////////////////////////////////////
   async componentDidUpdate (prevProps, prevState, snapshot) {
 
     if (prevState.size !== this.state.size) {
@@ -178,18 +141,10 @@ class ReflexElement extends React.Component {
     }
   }
 
-  /////////////////////////////////////////////////////////
-  //
-  //
-  /////////////////////////////////////////////////////////
   toArray (obj) {
     return obj ? (Array.isArray(obj) ? obj : [obj]) : []
   }
 
-  /////////////////////////////////////////////////////////
-  //
-  //
-  /////////////////////////////////////////////////////////
   renderChildren () {
 
     return React.Children.map(
@@ -207,10 +162,6 @@ class ReflexElement extends React.Component {
     })
   }
 
-  /////////////////////////////////////////////////////////
-  //
-  //
-  /////////////////////////////////////////////////////////
   render () {
 
     const className = [

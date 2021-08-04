@@ -43,10 +43,6 @@ function (_React$Component) {
   (0, _inherits2.default)(ReflexSplitter, _React$Component);
   (0, _createClass2.default)(ReflexSplitter, null, [{
     key: "isA",
-    /////////////////////////////////////////////////////////
-    //
-    //
-    /////////////////////////////////////////////////////////
     value: function isA(element) {
       if (!element) {
         return false;
@@ -54,11 +50,7 @@ function (_React$Component) {
 
 
       return process.env.NODE_ENV === 'development' ? element.type === _react.default.createElement(ReflexSplitter, null).type : element.type === ReflexSplitter;
-    } /////////////////////////////////////////////////////////
-    //
-    //
-    /////////////////////////////////////////////////////////
-
+    }
   }]);
 
   function ReflexSplitter(props) {
@@ -134,11 +126,7 @@ function (_React$Component) {
     };
     _this.document = props.document;
     return _this;
-  } /////////////////////////////////////////////////////////
-  //
-  //
-  /////////////////////////////////////////////////////////
-
+  }
 
   (0, _createClass2.default)(ReflexSplitter, [{
     key: "componentDidMount",
@@ -155,11 +143,7 @@ function (_React$Component) {
       this.document.addEventListener('touchmove', this.onMouseMove, {
         passive: false
       });
-    } /////////////////////////////////////////////////////////
-    //
-    //
-    /////////////////////////////////////////////////////////
-
+    }
   }, {
     key: "componentWillUnmount",
     value: function componentWillUnmount() {
@@ -178,17 +162,9 @@ function (_React$Component) {
           event: null
         });
       }
-    } /////////////////////////////////////////////////////////
-    //
-    //
-    /////////////////////////////////////////////////////////
-
+    }
   }, {
     key: "render",
-    /////////////////////////////////////////////////////////
-    //
-    //
-    /////////////////////////////////////////////////////////
     value: function render() {
       var className = [_utilities.Browser.isMobile() ? 'reflex-thin' : ''].concat((0, _toConsumableArray2.default)(this.props.className.split(' ')), [this.state.active ? 'active' : '', 'reflex-splitter']).join(' ').trim();
       return _react.default.createElement("div", (0, _extends2.default)({}, (0, _utilities.getDataProps)(this.props), {
@@ -212,11 +188,7 @@ exports.default = ReflexSplitter;
   className: _propTypes.default.string,
   propagate: _propTypes.default.bool,
   onResize: _propTypes.default.func,
-  style: _propTypes.default.object /////////////////////////////////////////////////////////
-  //
-  //
-  /////////////////////////////////////////////////////////
-
+  style: _propTypes.default.object
 });
 (0, _defineProperty2.default)(ReflexSplitter, "defaultProps", {
   document: typeof document !== 'undefined' ? document : null,

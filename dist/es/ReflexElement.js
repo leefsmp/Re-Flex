@@ -15,10 +15,6 @@ import PropTypes from 'prop-types';
 import React from 'react';
 
 class SizeAwareReflexElement extends React.Component {
-  /////////////////////////////////////////////////////////
-  //
-  //
-  /////////////////////////////////////////////////////////
   constructor(props) {
     super(props);
 
@@ -27,8 +23,10 @@ class SizeAwareReflexElement extends React.Component {
         resizeHeight,
         resizeWidth
       } = this.props;
-      const height = Math.floor(rect.bounds.height);
-      const width = Math.floor(rect.bounds.width);
+      const {
+        height,
+        width
+      } = rect.bounds;
       this.setDimensions(_objectSpread({}, resizeHeight && {
         height
       }, resizeWidth && {
@@ -43,16 +41,8 @@ class SizeAwareReflexElement extends React.Component {
       height: "100%",
       width: "100%"
     };
-  } /////////////////////////////////////////////////////////
-  //
-  //
-  /////////////////////////////////////////////////////////
+  }
 
-
-  /////////////////////////////////////////////////////////
-  //
-  //
-  /////////////////////////////////////////////////////////
   renderChildren() {
     const {
       propagateDimensions
@@ -75,11 +65,7 @@ class SizeAwareReflexElement extends React.Component {
 
       return child;
     });
-  } /////////////////////////////////////////////////////////
-  //
-  //
-  /////////////////////////////////////////////////////////
-
+  }
 
   render() {
     return React.createElement(Measure, {
@@ -100,20 +86,12 @@ class SizeAwareReflexElement extends React.Component {
 }
 
 class ReflexElement extends React.Component {
-  /////////////////////////////////////////////////////////
-  //
-  //
-  /////////////////////////////////////////////////////////
   constructor(props) {
     super(props);
     this.state = {
       size: props.size
     };
-  } /////////////////////////////////////////////////////////////
-  //
-  //
-  /////////////////////////////////////////////////////////////
-
+  }
 
   static getDerivedStateFromProps(nextProps, prevState) {
     if (nextProps.size !== prevState.size) {
@@ -123,11 +101,7 @@ class ReflexElement extends React.Component {
     }
 
     return null;
-  } /////////////////////////////////////////////////////////
-  //
-  //
-  /////////////////////////////////////////////////////////
-
+  }
 
   async componentDidUpdate(prevProps, prevState, snapshot) {
     if (prevState.size !== this.state.size) {
@@ -141,19 +115,11 @@ class ReflexElement extends React.Component {
         });
       }
     }
-  } /////////////////////////////////////////////////////////
-  //
-  //
-  /////////////////////////////////////////////////////////
-
+  }
 
   toArray(obj) {
     return obj ? Array.isArray(obj) ? obj : [obj] : [];
-  } /////////////////////////////////////////////////////////
-  //
-  //
-  /////////////////////////////////////////////////////////
-
+  }
 
   renderChildren() {
     return React.Children.map(this.props.children, child => {
@@ -166,11 +132,7 @@ class ReflexElement extends React.Component {
 
       return child;
     });
-  } /////////////////////////////////////////////////////////
-  //
-  //
-  /////////////////////////////////////////////////////////
-
+  }
 
   render() {
     const className = [...this.props.className.split(' '), this.props.orientation, 'reflex-element'].join(' ').trim();
@@ -196,11 +158,7 @@ _defineProperty(ReflexElement, "propTypes", {
   resizeHeight: PropTypes.bool,
   resizeWidth: PropTypes.bool,
   className: PropTypes.string,
-  size: PropTypes.number /////////////////////////////////////////////////////////
-  //
-  //
-  /////////////////////////////////////////////////////////
-
+  size: PropTypes.number
 });
 
 _defineProperty(ReflexElement, "defaultProps", {
@@ -209,11 +167,7 @@ _defineProperty(ReflexElement, "defaultProps", {
   resizeHeight: true,
   resizeWidth: true,
   direction: [1],
-  className: '' /////////////////////////////////////////////////////////
-  //
-  //
-  /////////////////////////////////////////////////////////
-
+  className: ''
 });
 
 export default React.forwardRef((props, ref) => {

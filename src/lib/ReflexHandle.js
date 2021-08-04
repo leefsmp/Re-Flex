@@ -12,10 +12,7 @@ export default class ReflexHandle extends React.Component {
 
   ref = React.createRef()
 
-  /////////////////////////////////////////////////////////
-  //
-  //
-  /////////////////////////////////////////////////////////
+  
   static propTypes = {
     children: PropTypes.oneOfType([
       PropTypes.arrayOf(PropTypes.node),
@@ -29,10 +26,6 @@ export default class ReflexHandle extends React.Component {
     style: PropTypes.object
   }
 
-  /////////////////////////////////////////////////////////
-  //
-  //
-  /////////////////////////////////////////////////////////
   static defaultProps = {
     document: typeof document === 'undefined' 
       ? null 
@@ -44,11 +37,7 @@ export default class ReflexHandle extends React.Component {
     className: '',
     style: {}
   }
-
-  /////////////////////////////////////////////////////////
-  //
-  //
-  /////////////////////////////////////////////////////////
+  
   static isA (element) {
     if (!element) {
       return false
@@ -59,25 +48,14 @@ export default class ReflexHandle extends React.Component {
     : (element.type === ReflexHandle)
   }
 
-  /////////////////////////////////////////////////////////
-  //
-  //
-  /////////////////////////////////////////////////////////
   constructor (props) {
-
     super (props)
-
     this.state = {
       active: false
     }
-
     this.document = props.document
   }
-
-  /////////////////////////////////////////////////////////
-  //
-  //
-  /////////////////////////////////////////////////////////
+  
   componentDidMount () {
     
     if (!this.document) {
@@ -104,11 +82,7 @@ export default class ReflexHandle extends React.Component {
         passive: false
       })
   }
-
-  /////////////////////////////////////////////////////////
-  //
-  //
-  /////////////////////////////////////////////////////////
+  
   componentWillUnmount () {
 
     if (!this.document) {
@@ -140,10 +114,6 @@ export default class ReflexHandle extends React.Component {
     }
   }
 
-  /////////////////////////////////////////////////////////
-  //
-  //
-  /////////////////////////////////////////////////////////
   onMouseMove = (event) => {
 
     if (this.state.active) {
@@ -169,11 +139,7 @@ export default class ReflexHandle extends React.Component {
       event.preventDefault()
     }
   }
-
-  /////////////////////////////////////////////////////////
-  //
-  //
-  /////////////////////////////////////////////////////////
+  
   onMouseDown = (event) => {
 
     this.setState({
@@ -200,10 +166,6 @@ export default class ReflexHandle extends React.Component {
     })
   }
 
-  /////////////////////////////////////////////////////////
-  //
-  //
-  /////////////////////////////////////////////////////////
   onMouseUp = (event) => {
 
     if (this.state.active) {
@@ -226,11 +188,7 @@ export default class ReflexHandle extends React.Component {
       })
     }
   }
-
-  /////////////////////////////////////////////////////////
-  //
-  //
-  /////////////////////////////////////////////////////////
+  
   render () {
 
     const className = [
