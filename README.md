@@ -110,7 +110,7 @@ Re-F|ex is the most powerful resizeable React layout component out there ... Don
   Type: `oneOf(['horizontal', 'vertical'])`.
   Default value: `horizontal`. 
   
-  * `maxRecDepth`: Maximun recursion depth to solve initial flex of layout elements based on user provided values. This prevents infinite recursion in case the constraints solver cannot find suitable dimensions on the elements to satisfy initial inputs.  
+  * `maxRecDepth`: Maximum recursion depth to solve initial flex of layout elements based on user provided values. This prevents infinite recursion in case the constraints solver cannot find suitable dimensions on the elements to satisfy initial inputs.  
   Type: `number`.
   Default value: `100`.
 
