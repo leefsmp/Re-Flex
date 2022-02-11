@@ -14,6 +14,10 @@ import Measure from 'react-measure';
 import PropTypes from 'prop-types';
 import React from 'react';
 
+const toArray = obj => {
+  return obj ? Array.isArray(obj) ? obj : [obj] : [];
+};
+
 class SizeAwareReflexElement extends React.Component {
   constructor(props) {
     super(props);
@@ -47,7 +51,10 @@ class SizeAwareReflexElement extends React.Component {
     const {
       propagateDimensions
     } = this.props;
-    return React.Children.map(this.props.children, child => {
+    const validChildren = toArray(this.props.children).filter(child => {
+      return !!child;
+    });
+    return React.Children.map(validChildren, child => {
       if (this.props.withHandle || ReflexHandle.isA(child)) {
         return React.cloneElement(child, _objectSpread({
           dimensions: propagateDimensions && this.state
@@ -105,7 +112,7 @@ class ReflexElement extends React.Component {
 
   async componentDidUpdate(prevProps, prevState, snapshot) {
     if (prevState.size !== this.state.size) {
-      const directions = this.toArray(this.props.direction);
+      const directions = toArray(this.props.direction);
 
       for (let direction of directions) {
         await this.props.events.emit('element.size', {
@@ -117,12 +124,11 @@ class ReflexElement extends React.Component {
     }
   }
 
-  toArray(obj) {
-    return obj ? Array.isArray(obj) ? obj : [obj] : [];
-  }
-
   renderChildren() {
-    return React.Children.map(this.props.children, child => {
+    const validChildren = toArray(this.props.children).filter(child => {
+      return !!child;
+    });
+    return React.Children.map(validChildren, child => {
       if (this.props.withHandle || ReflexHandle.isA(child)) {
         return React.cloneElement(child, _objectSpread({}, child.props, {
           index: this.props.index - 1,

@@ -88,9 +88,7 @@ export default class ReflexContainer extends React.Component {
   }
 
   getValidChildren (props = this.props) {
-
     return this.toArray(props.children).filter((child) => {
-
       return !!child
     })
   }

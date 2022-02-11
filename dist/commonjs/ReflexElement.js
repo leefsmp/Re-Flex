@@ -49,6 +49,10 @@ var _react = _interopRequireDefault(require("react"));
 // December 2016
 //
 ///////////////////////////////////////////////////////////
+var toArray = function toArray(obj) {
+  return obj ? Array.isArray(obj) ? obj : [obj] : [];
+};
+
 var SizeAwareReflexElement =
 /*#__PURE__*/
 function (_React$Component) {
@@ -89,7 +93,10 @@ function (_React$Component) {
       var _this2 = this;
 
       var propagateDimensions = this.props.propagateDimensions;
-      return _react.default.Children.map(this.props.children, function (child) {
+      var validChildren = toArray(this.props.children).filter(function (child) {
+        return !!child;
+      });
+      return _react.default.Children.map(validChildren, function (child) {
         if (_this2.props.withHandle || _ReflexHandle.default.isA(child)) {
           return _react.default.cloneElement(child, (0, _objectSpread2.default)({
             dimensions: propagateDimensions && _this2.state
@@ -163,7 +170,7 @@ function (_React$Component2) {
                   break;
                 }
 
-                directions = this.toArray(this.props.direction);
+                directions = toArray(this.props.direction);
                 _iteratorNormalCompletion = true;
                 _didIteratorError = false;
                 _iteratorError = undefined;
@@ -236,16 +243,14 @@ function (_React$Component2) {
       };
     }()
   }, {
-    key: "toArray",
-    value: function toArray(obj) {
-      return obj ? Array.isArray(obj) ? obj : [obj] : [];
-    }
-  }, {
     key: "renderChildren",
     value: function renderChildren() {
       var _this5 = this;
 
-      return _react.default.Children.map(this.props.children, function (child) {
+      var validChildren = toArray(this.props.children).filter(function (child) {
+        return !!child;
+      });
+      return _react.default.Children.map(validChildren, function (child) {
         if (_this5.props.withHandle || _ReflexHandle.default.isA(child)) {
           return _react.default.cloneElement(child, (0, _objectSpread2.default)({}, child.props, {
             index: _this5.props.index - 1,

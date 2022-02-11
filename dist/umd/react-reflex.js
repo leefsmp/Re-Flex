@@ -4952,6 +4952,10 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
+var toArray = function toArray(obj) {
+  return obj ? Array.isArray(obj) ? obj : [obj] : [];
+};
+
 var SizeAwareReflexElement =
 /*#__PURE__*/
 function (_React$Component) {
@@ -4995,7 +4999,10 @@ function (_React$Component) {
       var _this2 = this;
 
       var propagateDimensions = this.props.propagateDimensions;
-      return react__WEBPACK_IMPORTED_MODULE_17___default.a.Children.map(this.props.children, function (child) {
+      var validChildren = toArray(this.props.children).filter(function (child) {
+        return !!child;
+      });
+      return react__WEBPACK_IMPORTED_MODULE_17___default.a.Children.map(validChildren, function (child) {
         if (_this2.props.withHandle || _ReflexHandle__WEBPACK_IMPORTED_MODULE_12__["default"].isA(child)) {
           return react__WEBPACK_IMPORTED_MODULE_17___default.a.cloneElement(child, _babel_runtime_helpers_objectSpread__WEBPACK_IMPORTED_MODULE_4___default()({
             dimensions: propagateDimensions && _this2.state
@@ -5078,7 +5085,7 @@ function (_React$Component2) {
                   break;
                 }
 
-                directions = this.toArray(this.props.direction);
+                directions = toArray(this.props.direction);
                 _iteratorNormalCompletion = true;
                 _didIteratorError = false;
                 _iteratorError = undefined;
@@ -5151,16 +5158,14 @@ function (_React$Component2) {
       };
     }()
   }, {
-    key: "toArray",
-    value: function toArray(obj) {
-      return obj ? Array.isArray(obj) ? obj : [obj] : [];
-    }
-  }, {
     key: "renderChildren",
     value: function renderChildren() {
       var _this5 = this;
 
-      return react__WEBPACK_IMPORTED_MODULE_17___default.a.Children.map(this.props.children, function (child) {
+      var validChildren = toArray(this.props.children).filter(function (child) {
+        return !!child;
+      });
+      return react__WEBPACK_IMPORTED_MODULE_17___default.a.Children.map(validChildren, function (child) {
         if (_this5.props.withHandle || _ReflexHandle__WEBPACK_IMPORTED_MODULE_12__["default"].isA(child)) {
           return react__WEBPACK_IMPORTED_MODULE_17___default.a.cloneElement(child, _babel_runtime_helpers_objectSpread__WEBPACK_IMPORTED_MODULE_4___default()({}, child.props, {
             index: _this5.props.index - 1,
@@ -5247,6 +5252,7 @@ var _default = react__WEBPACK_IMPORTED_MODULE_17___default.a.forwardRef(function
     return;
   }
 
+  reactHotLoader.register(toArray, "toArray", "/Users/phi11119/Documents/leefsmp/reflex/src/lib/ReflexElement.js");
   reactHotLoader.register(SizeAwareReflexElement, "SizeAwareReflexElement", "/Users/phi11119/Documents/leefsmp/reflex/src/lib/ReflexElement.js");
   reactHotLoader.register(ReflexElement, "ReflexElement", "/Users/phi11119/Documents/leefsmp/reflex/src/lib/ReflexElement.js");
   reactHotLoader.register(_default, "default", "/Users/phi11119/Documents/leefsmp/reflex/src/lib/ReflexElement.js");
