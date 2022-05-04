@@ -69,8 +69,8 @@ class ReflexBasicSplitterDemo
         <ReflexSplitter/>
 
         <ReflexElement className="right-pane"
-          minSize="200"
-          maxSize="800">
+          minSize={200}
+          maxSize={800}>
           <div className="pane-content">
             <label>
               Right Pane (resizable)
@@ -112,8 +112,8 @@ class ReflexSplitterPropagationDemo2x
         <ReflexSplitter propagate={true}/>
 
         <ReflexElement className="middle-pane"
-          minSize="200"
-          maxSize="800">
+          minSize={200}
+          maxSize={800}>
           <div className="pane-content">
             <label>
               Middle Pane (resizable)
