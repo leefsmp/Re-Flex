@@ -34,6 +34,7 @@ export type ReflexElementProps = {
     onStartResize?: (args: HandlerProps) => void;
     onStopResize?: (args: HandlerProps) => void;
     onResize?: (args: HandlerProps) => void;
+    name?: string;
 } & StyleAndClassAndChildren;
 
 export class ReflexElement extends React.Component<ReflexElementProps, any> { }
