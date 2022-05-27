@@ -159,7 +159,6 @@ class ReflexElement extends React.Component {
 }
 
 _defineProperty(ReflexElement, "propTypes", {
-  renderOnResizeRate: PropTypes.number,
   propagateDimensions: PropTypes.bool,
   resizeHeight: PropTypes.bool,
   resizeWidth: PropTypes.bool,

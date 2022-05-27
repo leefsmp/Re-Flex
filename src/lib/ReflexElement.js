@@ -97,7 +97,6 @@ class SizeAwareReflexElement extends React.Component {
 class ReflexElement extends React.Component {
   
   static propTypes = {
-    renderOnResizeRate: PropTypes.number,
     propagateDimensions: PropTypes.bool,
     resizeHeight: PropTypes.bool,
     resizeWidth: PropTypes.bool,

@@ -292,7 +292,6 @@ function (_React$Component2) {
 }(_react.default.Component);
 
 (0, _defineProperty2.default)(ReflexElement, "propTypes", {
-  renderOnResizeRate: _propTypes.default.number,
   propagateDimensions: _propTypes.default.bool,
   resizeHeight: _propTypes.default.bool,
   resizeWidth: _propTypes.default.bool,

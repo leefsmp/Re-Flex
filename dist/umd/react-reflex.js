@@ -5217,7 +5217,6 @@ function (_React$Component2) {
 }(react__WEBPACK_IMPORTED_MODULE_17___default.a.Component);
 
 _babel_runtime_helpers_defineProperty__WEBPACK_IMPORTED_MODULE_11___default()(ReflexElement, "propTypes", {
-  renderOnResizeRate: prop_types__WEBPACK_IMPORTED_MODULE_16___default.a.number,
   propagateDimensions: prop_types__WEBPACK_IMPORTED_MODULE_16___default.a.bool,
   resizeHeight: prop_types__WEBPACK_IMPORTED_MODULE_16___default.a.bool,
   resizeWidth: prop_types__WEBPACK_IMPORTED_MODULE_16___default.a.bool,
