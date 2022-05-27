@@ -22,18 +22,19 @@ export type HandlerProps = {
 };
 
 export type ReflexElementProps = {
-  propagateDimensionsRate?: number;
-  propagateDimensions?: boolean;
-  resizeHeight?: boolean;
-  resizeWidth?: boolean;
-  size?: number;
-  minSize?: number;
-  maxSize?: number;
-  flex?: number;
-  direction?: PosNeg | [PosNeg, PosNeg];
-  onStartResize?: (args: HandlerProps) => void;
-  onStopResize?: (args: HandlerProps) => void;
-  onResize?: (args: HandlerProps) => void;
+    propagateDimensions?: boolean;
+    propagateDimensionsRate?: number;
+    resizeHeight?: boolean;
+    resizeWidth?: boolean;
+    size?: number;
+    minSize?: number;
+    maxSize?: number;
+    flex?: number;
+    direction?: PosNeg | [PosNeg, PosNeg];
+    onStartResize?: (args: HandlerProps) => void;
+    onStopResize?: (args: HandlerProps) => void;
+    onResize?: (args: HandlerProps) => void;
+    name?: string;
 } & StyleAndClassAndChildren;
 
 export class ReflexElement extends React.Component<ReflexElementProps, any> { }
