@@ -185,14 +185,14 @@ export default class ReflexContainer extends React.Component {
   /////////////////////////////////////////////////////////
   getSize (element) { 
 
-    const domElement = element.ref.current
+    const domElement = element?.ref.current
 
     switch (this.props.orientation) {
       case 'horizontal':
-        return domElement.offsetHeight
+        return domElement?.offsetHeight ?? 0
       case 'vertical':
       default:
-        return domElement.offsetWidth
+        return domElement?.offsetWidth ?? 0
     }
   }
 
@@ -488,7 +488,7 @@ export default class ReflexContainer extends React.Component {
 
     const size = this.getSize(child)
 
-    const maxSize = child.props.maxSize
+    const maxSize = child?.props.maxSize ?? 0
 
     const availableStretch = maxSize - size
 
@@ -523,7 +523,7 @@ export default class ReflexContainer extends React.Component {
     const size = this.getSize(child)
 
     const minSize = Math.max(
-      child.props.minSize, 0)
+      child?.props.minSize ?? 0, 0)
 
     const availableShrink = size - minSize
 

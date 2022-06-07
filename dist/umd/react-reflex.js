@@ -4399,15 +4399,17 @@ function (_React$Component) {
   }, {
     key: "getSize",
     value: function getSize(element) {
-      var domElement = element.ref.current;
+      var _ref, _ref2;
+
+      var domElement = element === null || element === void 0 ? void 0 : element.ref.current;
 
       switch (this.props.orientation) {
         case 'horizontal':
-          return domElement.offsetHeight;
+          return (_ref = domElement === null || domElement === void 0 ? void 0 : domElement.offsetHeight) !== null && _ref !== void 0 ? _ref : 0;
 
         case 'vertical':
         default:
-          return domElement.offsetWidth;
+          return (_ref2 = domElement === null || domElement === void 0 ? void 0 : domElement.offsetWidth) !== null && _ref2 !== void 0 ? _ref2 : 0;
       }
     } /////////////////////////////////////////////////////////
     // Computes offset from pointer position
@@ -4535,10 +4537,12 @@ function (_React$Component) {
   }, {
     key: "computeAvailableStretch",
     value: function computeAvailableStretch(idx, offset) {
+      var _ref3;
+
       var childIdx = offset < 0 ? idx + 1 : idx - 1;
       var child = this.children[childIdx];
       var size = this.getSize(child);
-      var maxSize = child.props.maxSize;
+      var maxSize = (_ref3 = child === null || child === void 0 ? void 0 : child.props.maxSize) !== null && _ref3 !== void 0 ? _ref3 : 0;
       var availableStretch = maxSize - size;
 
       if (availableStretch < Math.abs(offset)) {
@@ -4558,10 +4562,12 @@ function (_React$Component) {
   }, {
     key: "computeAvailableShrink",
     value: function computeAvailableShrink(idx, offset) {
+      var _ref4;
+
       var childIdx = offset > 0 ? idx + 1 : idx - 1;
       var child = this.children[childIdx];
       var size = this.getSize(child);
-      var minSize = Math.max(child.props.minSize, 0);
+      var minSize = Math.max((_ref4 = child === null || child === void 0 ? void 0 : child.props.minSize) !== null && _ref4 !== void 0 ? _ref4 : 0, 0);
       var availableShrink = size - minSize;
 
       if (availableShrink < Math.abs(offset)) {
