@@ -92,7 +92,7 @@
   "dependencies": {
     "@babel/runtime": "^7.0.0",
     "lodash.throttle": "^4.1.1",
-    "node-sass": "^4.14.1",
+    "node-sass": "^8.0.0",
     "prop-types": "^15.5.8",
     "react-measure": "^2.0.2"
   },
