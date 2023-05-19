@@ -10,20 +10,21 @@ import { Browser, getDataProps } from './utilities';
 import PropTypes from 'prop-types';
 import React from 'react';
 export default class ReflexSplitter extends React.Component {
+  /////////////////////////////////////////////////////////
+  // Determines if element is a splitter
+  // or wraps a splitter
+  //
+  /////////////////////////////////////////////////////////
   static isA(element) {
     if (!element) {
       return false;
-    } //https://github.com/leefsmp/Re-Flex/issues/49
-
-
-    return process.env.NODE_ENV === 'development' ? element.type === React.createElement(ReflexSplitter, null).type : element.type === ReflexSplitter;
+    }
+    //https://github.com/leefsmp/Re-Flex/issues/49
+    return process.env.NODE_ENV === 'development' ? element.type === /*#__PURE__*/React.createElement(ReflexSplitter, null).type : element.type === ReflexSplitter;
   }
-
   constructor(props) {
     super(props);
-
     _defineProperty(this, "ref", React.createRef());
-
     _defineProperty(this, "onMouseMove", event => {
       if (this.state.active) {
         const domElement = this.ref.current;
@@ -32,24 +33,20 @@ export default class ReflexSplitter extends React.Component {
           domElement,
           event
         });
-
         if (this.props.onResize) {
           this.props.onResize({
             component: this,
             domElement
           });
         }
-
         event.stopPropagation();
         event.preventDefault();
       }
     });
-
     _defineProperty(this, "onMouseDown", event => {
       this.setState({
         active: true
       });
-
       if (this.props.onStartResize) {
         // cancels resize from controller
         // if needed by returning true
@@ -61,44 +58,37 @@ export default class ReflexSplitter extends React.Component {
           return;
         }
       }
-
       this.props.events.emit('startResize', {
         index: this.props.index,
         event
       });
     });
-
     _defineProperty(this, "onMouseUp", event => {
       if (this.state.active) {
         this.setState({
           active: false
         });
-
         if (this.props.onStopResize) {
           this.props.onStopResize({
             domElement: this.ref.current,
             component: this
           });
         }
-
         this.props.events.emit('stopResize', {
           index: this.props.index,
           event
         });
       }
     });
-
     this.state = {
       active: false
     };
     this.document = props.document;
   }
-
   componentDidMount() {
     if (!this.document) {
       return;
     }
-
     this.document.addEventListener('touchend', this.onMouseUp);
     this.document.addEventListener('mouseup', this.onMouseUp);
     this.document.addEventListener('mousemove', this.onMouseMove, {
@@ -108,17 +98,14 @@ export default class ReflexSplitter extends React.Component {
       passive: false
     });
   }
-
   componentWillUnmount() {
     if (!this.document) {
       return;
     }
-
     this.document.removeEventListener('mouseup', this.onMouseUp);
     this.document.removeEventListener('touchend', this.onMouseUp);
     this.document.removeEventListener('mousemove', this.onMouseMove);
     this.document.removeEventListener('touchmove', this.onMouseMove);
-
     if (this.state.active) {
       this.props.events.emit('stopResize', {
         index: this.props.index,
@@ -126,10 +113,9 @@ export default class ReflexSplitter extends React.Component {
       });
     }
   }
-
   render() {
     const className = [Browser.isMobile() ? 'reflex-thin' : '', ...this.props.className.split(' '), this.state.active ? 'active' : '', 'reflex-splitter'].join(' ').trim();
-    return React.createElement("div", _extends({}, getDataProps(this.props), {
+    return /*#__PURE__*/React.createElement("div", _extends({}, getDataProps(this.props), {
       onTouchStart: this.onMouseDown,
       onMouseDown: this.onMouseDown,
       style: this.props.style,
@@ -138,9 +124,7 @@ export default class ReflexSplitter extends React.Component {
       ref: this.ref
     }), this.props.children);
   }
-
 }
-
 _defineProperty(ReflexSplitter, "propTypes", {
   children: PropTypes.oneOfType([PropTypes.arrayOf(PropTypes.node), PropTypes.node]),
   onStartResize: PropTypes.func,
@@ -150,7 +134,6 @@ _defineProperty(ReflexSplitter, "propTypes", {
   onResize: PropTypes.func,
   style: PropTypes.object
 });
-
 _defineProperty(ReflexSplitter, "defaultProps", {
   document: typeof document !== 'undefined' ? document : null,
   onStartResize: null,
@@ -158,10 +141,5 @@ _defineProperty(ReflexSplitter, "defaultProps", {
   propagate: false,
   onResize: null,
   className: '',
-  style: {} /////////////////////////////////////////////////////////
-  // Determines if element is a splitter
-  // or wraps a splitter
-  //
-  /////////////////////////////////////////////////////////
-
+  style: {}
 });
