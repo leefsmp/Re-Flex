@@ -5105,11 +5105,12 @@ var ReflexSplitter = /*#__PURE__*/function (_React$Component) {
         return false;
       }
       //https://github.com/leefsmp/Re-Flex/issues/49
-      return  true ? element.type === /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_11___default.a.createElement(ReflexSplitter, null).type : undefined;
+      return element.type === ReflexSplitter.type;
     }
   }]);
   return ReflexSplitter;
 }(react__WEBPACK_IMPORTED_MODULE_11___default.a.Component);
+_babel_runtime_helpers_defineProperty__WEBPACK_IMPORTED_MODULE_8___default()(ReflexSplitter, "type", /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_11___default.a.createElement(ReflexSplitter, null).type);
 _babel_runtime_helpers_defineProperty__WEBPACK_IMPORTED_MODULE_8___default()(ReflexSplitter, "propTypes", {
   children: prop_types__WEBPACK_IMPORTED_MODULE_10___default.a.oneOfType([prop_types__WEBPACK_IMPORTED_MODULE_10___default.a.arrayOf(prop_types__WEBPACK_IMPORTED_MODULE_10___default.a.node), prop_types__WEBPACK_IMPORTED_MODULE_10___default.a.node]),
   onStartResize: prop_types__WEBPACK_IMPORTED_MODULE_10___default.a.func,

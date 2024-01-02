@@ -20,7 +20,7 @@ export default class ReflexSplitter extends React.Component {
       return false;
     }
     //https://github.com/leefsmp/Re-Flex/issues/49
-    return process.env.NODE_ENV === 'development' ? element.type === /*#__PURE__*/React.createElement(ReflexSplitter, null).type : element.type === ReflexSplitter;
+    return element.type === ReflexSplitter.type;
   }
   constructor(props) {
     super(props);
@@ -125,6 +125,7 @@ export default class ReflexSplitter extends React.Component {
     }), this.props.children);
   }
 }
+_defineProperty(ReflexSplitter, "type", /*#__PURE__*/React.createElement(ReflexSplitter, null).type);
 _defineProperty(ReflexSplitter, "propTypes", {
   children: PropTypes.oneOfType([PropTypes.arrayOf(PropTypes.node), PropTypes.node]),
   onStartResize: PropTypes.func,

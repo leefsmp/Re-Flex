@@ -146,12 +146,13 @@ var ReflexSplitter = /*#__PURE__*/function (_React$Component) {
         return false;
       }
       //https://github.com/leefsmp/Re-Flex/issues/49
-      return process.env.NODE_ENV === 'development' ? element.type === /*#__PURE__*/_react.default.createElement(ReflexSplitter, null).type : element.type === ReflexSplitter;
+      return element.type === ReflexSplitter.type;
     }
   }]);
   return ReflexSplitter;
 }(_react.default.Component);
 exports.default = ReflexSplitter;
+(0, _defineProperty2.default)(ReflexSplitter, "type", /*#__PURE__*/_react.default.createElement(ReflexSplitter, null).type);
 (0, _defineProperty2.default)(ReflexSplitter, "propTypes", {
   children: _propTypes.default.oneOfType([_propTypes.default.arrayOf(_propTypes.default.node), _propTypes.default.node]),
   onStartResize: _propTypes.default.func,

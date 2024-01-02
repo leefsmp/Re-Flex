@@ -47,9 +47,7 @@ export default class ReflexSplitter extends React.Component {
       return false
     }
     //https://github.com/leefsmp/Re-Flex/issues/49
-    return (process.env.NODE_ENV === 'development')
-      ? (element.type === (<ReflexSplitter/>).type)
-      : (element.type === ReflexSplitter)
+    return (element.type === (<ReflexSplitter/>).type)
   }
 
   constructor (props) {
@@ -58,9 +56,12 @@ export default class ReflexSplitter extends React.Component {
       active: false
     }
     this.document = props.document
+    console.log("hey")
   }
   
   componentDidMount () {
+
+    console.log("ho")
     
     if (!this.document) {
       return;
