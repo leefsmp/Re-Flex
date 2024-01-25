@@ -3819,8 +3819,8 @@ var ReflexContainer = /*#__PURE__*/function (_React$Component) {
   }, {
     key: "getSize",
     value: function getSize(element) {
-      var _domElement$offsetHei, _domElement$offsetWid;
-      var domElement = element === null || element === void 0 ? void 0 : element.ref.current;
+      var _element$ref, _domElement$offsetHei, _domElement$offsetWid;
+      var domElement = element === null || element === void 0 ? void 0 : (_element$ref = element.ref) === null || _element$ref === void 0 ? void 0 : _element$ref.current;
       switch (this.props.orientation) {
         case 'horizontal':
           return (_domElement$offsetHei = domElement === null || domElement === void 0 ? void 0 : domElement.offsetHeight) !== null && _domElement$offsetHei !== void 0 ? _domElement$offsetHei : 0;
@@ -4257,7 +4257,7 @@ _babel_runtime_helpers_defineProperty__WEBPACK_IMPORTED_MODULE_9___default()(Ref
   if (!reactHotLoader) {
     return;
   }
-  reactHotLoader.register(ReflexContainer, "ReflexContainer", "/Users/phi11119/Documents/leefsmp/reflex/src/lib/ReflexContainer.js");
+  reactHotLoader.register(ReflexContainer, "ReflexContainer", "/Users/phi11119/Documents/leefsmp/Re-Flex/src/lib/ReflexContainer.js");
   leaveModule(module);
 })();
 ;
@@ -4570,10 +4570,10 @@ var _default = react__WEBPACK_IMPORTED_MODULE_17___default.a.forwardRef(function
   if (!reactHotLoader) {
     return;
   }
-  reactHotLoader.register(toArray, "toArray", "/Users/phi11119/Documents/leefsmp/reflex/src/lib/ReflexElement.js");
-  reactHotLoader.register(SizeAwareReflexElement, "SizeAwareReflexElement", "/Users/phi11119/Documents/leefsmp/reflex/src/lib/ReflexElement.js");
-  reactHotLoader.register(ReflexElement, "ReflexElement", "/Users/phi11119/Documents/leefsmp/reflex/src/lib/ReflexElement.js");
-  reactHotLoader.register(_default, "default", "/Users/phi11119/Documents/leefsmp/reflex/src/lib/ReflexElement.js");
+  reactHotLoader.register(toArray, "toArray", "/Users/phi11119/Documents/leefsmp/Re-Flex/src/lib/ReflexElement.js");
+  reactHotLoader.register(SizeAwareReflexElement, "SizeAwareReflexElement", "/Users/phi11119/Documents/leefsmp/Re-Flex/src/lib/ReflexElement.js");
+  reactHotLoader.register(ReflexElement, "ReflexElement", "/Users/phi11119/Documents/leefsmp/Re-Flex/src/lib/ReflexElement.js");
+  reactHotLoader.register(_default, "default", "/Users/phi11119/Documents/leefsmp/Re-Flex/src/lib/ReflexElement.js");
   leaveModule(module);
 })();
 ;
@@ -4681,8 +4681,8 @@ var _default = ReflexEvents;
   if (!reactHotLoader) {
     return;
   }
-  reactHotLoader.register(ReflexEvents, "ReflexEvents", "/Users/phi11119/Documents/leefsmp/reflex/src/lib/ReflexEvents.js");
-  reactHotLoader.register(_default, "default", "/Users/phi11119/Documents/leefsmp/reflex/src/lib/ReflexEvents.js");
+  reactHotLoader.register(ReflexEvents, "ReflexEvents", "/Users/phi11119/Documents/leefsmp/Re-Flex/src/lib/ReflexEvents.js");
+  reactHotLoader.register(_default, "default", "/Users/phi11119/Documents/leefsmp/Re-Flex/src/lib/ReflexEvents.js");
   leaveModule(module);
 })();
 ;
@@ -4906,7 +4906,7 @@ _babel_runtime_helpers_defineProperty__WEBPACK_IMPORTED_MODULE_8___default()(Ref
   if (!reactHotLoader) {
     return;
   }
-  reactHotLoader.register(ReflexHandle, "ReflexHandle", "/Users/phi11119/Documents/leefsmp/reflex/src/lib/ReflexHandle.js");
+  reactHotLoader.register(ReflexHandle, "ReflexHandle", "/Users/phi11119/Documents/leefsmp/Re-Flex/src/lib/ReflexHandle.js");
   leaveModule(module);
 })();
 ;
@@ -5038,11 +5038,13 @@ var ReflexSplitter = /*#__PURE__*/function (_React$Component) {
       active: false
     };
     _this.document = props.document;
+    console.log("hey");
     return _this;
   }
   _babel_runtime_helpers_createClass__WEBPACK_IMPORTED_MODULE_3___default()(ReflexSplitter, [{
     key: "componentDidMount",
     value: function componentDidMount() {
+      console.log("ho");
       if (!this.document) {
         return;
       }
@@ -5105,12 +5107,11 @@ var ReflexSplitter = /*#__PURE__*/function (_React$Component) {
         return false;
       }
       //https://github.com/leefsmp/Re-Flex/issues/49
-      return element.type === ReflexSplitter.type;
+      return element.type === /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_11___default.a.createElement(ReflexSplitter, null).type;
     }
   }]);
   return ReflexSplitter;
 }(react__WEBPACK_IMPORTED_MODULE_11___default.a.Component);
-_babel_runtime_helpers_defineProperty__WEBPACK_IMPORTED_MODULE_8___default()(ReflexSplitter, "type", /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_11___default.a.createElement(ReflexSplitter, null).type);
 _babel_runtime_helpers_defineProperty__WEBPACK_IMPORTED_MODULE_8___default()(ReflexSplitter, "propTypes", {
   children: prop_types__WEBPACK_IMPORTED_MODULE_10___default.a.oneOfType([prop_types__WEBPACK_IMPORTED_MODULE_10___default.a.arrayOf(prop_types__WEBPACK_IMPORTED_MODULE_10___default.a.node), prop_types__WEBPACK_IMPORTED_MODULE_10___default.a.node]),
   onStartResize: prop_types__WEBPACK_IMPORTED_MODULE_10___default.a.func,
@@ -5137,7 +5138,7 @@ _babel_runtime_helpers_defineProperty__WEBPACK_IMPORTED_MODULE_8___default()(Ref
   if (!reactHotLoader) {
     return;
   }
-  reactHotLoader.register(ReflexSplitter, "ReflexSplitter", "/Users/phi11119/Documents/leefsmp/reflex/src/lib/ReflexSplitter.js");
+  reactHotLoader.register(ReflexSplitter, "ReflexSplitter", "/Users/phi11119/Documents/leefsmp/Re-Flex/src/lib/ReflexSplitter.js");
   leaveModule(module);
 })();
 ;
@@ -5331,8 +5332,8 @@ var getDataProps = function getDataProps(props) {
   if (!reactHotLoader) {
     return;
   }
-  reactHotLoader.register(Browser, "Browser", "/Users/phi11119/Documents/leefsmp/reflex/src/lib/utilities.js");
-  reactHotLoader.register(getDataProps, "getDataProps", "/Users/phi11119/Documents/leefsmp/reflex/src/lib/utilities.js");
+  reactHotLoader.register(Browser, "Browser", "/Users/phi11119/Documents/leefsmp/Re-Flex/src/lib/utilities.js");
+  reactHotLoader.register(getDataProps, "getDataProps", "/Users/phi11119/Documents/leefsmp/Re-Flex/src/lib/utilities.js");
   leaveModule(module);
 })();
 ;

@@ -185,7 +185,7 @@ export default class ReflexContainer extends React.Component {
   /////////////////////////////////////////////////////////
   getSize (element) { 
 
-    const domElement = element?.ref.current
+    const domElement = element?.ref?.current
 
     switch (this.props.orientation) {
       case 'horizontal':
