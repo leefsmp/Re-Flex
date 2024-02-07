@@ -388,7 +388,7 @@ export default class ReflexContainer extends React.Component {
       } catch (ex) {
 
         // TODO handle exception ...
-        console.log(ex)
+        console.error(ex)
       }
     })
   }
@@ -757,7 +757,8 @@ export default class ReflexContainer extends React.Component {
         minFlex: (props.minSize || 1) * pixelFlex,
         constrained: props.flex !== undefined,
         flex: props.flex || 0,
-        type: child.type
+        type: child.type,
+        name: child.props?.name
       }
     })
 

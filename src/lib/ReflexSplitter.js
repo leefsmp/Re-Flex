@@ -46,8 +46,11 @@ export default class ReflexSplitter extends React.Component {
     if (!element) {
       return false
     }
-    //https://github.com/leefsmp/Re-Flex/issues/49
-    return (element.type === (<ReflexSplitter/>).type)
+
+    return (process.env.NODE_ENV === 'development'
+      ? element.type === (<ReflexSplitter/>).type
+      : element.type === ReflexSplitter
+    ) || element.name === 'reflex-splitter' || element.props?.name === 'reflex-splitter';
   }
 
   constructor (props) {
@@ -56,13 +59,9 @@ export default class ReflexSplitter extends React.Component {
       active: false
     }
     this.document = props.document
-    console.log("hey")
   }
-  
-  componentDidMount () {
 
-    console.log("ho")
-    
+  componentDidMount () {
     if (!this.document) {
       return;
     }
