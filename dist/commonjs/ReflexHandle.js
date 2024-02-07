@@ -136,11 +136,11 @@ var ReflexHandle = /*#__PURE__*/function (_React$Component) {
   }], [{
     key: "isA",
     value: function isA(element) {
+      var _element$props;
       if (!element) {
         return false;
       }
-      //https://github.com/leefsmp/Re-Flex/issues/49
-      return process.env.NODE_ENV === 'development' ? element.type === /*#__PURE__*/_react.default.createElement(ReflexHandle, null).type : element.type === ReflexHandle;
+      return (process.env.NODE_ENV === 'development' ? element.type === /*#__PURE__*/_react.default.createElement(ReflexHandle, null).type : element.type === ReflexHandle) || element.name === 'reflex-handle' || ((_element$props = element.props) === null || _element$props === void 0 ? void 0 : _element$props.name) === 'reflex-handle';
     }
   }]);
   return ReflexHandle;

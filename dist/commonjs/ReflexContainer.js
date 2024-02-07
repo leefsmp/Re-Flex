@@ -28,11 +28,11 @@ var ReflexContainer = /*#__PURE__*/function (_React$Component) {
   var _super = _createSuper(ReflexContainer);
   /////////////////////////////////////////////////////////
   // orientation: Orientation of the layout container
-  //              valid values are ['horizontal', 'vertical'] 
+  //              valid values are ['horizontal', 'vertical']
   // maxRecDepth: Maximun recursion depth to solve initial flex
   //              of layout elements based on user provided values
-  // className: Space separated classnames to apply custom styles 
-  //            to the layout container  
+  // className: Space separated classnames to apply custom styles
+  //            to the layout container
   // style: allows passing inline style to the container
   /////////////////////////////////////////////////////////
 
@@ -120,7 +120,7 @@ var ReflexContainer = /*#__PURE__*/function (_React$Component) {
           });
         } catch (ex) {
           // TODO handle exception ...
-          console.log(ex);
+          console.error(ex);
         }
       });
     });
@@ -185,9 +185,9 @@ var ReflexContainer = /*#__PURE__*/function (_React$Component) {
 
     //   const children = this.getValidChildren(props)
 
-    //   if (children.length !== this.state.flexData.length || 
-    //     props.orientation !== this.props.orientation || 
-    //     this.flexHasChanged(props)) 
+    //   if (children.length !== this.state.flexData.length ||
+    //     props.orientation !== this.props.orientation ||
+    //     this.flexHasChanged(props))
     //   {
     //     const flexData = this.computeFlexData(
     //       children, props)
@@ -205,7 +205,7 @@ var ReflexContainer = /*#__PURE__*/function (_React$Component) {
     //       windowResizeAware: props.windowResizeAware
     //     })
     //   }
-    // } 
+    // }
 
     /////////////////////////////////////////////////////////
     // attempts to preserve current flex on window resize
@@ -562,6 +562,7 @@ var ReflexContainer = /*#__PURE__*/function (_React$Component) {
         }, 0.0);
       };
       var flexDataInit = children.map(function (child) {
+        var _child$props;
         var props = child.props;
         return {
           maxFlex: (props.maxSize || Number.MAX_VALUE) * pixelFlex,
@@ -569,7 +570,8 @@ var ReflexContainer = /*#__PURE__*/function (_React$Component) {
           minFlex: (props.minSize || 1) * pixelFlex,
           constrained: props.flex !== undefined,
           flex: props.flex || 0,
-          type: child.type
+          type: child.type,
+          name: (_child$props = child.props) === null || _child$props === void 0 ? void 0 : _child$props.name
         };
       });
       var computeFlexDataRec = function computeFlexDataRec(flexDataIn) {
