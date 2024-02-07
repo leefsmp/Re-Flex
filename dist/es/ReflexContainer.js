@@ -16,11 +16,11 @@ import './Polyfills';
 export default class ReflexContainer extends React.Component {
   /////////////////////////////////////////////////////////
   // orientation: Orientation of the layout container
-  //              valid values are ['horizontal', 'vertical']
+  //              valid values are ['horizontal', 'vertical'] 
   // maxRecDepth: Maximun recursion depth to solve initial flex
   //              of layout elements based on user provided values
-  // className: Space separated classnames to apply custom styles
-  //            to the layout container
+  // className: Space separated classnames to apply custom styles 
+  //            to the layout container  
   // style: allows passing inline style to the container
   /////////////////////////////////////////////////////////
 
@@ -163,9 +163,9 @@ export default class ReflexContainer extends React.Component {
 
   //   const children = this.getValidChildren(props)
 
-  //   if (children.length !== this.state.flexData.length ||
-  //     props.orientation !== this.props.orientation ||
-  //     this.flexHasChanged(props))
+  //   if (children.length !== this.state.flexData.length || 
+  //     props.orientation !== this.props.orientation || 
+  //     this.flexHasChanged(props)) 
   //   {
   //     const flexData = this.computeFlexData(
   //       children, props)
@@ -183,7 +183,7 @@ export default class ReflexContainer extends React.Component {
   //       windowResizeAware: props.windowResizeAware
   //     })
   //   }
-  // }
+  // } 
 
   /////////////////////////////////////////////////////////
   // attempts to preserve current flex on window resize
@@ -271,6 +271,21 @@ export default class ReflexContainer extends React.Component {
 
   /////////////////////////////////////////////////////////
   // Handles startResize event
+  //
+  /////////////////////////////////////////////////////////
+
+  /////////////////////////////////////////////////////////
+  // Handles splitter resize event
+  //
+  /////////////////////////////////////////////////////////
+
+  /////////////////////////////////////////////////////////
+  // Handles stopResize event
+  //
+  /////////////////////////////////////////////////////////
+
+  /////////////////////////////////////////////////////////
+  // Handles element size modified event
   //
   /////////////////////////////////////////////////////////
 

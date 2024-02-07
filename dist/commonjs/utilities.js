@@ -13,7 +13,7 @@ var _createClass2 = _interopRequireDefault(require("@babel/runtime/helpers/creat
 // Browser Utils
 //
 /////////////////////////////////////////////////////////
-var Browser = /*#__PURE__*/function () {
+var Browser = exports.Browser = /*#__PURE__*/function () {
   function Browser() {
     (0, _classCallCheck2.default)(this, Browser);
   }
@@ -123,8 +123,7 @@ var Browser = /*#__PURE__*/function () {
 // Returns only the props that start with "data-"
 //
 /////////////////////////////////////////////////////////
-exports.Browser = Browser;
-var getDataProps = function getDataProps(props) {
+var getDataProps = exports.getDataProps = function getDataProps(props) {
   return Object.keys(props).reduce(function (prev, key) {
     if (key.substr(0, 5) === 'data-') {
       return (0, _objectSpread3.default)({}, prev, (0, _defineProperty2.default)({}, key, props[key]));
@@ -132,4 +131,3 @@ var getDataProps = function getDataProps(props) {
     return prev;
   }, {});
 };
-exports.getDataProps = getDataProps;

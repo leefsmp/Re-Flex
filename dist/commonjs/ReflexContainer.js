@@ -10,10 +10,10 @@ var _objectSpread2 = _interopRequireDefault(require("@babel/runtime/helpers/obje
 var _toConsumableArray2 = _interopRequireDefault(require("@babel/runtime/helpers/toConsumableArray"));
 var _classCallCheck2 = _interopRequireDefault(require("@babel/runtime/helpers/classCallCheck"));
 var _createClass2 = _interopRequireDefault(require("@babel/runtime/helpers/createClass"));
-var _assertThisInitialized2 = _interopRequireDefault(require("@babel/runtime/helpers/assertThisInitialized"));
-var _inherits2 = _interopRequireDefault(require("@babel/runtime/helpers/inherits"));
 var _possibleConstructorReturn2 = _interopRequireDefault(require("@babel/runtime/helpers/possibleConstructorReturn"));
 var _getPrototypeOf2 = _interopRequireDefault(require("@babel/runtime/helpers/getPrototypeOf"));
+var _assertThisInitialized2 = _interopRequireDefault(require("@babel/runtime/helpers/assertThisInitialized"));
+var _inherits2 = _interopRequireDefault(require("@babel/runtime/helpers/inherits"));
 var _defineProperty2 = _interopRequireDefault(require("@babel/runtime/helpers/defineProperty"));
 var _ReflexSplitter = _interopRequireDefault(require("./ReflexSplitter"));
 var _ReflexEvents = _interopRequireDefault(require("./ReflexEvents"));
@@ -21,25 +21,29 @@ var _utilities = require("./utilities");
 var _propTypes = _interopRequireDefault(require("prop-types"));
 var _react = _interopRequireDefault(require("react"));
 require("./Polyfills");
-function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = (0, _getPrototypeOf2.default)(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = (0, _getPrototypeOf2.default)(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return (0, _possibleConstructorReturn2.default)(this, result); }; }
-function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
-var ReflexContainer = /*#__PURE__*/function (_React$Component) {
+function _callSuper(t, o, e) { return o = (0, _getPrototypeOf2.default)(o), (0, _possibleConstructorReturn2.default)(t, _isNativeReflectConstruct() ? Reflect.construct(o, e || [], (0, _getPrototypeOf2.default)(t).constructor) : o.apply(t, e)); }
+function _isNativeReflectConstruct() { try { var t = !Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); } catch (t) {} return (_isNativeReflectConstruct = function _isNativeReflectConstruct() { return !!t; })(); } ///////////////////////////////////////////////////////////
+// ReflexContainer
+// By Philippe Leefsma
+// December 2016
+//
+///////////////////////////////////////////////////////////
+var ReflexContainer = exports.default = /*#__PURE__*/function (_React$Component) {
   (0, _inherits2.default)(ReflexContainer, _React$Component);
-  var _super = _createSuper(ReflexContainer);
   /////////////////////////////////////////////////////////
   // orientation: Orientation of the layout container
-  //              valid values are ['horizontal', 'vertical']
+  //              valid values are ['horizontal', 'vertical'] 
   // maxRecDepth: Maximun recursion depth to solve initial flex
   //              of layout elements based on user provided values
-  // className: Space separated classnames to apply custom styles
-  //            to the layout container
+  // className: Space separated classnames to apply custom styles 
+  //            to the layout container  
   // style: allows passing inline style to the container
   /////////////////////////////////////////////////////////
 
   function ReflexContainer(props) {
     var _this;
     (0, _classCallCheck2.default)(this, ReflexContainer);
-    _this = _super.call(this, props);
+    _this = _callSuper(this, ReflexContainer, [props]);
     (0, _defineProperty2.default)((0, _assertThisInitialized2.default)(_this), "onWindowResize", function () {
       _this.setState({
         flexData: _this.computeFlexData()
@@ -185,9 +189,9 @@ var ReflexContainer = /*#__PURE__*/function (_React$Component) {
 
     //   const children = this.getValidChildren(props)
 
-    //   if (children.length !== this.state.flexData.length ||
-    //     props.orientation !== this.props.orientation ||
-    //     this.flexHasChanged(props))
+    //   if (children.length !== this.state.flexData.length || 
+    //     props.orientation !== this.props.orientation || 
+    //     this.flexHasChanged(props)) 
     //   {
     //     const flexData = this.computeFlexData(
     //       children, props)
@@ -205,7 +209,7 @@ var ReflexContainer = /*#__PURE__*/function (_React$Component) {
     //       windowResizeAware: props.windowResizeAware
     //     })
     //   }
-    // }
+    // } 
 
     /////////////////////////////////////////////////////////
     // attempts to preserve current flex on window resize
@@ -298,6 +302,21 @@ var ReflexContainer = /*#__PURE__*/function (_React$Component) {
 
     /////////////////////////////////////////////////////////
     // Handles startResize event
+    //
+    /////////////////////////////////////////////////////////
+
+    /////////////////////////////////////////////////////////
+    // Handles splitter resize event
+    //
+    /////////////////////////////////////////////////////////
+
+    /////////////////////////////////////////////////////////
+    // Handles stopResize event
+    //
+    /////////////////////////////////////////////////////////
+
+    /////////////////////////////////////////////////////////
+    // Handles element size modified event
     //
     /////////////////////////////////////////////////////////
   }, {
@@ -650,7 +669,6 @@ var ReflexContainer = /*#__PURE__*/function (_React$Component) {
   }]);
   return ReflexContainer;
 }(_react.default.Component);
-exports.default = ReflexContainer;
 (0, _defineProperty2.default)(ReflexContainer, "propTypes", {
   windowResizeAware: _propTypes.default.bool,
   orientation: _propTypes.default.oneOf(['horizontal', 'vertical']),

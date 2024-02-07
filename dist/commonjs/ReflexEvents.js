@@ -72,5 +72,4 @@ var ReflexEvents = /*#__PURE__*/function () {
   }]);
   return ReflexEvents;
 }();
-var _default = ReflexEvents;
-exports.default = _default;
+var _default = exports.default = ReflexEvents;
