@@ -42,10 +42,11 @@ export default class ReflexHandle extends React.Component {
     if (!element) {
       return false
     }
-    //https://github.com/leefsmp/Re-Flex/issues/49
-    return (process.env.NODE_ENV === 'development')
-    ? (element.type === (<ReflexHandle/>).type)
-    : (element.type === ReflexHandle)
+
+    return (process.env.NODE_ENV === 'development'
+      ? element.type === (<ReflexHandle/>).type
+      : element.type === ReflexHandle
+    ) || element.name === 'reflex-handle' || element.props?.name === 'reflex-handle';
   }
 
   constructor (props) {

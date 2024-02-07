@@ -86,13 +86,11 @@ var ReflexSplitter = /*#__PURE__*/function (_React$Component) {
       active: false
     };
     _this.document = props.document;
-    console.log("hey");
     return _this;
   }
   (0, _createClass2.default)(ReflexSplitter, [{
     key: "componentDidMount",
     value: function componentDidMount() {
-      console.log("ho");
       if (!this.document) {
         return;
       }
@@ -144,11 +142,11 @@ var ReflexSplitter = /*#__PURE__*/function (_React$Component) {
     //
     /////////////////////////////////////////////////////////
     function isA(element) {
+      var _element$props;
       if (!element) {
         return false;
       }
-      //https://github.com/leefsmp/Re-Flex/issues/49
-      return element.type === /*#__PURE__*/_react.default.createElement(ReflexSplitter, null).type;
+      return (process.env.NODE_ENV === 'development' ? element.type === /*#__PURE__*/_react.default.createElement(ReflexSplitter, null).type : element.type === ReflexSplitter) || element.name === 'reflex-splitter' || ((_element$props = element.props) === null || _element$props === void 0 ? void 0 : _element$props.name) === 'reflex-splitter';
     }
   }]);
   return ReflexSplitter;

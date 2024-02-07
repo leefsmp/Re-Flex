@@ -106,110 +106,148 @@ Re-F|ex is the most powerful resizeable React layout component out there ... Don
 
 * Supported properties on `ReflexContainer`:
 
-  * `orientation`: Orientation of the layout container. 
+  * `orientation`: Orientation of the layout container.
   Type: `oneOf(['horizontal', 'vertical'])`.
-  Default value: `horizontal`. 
-  
-  * `maxRecDepth`: Maximum recursion depth to solve initial flex of layout elements based on user provided values. This prevents infinite recursion in case the constraints solver cannot find suitable dimensions on the elements to satisfy initial inputs.  
+  Default value: `horizontal`.
+
+  * `maxRecDepth`: Maximum recursion depth to solve initial flex of layout elements based on user provided values. This prevents infinite recursion in case the constraints solver cannot find suitable dimensions on the elements to satisfy initial inputs.
   Type: `number`.
   Default value: `100`.
 
-  * `windowResizeAware`: When set to true, this flag will update the layout upon a window resize event to attempt to satisfy `minSize`/`maxSize` constraints on each element. If your elements do not have those constraints, this is not needed. 
+  * `windowResizeAware`: When set to true, this flag will update the layout upon a window resize event to attempt to satisfy `minSize`/`maxSize` constraints on each element. If your elements do not have those constraints, this is not needed.
   Type: `bool`.
   Default value: `false`.
-  
+
   * `className`: Space separated classnames to apply custom styles on the component. Type: `string`.
-  Default value: `empty string ''`. 
-  
-  * `style`: allows passing inline style to the container. 
+  Default value: `empty string ''`.
+
+  * `style`: allows passing inline style to the container.
   Type: `object`.
-  Default value: `{}`. 
+  Default value: `{}`.
 
 * Supported properties on `ReflexElement`:
 
-  * `propagateDimensions`: Setting this to `true` will propagate a dimensions `{height, width}` property to the children. See [Size-aware element demo](https://leefsmp.github.io/Re-Flex/index.html#demo7) for more details. 
+  * `propagateDimensions`: Setting this to `true` will propagate a dimensions `{height, width}` property to the children. See [Size-aware element demo](https://leefsmp.github.io/Re-Flex/index.html#demo7) for more details.
   Type: `bool`.
-  Default value: `false`. 
+  Default value: `false`.
 
-  * `propagateDimensionsRate`: When resizing with `propagateDimensions={true}`, defines the rate at which the dimensions will be updated on the child elements (in times per second). This can help improving performances when using this approach on heavy components by skipping some rerender steps during resizing. 
+  * `propagateDimensionsRate`: When resizing with `propagateDimensions={true}`, defines the rate at which the dimensions will be updated on the child elements (in times per second). This can help improving performances when using this approach on heavy components by skipping some rerender steps during resizing.
   Type: `number`.
-  Default value: `100`. 
-  
-  * `resizeHeight`: Allows to control if `height` will be propagated when `propagateDimensions={true}`.  
-  Type: `bool`.
-  Default value: `true`.
-  
-  * `resizeWidth`: Allows to control if `width` will be propagated when `propagateDimensions={true}`.  
+  Default value: `100`.
+
+  * `resizeHeight`: Allows to control if `height` will be propagated when `propagateDimensions={true}`.
   Type: `bool`.
   Default value: `true`.
 
-  * `size`: Allows to control the size in pixel of an element. The main use-case is to allow to perform animations programmatically on an element (shrinking/expanding). See [Controlled elements demo](https://leefsmp.github.io/Re-Flex/index.html#demo6) for more details. 
+  * `resizeWidth`: Allows to control if `width` will be propagated when `propagateDimensions={true}`.
+  Type: `bool`.
+  Default value: `true`.
+
+  * `size`: Allows to control the size in pixel of an element. The main use-case is to allow to perform animations programmatically on an element (shrinking/expanding). See [Controlled elements demo](https://leefsmp.github.io/Re-Flex/index.html#demo6) for more details.
   Type: `number`.
-  Default value: `true`. 
+  Default value: `true`.
 
   * `minSize`: Creates a constraint on the minimum size in pixel to which the element can be resized to by the user.
   Type: `number`.
-  Default value: `true`. 
+  Default value: `true`.
 
   * `maxSize`: Creates a constraint on the maximum size in pixel to which the element can be resized to by the user.
   Type: `number`.
-  Default value: `true`. 
+  Default value: `true`.
 
   * `flex`: Specifiy the initial `flex` of an element. By default all element will get evenly displayed inside a layout, unless some of them have `minSize`, `maxSize` or `size` specified.
   Type: `number`.
   Default value: `true`.
 
-  * `direction`: Allows to control in which direction(s) the element will shrink/expand when its `size` property is modified. See [Controlled elements demo](https://leefsmp.github.io/Re-Flex/index.html#demo6) for more details. 
+  * `direction`: Allows to control in which direction(s) the element will shrink/expand when its `size` property is modified. See [Controlled elements demo](https://leefsmp.github.io/Re-Flex/index.html#demo6) for more details.
   Type: `-1, 1 or [-1, 1]`.
-  Default value: `1`. 
+  Default value: `1`.
 
-  * `onStartResize`: Event fired when user initiates layout resizing. 
+  * `onStartResize`: Event fired when user initiates layout resizing.
   Type: `function({domElement, component})`.
-  Default value: `undefined`. 
+  Default value: `undefined`.
 
-  * `onStopResize`: Event fired when user finishes layout resizing. 
+  * `onStopResize`: Event fired when user finishes layout resizing.
   Type: `function({domElement, component})`.
-  Default value: `undefined`. 
-  
-  * `onResize`: Event fired at each resize step when user resizes layout. 
-  Type: `function({domElement, component})`.
-  Default value: `undefined`. 
+  Default value: `undefined`.
 
-  * `className`: Space separated classnames to apply custom styles on the component. 
+  * `onResize`: Event fired at each resize step when user resizes layout.
+  Type: `function({domElement, component})`.
+  Default value: `undefined`.
+
+  * `className`: Space separated classnames to apply custom styles on the component.
   Type: `string`.
-  Default value: `empty string ''`. 
+  Default value: `empty string ''`.
 
-  * `style`: allows passing inline style to the container.  
+  * `style`: allows passing inline style to the container.
   Type: `object`.
   Default value: `{}`.
 
 * Supported properties on `ReflexSplitter`:
 
-  * `propagate`: Propagate the drag when reszing a layout across multiple splitters. Layou must have at least 3 elements with therefore 2 splitters for this properties to be relevant. 
+  * `propagate`: Propagate the drag when reszing a layout across multiple splitters. Layou must have at least 3 elements with therefore 2 splitters for this properties to be relevant.
   Type: `bool`.
   Default value: `false`.
 
-  * `onStartResize`: Event fired when user initiates layout resizing. 
+  * `onStartResize`: Event fired when user initiates layout resizing.
   Type: `function({domElement, component})`.
-  Default value: `undefined`. 
+  Default value: `undefined`.
 
-  * `onStopResize`: Event fired when user finishes layout resizing. 
+  * `onStopResize`: Event fired when user finishes layout resizing.
   Type: `function({domElement, component})`.
-  Default value: `undefined`. 
-  
-  * `onResize`: Event fired at each resize step when user resizes layout. 
+  Default value: `undefined`.
+
+  * `onResize`: Event fired at each resize step when user resizes layout.
   Type: `function({domElement, component})`.
-  Default value: `undefined`. 
+  Default value: `undefined`.
 
   * `className`: Space separated classnames to apply custom styles on the component.
-  Type: `string`. 
-  Default value: `empty string ''`. 
+  Type: `string`.
+  Default value: `empty string ''`.
 
-  * `style`: allows passing inline style to the container.  
+  * `style`: allows passing inline style to the container.
   Default value: `{}`.
   Type: `object`.
 
+## Custom component wrappers
 
+Re-F|ex components can be wrapped with custom components taking into account to keep `name` property.
+
+Names must be:
+
+* `<ReflexSplitter />`: `name="reflex-splitter"`.
+* `<ReflexHandle />`: `name="reflex-handle"`.
+
+Example:
+
+```js
+const ReflexSplitterWrapper = forwardRef(({ name = 'reflex-splitter', className, children, ...props }, ref) => (
+  <ReflexSplitter { ...props }
+      className={ className }
+      ref={ ref }
+      name={ name }>
+    { children }
+  </ReflexSplitter>;
+);
+
+<ReflexContainer orientation="vertical">
+
+  <ReflexElement className="left-pane">
+    <div className="pane-content">
+      Left Pane (resizeable)
+    </div>
+  </ReflexElement>
+
+  <ReflexSplitterWrapper className="reflex-splitter-custom-class" />
+
+  <ReflexElement className="right-pane">
+    <div className="pane-content">
+      Right Pane (resizeable)
+    </div>
+  </ReflexElement>
+
+</ReflexContainer>
+```
 
 ## Development
 
@@ -219,7 +257,7 @@ Re-F|ex is the most powerful resizeable React layout component out there ... Don
 ## Web Applications using Re-F|ex
 
   [See here...](./webapps-using-reflex.md)
-  
+
   (Feel free to add your own by submitting a pull request...)
 
 ## About the Author
