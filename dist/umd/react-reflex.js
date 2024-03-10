@@ -3519,7 +3519,7 @@ if (!Array.prototype.includes) {
         if (sameValueZero(o[k], valueToFind)) {
           return true;
         }
-        // c. Increase k by 1. 
+        // c. Increase k by 1.
         k++;
       }
 
@@ -3608,11 +3608,11 @@ var ReflexContainer = /*#__PURE__*/function (_React$Component) {
   var _super = _createSuper(ReflexContainer);
   /////////////////////////////////////////////////////////
   // orientation: Orientation of the layout container
-  //              valid values are ['horizontal', 'vertical'] 
+  //              valid values are ['horizontal', 'vertical']
   // maxRecDepth: Maximun recursion depth to solve initial flex
   //              of layout elements based on user provided values
-  // className: Space separated classnames to apply custom styles 
-  //            to the layout container  
+  // className: Space separated classnames to apply custom styles
+  //            to the layout container
   // style: allows passing inline style to the container
   /////////////////////////////////////////////////////////
 
@@ -3765,9 +3765,9 @@ var ReflexContainer = /*#__PURE__*/function (_React$Component) {
 
     //   const children = this.getValidChildren(props)
 
-    //   if (children.length !== this.state.flexData.length || 
-    //     props.orientation !== this.props.orientation || 
-    //     this.flexHasChanged(props)) 
+    //   if (children.length !== this.state.flexData.length ||
+    //     props.orientation !== this.props.orientation ||
+    //     this.flexHasChanged(props))
     //   {
     //     const flexData = this.computeFlexData(
     //       children, props)
@@ -3785,7 +3785,7 @@ var ReflexContainer = /*#__PURE__*/function (_React$Component) {
     //       windowResizeAware: props.windowResizeAware
     //     })
     //   }
-    // } 
+    // }
 
     /////////////////////////////////////////////////////////
     // attempts to preserve current flex on window resize
@@ -5038,13 +5038,11 @@ var ReflexSplitter = /*#__PURE__*/function (_React$Component) {
       active: false
     };
     _this.document = props.document;
-    console.log("hey");
     return _this;
   }
   _babel_runtime_helpers_createClass__WEBPACK_IMPORTED_MODULE_3___default()(ReflexSplitter, [{
     key: "componentDidMount",
     value: function componentDidMount() {
-      console.log("ho");
       if (!this.document) {
         return;
       }

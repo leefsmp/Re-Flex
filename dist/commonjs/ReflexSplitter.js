@@ -86,13 +86,11 @@ var ReflexSplitter = /*#__PURE__*/function (_React$Component) {
       active: false
     };
     _this.document = props.document;
-    console.log("hey");
     return _this;
   }
   (0, _createClass2.default)(ReflexSplitter, [{
     key: "componentDidMount",
     value: function componentDidMount() {
-      console.log("ho");
       if (!this.document) {
         return;
       }
