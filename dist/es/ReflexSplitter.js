@@ -84,10 +84,8 @@ export default class ReflexSplitter extends React.Component {
       active: false
     };
     this.document = props.document;
-    console.log("hey");
   }
   componentDidMount() {
-    console.log("ho");
     if (!this.document) {
       return;
     }
