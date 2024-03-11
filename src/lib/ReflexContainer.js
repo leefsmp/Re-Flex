@@ -48,6 +48,7 @@ export default class ReflexContainer extends React.Component {
       flexData: []
     }
     this.ref = React.createRef()
+    this.isSetPropSize = false
   }
   
   componentDidMount () {
@@ -369,6 +370,8 @@ export default class ReflexContainer extends React.Component {
           this.computeAvailableOffset(
             splitterIdx, dir * offset)
 
+        this.isSetPropSize = data.isSetPropSize
+
         this.elements = null
 
         if (availableOffset) {
@@ -390,6 +393,7 @@ export default class ReflexContainer extends React.Component {
         // TODO handle exception ...
         console.log(ex)
       }
+      this.isSetPropSize = false
     })
   }
 
@@ -595,7 +599,7 @@ export default class ReflexContainer extends React.Component {
 
     const newSize = Math.max(size + offset, 0)
 
-    const currentFlex = this.state.flexData[idx].flex
+    const currentFlex = this.isSetPropSize ? 0 : this.state.flexData[idx].flex
 
     const newFlex = (currentFlex > 0)
         ? currentFlex * newSize / size
