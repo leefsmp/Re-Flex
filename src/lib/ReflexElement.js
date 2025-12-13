@@ -141,7 +141,8 @@ class ReflexElement extends React.Component {
         await this.props.events.emit('element.size', {
           index: this.props.index,
           size: this.props.size,
-          direction
+          direction,
+          isSetPropSize: true
         })
       }
     }
