@@ -216,12 +216,3 @@ Re-F|ex is the most powerful resizeable React layout component out there ... Don
 * Build the lib: `npm run build` | `npm run build-dev` (dev mode non-minified with source-map)
 * Build the demo: `npm run build-demo` | `npm run build-demo-dev` (dev mode non-minified with source-map + webpack watch)
 
-## Web Applications using Re-F|ex
-
-  [See here...](./webapps-using-reflex.md)
-  
-  (Feel free to add your own by submitting a pull request...)
-
-## About the Author
-
-[https://twitter.com/F3lipek](https://twitter.com/F3lipek)
