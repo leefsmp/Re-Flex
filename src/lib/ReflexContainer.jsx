@@ -329,7 +329,7 @@ export default class ReflexContainer extends React.Component {
     document.body.classList.remove('reflex-col-resize')
 
     const resizedRefs = this.elements ? this.elements.map(element => {
-      return element.ref
+      return element.props.ref || element.ref
     }) : [];
 
     const elements = this.children.filter(child => {
