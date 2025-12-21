@@ -12,6 +12,7 @@
     "build-css": "copy ./src/styles.css ./dist",
     "build-dts": "copy ./src/index.d.ts ./dist",
     "build": "npm run build-lib && npm run build-demo && npm run build-dts && npm run build-css",
+    "prepublish": "npm run build",
     "lint": "eslint ."
   },
   "dependencies": {
