@@ -185,7 +185,9 @@ export default class ReflexContainer extends React.Component {
   /////////////////////////////////////////////////////////
   getSize (element) { 
 
-    const domElement = element?.ref?.current
+    const ref = element?.props.ref || element?.ref
+
+    const domElement = ref?.current
 
     switch (this.props.orientation) {
       case 'horizontal':
@@ -334,7 +336,7 @@ export default class ReflexContainer extends React.Component {
 
     const elements = this.children.filter(child => {
       return !ReflexSplitter.isA(child) &&
-        resizedRefs.includes(child.ref)
+        resizedRefs.includes(child.props.ref || child.ref)
     })
 
     this.emitElementsEvent(
@@ -709,8 +711,9 @@ export default class ReflexContainer extends React.Component {
   emitElementsEvent (elements, event) {
     this.toArray(elements).forEach(component => {
       if (component.props[event]) {
+        const compRef = component.props.ref || component.ref
         component.props[event]({
-          domElement: component.ref.current,
+          domElement: compRef?.current,
           component
         })
       }

@@ -4,7 +4,7 @@
   "main": "dist/react-reflex.cjs",
   "module": "dist/react-reflex.js",
   "types": "./dist/index.d.ts",
-  "version": "5.0.3",
+  "version": "5.0.4",
   "type": "module",
   "scripts": {
     "build-demo": "tsc -b && vite build --config vite.config.demo.ts",
