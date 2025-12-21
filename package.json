@@ -10,7 +10,7 @@
     "build-demo": "tsc -b && vite build --config vite.config.demo.ts",
     "build-lib": "tsc -b && vite build --config vite.config.lib.ts",
     "build-css": "copy ./styles.css ./dist",
-    "build-dts": "copy ./index.d.ts ./dist/index.d.ts",
+    "build-dts": "copy ./index.d.ts ./dist",
     "build": "npm run build-lib && npm run build-demo && npm run build-dts && npm run build-css",
     "prepublish": "npm run build",
     "lint": "eslint ."
