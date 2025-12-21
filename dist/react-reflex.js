@@ -747,7 +747,7 @@ var import_prop_types$3 = /* @__PURE__ */ __toESM(require_prop_types(), 1), Refl
 		return !this.getValidChildren().map((r) => r.props.flex || 0).every((r, s) => r === o[s]);
 	}
 	getSize(r) {
-		let o = r?.ref?.current;
+		let o = (r?.props.ref || r?.ref)?.current;
 		switch (this.props.orientation) {
 			case "horizontal": return o?.offsetHeight ?? 0;
 			case "vertical":
@@ -809,7 +809,7 @@ var import_prop_types$3 = /* @__PURE__ */ __toESM(require_prop_types(), 1), Refl
 	};
 	onStopResize = (r) => {
 		document.body.classList.remove("reflex-row-resize"), document.body.classList.remove("reflex-col-resize");
-		let o = this.elements ? this.elements.map((r) => r.props.ref || r.ref) : [], s = this.children.filter((r) => !ReflexSplitter.isA(r) && o.includes(r.ref));
+		let o = this.elements ? this.elements.map((r) => r.props.ref || r.ref) : [], s = this.children.filter((r) => !ReflexSplitter.isA(r) && o.includes(r.props.ref || r.ref));
 		this.emitElementsEvent(s, "onStopResize"), this.setState({ resizing: !1 });
 	};
 	onElementSize = (r) => new Promise((o) => {
@@ -900,10 +900,13 @@ var import_prop_types$3 = /* @__PURE__ */ __toESM(require_prop_types(), 1), Refl
 	}
 	emitElementsEvent(r, o) {
 		this.toArray(r).forEach((r) => {
-			r.props[o] && r.props[o]({
-				domElement: r.ref.current,
-				component: r
-			});
+			if (r.props[o]) {
+				let s = r.props.ref || r.ref;
+				r.props[o]({
+					domElement: s?.current,
+					component: r
+				});
+			}
 		});
 	}
 	computeFlexData(o = this.getValidChildren(), s = this.props) {
