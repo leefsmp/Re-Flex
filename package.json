@@ -4,7 +4,7 @@
   "main": "dist/commonjs/index.js",
   "module": "dist/es/index.js",
   "types": "./dist/index.d.ts",
-  "version": "5.0.0",
+  "version": "5.0.1",
   "type": "module",
   "scripts": {
     "build-demo": "tsc -b && vite build --config vite.config.demo.ts",
