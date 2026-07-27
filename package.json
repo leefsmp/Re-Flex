@@ -4,8 +4,9 @@
   "main": "dist/react-reflex.cjs",
   "module": "dist/react-reflex.js",
   "types": "./dist/index.d.ts",
-  "version": "5.0.5",
+  "version": "5.0.6",
   "type": "module",
+  "license": "MIT",
   "scripts": {
     "build-demo": "tsc -b && vite build --config vite.config.demo.ts",
     "build-lib": "tsc -b && vite build --config vite.config.lib.ts",
