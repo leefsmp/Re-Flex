@@ -1,15 +1,67 @@
 import React from "react";
 import { jsx } from "react/jsx-runtime";
-var __create = Object.create, __defProp = Object.defineProperty, __getOwnPropDesc = Object.getOwnPropertyDescriptor, __getOwnPropNames = Object.getOwnPropertyNames, __getProtoOf = Object.getPrototypeOf, __hasOwnProp = Object.prototype.hasOwnProperty, __commonJSMin = (e, t) => () => (t || e((t = { exports: {} }).exports, t), t.exports), __copyProps = (e, t, n, o) => {
-	if (t && typeof t == "object" || typeof t == "function") for (var c = __getOwnPropNames(t), l = 0, u = c.length, d; l < u; l++) d = c[l], !__hasOwnProp.call(e, d) && d !== n && __defProp(e, d, {
-		get: ((e) => t[e]).bind(null, d),
-		enumerable: !(o = __getOwnPropDesc(t, d)) || o.enumerable
+var __create = Object.create, __defProp = Object.defineProperty, __getOwnPropDesc = Object.getOwnPropertyDescriptor, __getOwnPropNames = Object.getOwnPropertyNames, __getProtoOf = Object.getPrototypeOf, __hasOwnProp = Object.prototype.hasOwnProperty, __commonJSMin = (e, n) => () => (n || e((n = { exports: {} }).exports, n), n.exports), __copyProps = (e, n, r, s) => {
+	if (n && typeof n == "object" || typeof n == "function") for (var l = __getOwnPropNames(n), u = 0, d = l.length, f; u < d; u++) f = l[u], !__hasOwnProp.call(e, f) && f !== r && __defProp(e, f, {
+		get: ((e) => n[e]).bind(null, f),
+		enumerable: !(s = __getOwnPropDesc(n, f)) || s.enumerable
 	});
 	return e;
-}, __toESM = (e, t, i) => (i = e == null ? {} : __create(__getProtoOf(e)), __copyProps(t || !e || !e.__esModule ? __defProp(i, "default", {
+}, __toESM = (e, n, a) => (a = e == null ? {} : __create(__getProtoOf(e)), __copyProps(n || !e || !e.__esModule ? __defProp(a, "default", {
 	value: e,
 	enumerable: !0
-}) : i, e)), Browser = class e {
+}) : a, e));
+function _typeof(e) {
+	"@babel/helpers - typeof";
+	return _typeof = typeof Symbol == "function" && typeof Symbol.iterator == "symbol" ? function(e) {
+		return typeof e;
+	} : function(e) {
+		return e && typeof Symbol == "function" && e.constructor === Symbol && e !== Symbol.prototype ? "symbol" : typeof e;
+	}, _typeof(e);
+}
+function toPrimitive(e, n) {
+	if (_typeof(e) != "object" || !e) return e;
+	var r = e[Symbol.toPrimitive];
+	if (r !== void 0) {
+		var i = r.call(e, n || "default");
+		if (_typeof(i) != "object") return i;
+		throw TypeError("@@toPrimitive must return a primitive value.");
+	}
+	return (n === "string" ? String : Number)(e);
+}
+function toPropertyKey(e) {
+	var n = toPrimitive(e, "string");
+	return _typeof(n) == "symbol" ? n : n + "";
+}
+function _defineProperty(e, n, r) {
+	return (n = toPropertyKey(n)) in e ? Object.defineProperty(e, n, {
+		value: r,
+		enumerable: !0,
+		configurable: !0,
+		writable: !0
+	}) : e[n] = r, e;
+}
+function ownKeys(e, n) {
+	var r = Object.keys(e);
+	if (Object.getOwnPropertySymbols) {
+		var i = Object.getOwnPropertySymbols(e);
+		n && (i = i.filter(function(n) {
+			return Object.getOwnPropertyDescriptor(e, n).enumerable;
+		})), r.push.apply(r, i);
+	}
+	return r;
+}
+function _objectSpread2(e) {
+	for (var n = 1; n < arguments.length; n++) {
+		var r = arguments[n] == null ? {} : arguments[n];
+		n % 2 ? ownKeys(Object(r), !0).forEach(function(n) {
+			_defineProperty(e, n, r[n]);
+		}) : Object.getOwnPropertyDescriptors ? Object.defineProperties(e, Object.getOwnPropertyDescriptors(r)) : ownKeys(Object(r)).forEach(function(n) {
+			Object.defineProperty(e, n, Object.getOwnPropertyDescriptor(r, n));
+		});
+	}
+	return e;
+}
+var Browser = class e {
 	static isBrowser() {
 		return typeof window < "u";
 	}
@@ -32,27 +84,42 @@ var __create = Object.create, __defProp = Object.defineProperty, __getOwnPropDes
 		return e.isBrowser() && (e.isWindowsMobile() || e.isBlackBerry() || e.isAndroid() || e.isIOS());
 	}
 };
-const getDataProps = (e) => Object.keys(e).reduce((t, n) => n.startsWith("data-") ? {
-	...t,
-	[n]: e[n]
-} : t, {}), getPointerPosition = (e) => "changedTouches" in e ? e.changedTouches[0] : e;
-var ReflexSplitter = class n extends React.Component {
-	ref = React.createRef();
-	document;
-	static defaultProps = {
-		document: typeof document < "u" ? document : null,
-		onStartResize: null,
-		onStopResize: null,
-		propagate: !1,
-		onResize: null,
-		className: "",
-		style: {}
-	};
+const getDataProps = (e) => Object.keys(e).reduce((n, r) => r.startsWith("data-") ? _objectSpread2(_objectSpread2({}, n), {}, { [r]: e[r] }) : n, {}), getPointerPosition = (e) => "changedTouches" in e ? e.changedTouches[0] : e;
+var ReflexSplitter = class r extends React.Component {
 	static isA(e) {
-		return e ? process.env.NODE_ENV === "development" ? e.type === (/* @__PURE__ */ jsx(n, {})).type : e.type === n : !1;
+		return e ? process.env.NODE_ENV === "development" ? e.type === (/* @__PURE__ */ jsx(r, {})).type : e.type === r : !1;
 	}
-	constructor(e) {
-		super(e), this.state = { active: !1 }, this.document = e.document ?? null;
+	constructor(n) {
+		var r;
+		super(n), _defineProperty(this, "ref", React.createRef()), _defineProperty(this, "document", void 0), _defineProperty(this, "onMouseMove", (e) => {
+			if (this.state.active) {
+				let n = this.ref.current;
+				this.internalProps.events.emit("resize", {
+					index: this.internalProps.index,
+					domElement: n,
+					event: e
+				}), this.props.onResize && this.props.onResize({
+					component: this,
+					domElement: n
+				}), e.stopPropagation(), e.preventDefault();
+			}
+		}), _defineProperty(this, "onMouseDown", (e) => {
+			this.setState({ active: !0 }), !(this.props.onStartResize && this.props.onStartResize({
+				domElement: this.ref.current,
+				component: this
+			})) && this.internalProps.events.emit("startResize", {
+				index: this.internalProps.index,
+				event: e
+			});
+		}), _defineProperty(this, "onMouseUp", (e) => {
+			this.state.active && (this.setState({ active: !1 }), this.props.onStopResize && this.props.onStopResize({
+				domElement: this.ref.current,
+				component: this
+			}), this.internalProps.events.emit("stopResize", {
+				index: this.internalProps.index,
+				event: e
+			}));
+		}), this.state = { active: !1 }, this.document = (r = n.document) == null ? null : r;
 	}
 	get internalProps() {
 		return this.props;
@@ -66,99 +133,120 @@ var ReflexSplitter = class n extends React.Component {
 			event: null
 		}));
 	}
-	onMouseMove = (e) => {
-		if (this.state.active) {
-			let t = this.ref.current;
-			this.internalProps.events.emit("resize", {
-				index: this.internalProps.index,
-				domElement: t,
-				event: e
-			}), this.props.onResize && this.props.onResize({
-				component: this,
-				domElement: t
-			}), e.stopPropagation(), e.preventDefault();
-		}
-	};
-	onMouseDown = (e) => {
-		this.setState({ active: !0 }), !(this.props.onStartResize && this.props.onStartResize({
-			domElement: this.ref.current,
-			component: this
-		})) && this.internalProps.events.emit("startResize", {
-			index: this.internalProps.index,
-			event: e
-		});
-	};
-	onMouseUp = (e) => {
-		this.state.active && (this.setState({ active: !1 }), this.props.onStopResize && this.props.onStopResize({
-			domElement: this.ref.current,
-			component: this
-		}), this.internalProps.events.emit("stopResize", {
-			index: this.internalProps.index,
-			event: e
-		}));
-	};
 	render() {
-		let e = [
+		var e;
+		let r = [
 			Browser.isMobile() ? "reflex-thin" : "",
-			...(this.props.className ?? "").split(" "),
+			...((e = this.props.className) == null ? "" : e).split(" "),
 			this.state.active ? "active" : "",
 			"reflex-splitter"
 		].join(" ").trim();
-		return /* @__PURE__ */ jsx("div", {
-			...getDataProps(this.props),
+		return /* @__PURE__ */ jsx("div", _objectSpread2(_objectSpread2({}, getDataProps(this.props)), {}, {
 			onTouchStart: this.onMouseDown,
 			onMouseDown: this.onMouseDown,
 			style: this.props.style,
-			className: e,
+			className: r,
 			id: this.props.id,
 			ref: this.ref,
 			children: this.props.children
-		});
+		}));
 	}
-}, ReflexEvents_default = class {
-	_events = {};
-	on(e, t) {
+};
+_defineProperty(ReflexSplitter, "defaultProps", {
+	document: typeof document < "u" ? document : null,
+	onStartResize: null,
+	onStopResize: null,
+	propagate: !1,
+	onResize: null,
+	className: "",
+	style: {}
+});
+var ReflexEvents_default = class {
+	constructor() {
+		_defineProperty(this, "_events", {});
+	}
+	on(e, n) {
 		return e.split(" ").forEach((e) => {
-			this._events[e] = this._events[e] || [], this._events[e].push(t);
+			this._events[e] = this._events[e] || [], this._events[e].push(n);
 		}), this;
 	}
-	off(e, t) {
+	off(e, n) {
 		return e === void 0 ? (this._events = {}, this) : (e.split(" ").forEach((e) => {
-			if (e in this._events) if (t) {
-				let n = this._events[e].indexOf(t);
-				n !== -1 && this._events[e].splice(n, 1);
+			if (e in this._events) if (n) {
+				let r = this._events[e].indexOf(n);
+				r !== -1 && this._events[e].splice(r, 1);
 			} else this._events[e] = [];
 		}), this);
 	}
-	emit(e, ...t) {
-		let n = this._events[e];
-		if (n === void 0) return;
-		let r = n.slice();
-		for (let e of r) {
-			let n = e.apply(this, t);
-			if (n !== void 0) return n;
+	emit(e, ...n) {
+		let r = this._events[e];
+		if (r === void 0) return;
+		let i = r.slice();
+		for (let e of i) {
+			let r = e.apply(this, n);
+			if (r !== void 0) return r;
 		}
 	}
 }, ReflexContainer = class extends React.Component {
-	static defaultProps = {
-		orientation: "horizontal",
-		windowResizeAware: !1,
-		maxRecDepth: 100,
-		className: "",
-		style: {}
-	};
-	events;
-	children;
-	elements = null;
-	previousPos = 0;
-	ref;
-	constructor(t) {
-		super(t), this.events = new ReflexEvents_default(), this.children = [], this.state = { flexData: [] }, this.ref = React.createRef();
+	constructor(n) {
+		super(n), _defineProperty(this, "events", void 0), _defineProperty(this, "children", void 0), _defineProperty(this, "elements", null), _defineProperty(this, "previousPos", 0), _defineProperty(this, "ref", void 0), _defineProperty(this, "onWindowResize", () => {
+			this.setState({ flexData: this.computeFlexData() });
+		}), _defineProperty(this, "onStartResize", (e) => {
+			let n = getPointerPosition(e.event);
+			switch (this.props.orientation) {
+				case "horizontal":
+					document.body.classList.add("reflex-row-resize"), this.previousPos = n.clientY;
+					break;
+				case "vertical":
+				default:
+					document.body.classList.add("reflex-col-resize"), this.previousPos = n.clientX;
+					break;
+			}
+			this.elements = [this.children[e.index - 1], this.children[e.index + 1]], this.emitElementsEvent(this.elements, "onStartResize");
+		}), _defineProperty(this, "onResize", (e) => {
+			let n = getPointerPosition(e.event), r = this.getOffset(n, e.domElement);
+			switch (this.props.orientation) {
+				case "horizontal":
+					this.previousPos = n.clientY;
+					break;
+				case "vertical":
+				default:
+					this.previousPos = n.clientX;
+					break;
+			}
+			if (r) {
+				let n = this.computeAvailableOffset(e.index, r);
+				if (n) {
+					let r = this.cloneFlexData(this.state.flexData);
+					this.elements = this.dispatchOffset(e.index, n, r), this.adjustFlex(this.elements, r), this.setState({
+						flexData: r,
+						resizing: !0
+					}, () => {
+						this.emitElementsEvent(this.elements, "onResize");
+					});
+				}
+			}
+		}), _defineProperty(this, "onStopResize", () => {
+			document.body.classList.remove("reflex-row-resize"), document.body.classList.remove("reflex-col-resize");
+			let e = this.elements ? this.elements.map((e) => this.getChildRef(e)) : [], n = this.children.filter((n) => !ReflexSplitter.isA(n) && e.includes(this.getChildRef(n)));
+			this.emitElementsEvent(n, "onStopResize"), this.setState({ resizing: !1 });
+		}), _defineProperty(this, "onElementSize", (e) => new Promise((n) => {
+			try {
+				let r = e.index, i = this.getSize(this.children[r]), a = e.size - i, o = e.direction, s = r + o, c = this.computeAvailableOffset(s, o * a);
+				this.elements = null;
+				let l = this.state.flexData;
+				c && (l = this.cloneFlexData(this.state.flexData), this.elements = this.dispatchOffset(s, c, l), this.adjustFlex(this.elements, l)), this.setState({ flexData: l }, () => {
+					this.emitElementsEvent(this.elements, "onResize"), n();
+				});
+			} catch (e) {
+				console.error("ReflexContainer: failed to process element.size event", e), n();
+			}
+		})), this.events = new ReflexEvents_default(), this.children = [], this.state = { flexData: [] }, this.ref = React.createRef();
 	}
 	componentDidMount() {
-		let e = this.computeFlexData(), { windowResizeAware: t } = this.props;
-		t && window.addEventListener("resize", this.onWindowResize), this.setState({
-			windowResizeAware: t,
+		let e = this.computeFlexData(), { windowResizeAware: n } = this.props;
+		n && window.addEventListener("resize", this.onWindowResize), this.setState({
+			windowResizeAware: n,
 			flexData: e
 		}), this.events.on("element.size", this.onElementSize), this.events.on("startResize", this.onStartResize), this.events.on("stopResize", this.onStopResize), this.events.on("resize", this.onResize);
 	}
@@ -169,146 +257,93 @@ var ReflexSplitter = class n extends React.Component {
 		return this.toArray(e.children).filter((e) => !!e);
 	}
 	componentDidUpdate(e) {
-		let t = this.getValidChildren(this.props);
-		if (t.length !== this.state.flexData.length || e.orientation !== this.props.orientation || this.flexHasChanged(e)) {
-			let e = this.computeFlexData(t, this.props);
+		let n = this.getValidChildren(this.props);
+		if (n.length !== this.state.flexData.length || e.orientation !== this.props.orientation || this.flexHasChanged(e)) {
+			let e = this.computeFlexData(n, this.props);
 			this.setState({ flexData: e });
 		}
 		this.props.windowResizeAware !== this.state.windowResizeAware && (this.props.windowResizeAware ? window.addEventListener("resize", this.onWindowResize) : window.removeEventListener("resize", this.onWindowResize), this.setState({ windowResizeAware: this.props.windowResizeAware }));
 	}
-	onWindowResize = () => {
-		this.setState({ flexData: this.computeFlexData() });
-	};
 	flexHasChanged(e) {
-		let t = this.getValidChildren(e).map((e) => e.props.flex || 0);
-		return !this.getValidChildren().map((e) => e.props.flex || 0).every((e, n) => e === t[n]);
+		let n = this.getValidChildren(e).map((e) => e.props.flex || 0);
+		return !this.getValidChildren().map((e) => e.props.flex || 0).every((e, r) => e === n[r]);
 	}
 	getChildRef(e) {
-		let t = e;
-		return e?.props.ref ?? t?.ref;
+		var n;
+		let r = e;
+		return (n = e == null ? void 0 : e.props.ref) == null ? r == null ? void 0 : r.ref : n;
 	}
 	getSize(e) {
-		let t = this.getChildRef(e)?.current;
+		let n = this.getChildRef(e), r = n == null ? void 0 : n.current;
 		switch (this.props.orientation) {
-			case "horizontal": return t?.offsetHeight ?? 0;
+			case "horizontal":
+				var i;
+				return (i = r == null ? void 0 : r.offsetHeight) == null ? 0 : i;
 			case "vertical":
-			default: return t?.offsetWidth ?? 0;
+			default:
+				var a;
+				return (a = r == null ? void 0 : r.offsetWidth) == null ? 0 : a;
 		}
 	}
-	getOffset(e, t) {
-		let { top: n, bottom: r, left: i, right: a } = t.getBoundingClientRect();
+	getOffset(e, n) {
+		let { top: r, bottom: i, left: a, right: o } = n.getBoundingClientRect();
 		switch (this.props.orientation) {
 			case "horizontal": {
-				let t = e.clientY - this.previousPos;
-				if (t > 0) {
-					if (e.clientY >= n) return t;
-				} else if (e.clientY <= r) return t;
+				let n = e.clientY - this.previousPos;
+				if (n > 0) {
+					if (e.clientY >= r) return n;
+				} else if (e.clientY <= i) return n;
 				break;
 			}
 			case "vertical":
 			default:
 				{
-					let t = e.clientX - this.previousPos;
-					if (t > 0) {
-						if (e.clientX > i) return t;
-					} else if (e.clientX < a) return t;
+					let n = e.clientX - this.previousPos;
+					if (n > 0) {
+						if (e.clientX > a) return n;
+					} else if (e.clientX < o) return n;
 				}
 				break;
 		}
 		return 0;
 	}
-	onStartResize = (e) => {
-		let t = getPointerPosition(e.event);
-		switch (this.props.orientation) {
-			case "horizontal":
-				document.body.classList.add("reflex-row-resize"), this.previousPos = t.clientY;
-				break;
-			case "vertical":
-			default:
-				document.body.classList.add("reflex-col-resize"), this.previousPos = t.clientX;
-				break;
-		}
-		this.elements = [this.children[e.index - 1], this.children[e.index + 1]], this.emitElementsEvent(this.elements, "onStartResize");
-	};
-	onResize = (e) => {
-		let t = getPointerPosition(e.event), n = this.getOffset(t, e.domElement);
-		switch (this.props.orientation) {
-			case "horizontal":
-				this.previousPos = t.clientY;
-				break;
-			case "vertical":
-			default:
-				this.previousPos = t.clientX;
-				break;
-		}
-		if (n) {
-			let t = this.computeAvailableOffset(e.index, n);
-			if (t) {
-				let n = this.cloneFlexData(this.state.flexData);
-				this.elements = this.dispatchOffset(e.index, t, n), this.adjustFlex(this.elements, n), this.setState({
-					flexData: n,
-					resizing: !0
-				}, () => {
-					this.emitElementsEvent(this.elements, "onResize");
-				});
-			}
-		}
-	};
-	onStopResize = () => {
-		document.body.classList.remove("reflex-row-resize"), document.body.classList.remove("reflex-col-resize");
-		let e = this.elements ? this.elements.map((e) => this.getChildRef(e)) : [], t = this.children.filter((t) => !ReflexSplitter.isA(t) && e.includes(this.getChildRef(t)));
-		this.emitElementsEvent(t, "onStopResize"), this.setState({ resizing: !1 });
-	};
-	onElementSize = (e) => new Promise((t) => {
-		try {
-			let n = e.index, r = this.getSize(this.children[n]), i = e.size - r, a = e.direction, o = n + a, s = this.computeAvailableOffset(o, a * i);
-			this.elements = null;
-			let c = this.state.flexData;
-			s && (c = this.cloneFlexData(this.state.flexData), this.elements = this.dispatchOffset(o, s, c), this.adjustFlex(this.elements, c)), this.setState({ flexData: c }, () => {
-				this.emitElementsEvent(this.elements, "onResize"), t();
-			});
-		} catch (e) {
-			console.error("ReflexContainer: failed to process element.size event", e), t();
-		}
-	});
-	adjustFlex(e, t) {
-		let n = e.reduce((n, r) => {
-			let i = r.props.index;
-			return n + (r.props.flex - t[i].flex) / e.length;
+	adjustFlex(e, n) {
+		let r = e.reduce((r, i) => {
+			let a = i.props.index;
+			return r + (i.props.flex - n[a].flex) / e.length;
 		}, 0);
 		e.forEach((e) => {
-			let r = e.props.index;
-			t[r] = {
-				...t[r],
-				flex: t[r].flex + n
-			};
+			let i = e.props.index;
+			n[i] = _objectSpread2(_objectSpread2({}, n[i]), {}, { flex: n[i].flex + r });
 		});
 	}
-	computeAvailableOffset(e, t) {
-		let n = this.computeAvailableStretch(e, t), r = this.computeAvailableShrink(e, t);
-		return Math.min(n, r) * Math.sign(t);
+	computeAvailableOffset(e, n) {
+		let r = this.computeAvailableStretch(e, n), i = this.computeAvailableShrink(e, n);
+		return Math.min(r, i) * Math.sign(n);
 	}
-	checkPropagate(e, t) {
-		let n = t > 0 ? e < this.children.length - 2 ? this.children[e + 2] : void 0 : e > 2 ? this.children[e - 2] : void 0;
-		return !!n && ReflexSplitter.isA(n) && !!n.props.propagate;
+	checkPropagate(e, n) {
+		let r = n > 0 ? e < this.children.length - 2 ? this.children[e + 2] : void 0 : e > 2 ? this.children[e - 2] : void 0;
+		return !!r && ReflexSplitter.isA(r) && !!r.props.propagate;
 	}
-	computeAvailableStretch(e, t) {
-		let n = t < 0 ? e + 1 : e - 1, r = this.children[n], i = this.getSize(r), a = (r?.props.maxSize ?? 0) - i;
-		if (a < Math.abs(t) && this.checkPropagate(e, -1 * t)) {
-			let n = Math.sign(t) * (Math.abs(t) - a);
-			return a + this.computeAvailableStretch(t < 0 ? e + 2 : e - 2, n);
+	computeAvailableStretch(e, n) {
+		var r;
+		let i = n < 0 ? e + 1 : e - 1, a = this.children[i], o = this.getSize(a), s = ((r = a == null ? void 0 : a.props.maxSize) == null ? 0 : r) - o;
+		if (s < Math.abs(n) && this.checkPropagate(e, -1 * n)) {
+			let r = Math.sign(n) * (Math.abs(n) - s);
+			return s + this.computeAvailableStretch(n < 0 ? e + 2 : e - 2, r);
 		}
-		return Math.min(a, Math.abs(t));
+		return Math.min(s, Math.abs(n));
 	}
-	computeAvailableShrink(e, t) {
-		let n = t > 0 ? e + 1 : e - 1, r = this.children[n], i = this.getSize(r) - Math.max(r?.props.minSize ?? 0, 0);
-		if (i < Math.abs(t) && this.checkPropagate(e, t)) {
-			let n = Math.sign(t) * (Math.abs(t) - i);
-			return i + this.computeAvailableShrink(t > 0 ? e + 2 : e - 2, n);
+	computeAvailableShrink(e, n) {
+		var r;
+		let i = n > 0 ? e + 1 : e - 1, a = this.children[i], o = this.getSize(a) - Math.max((r = a == null ? void 0 : a.props.minSize) == null ? 0 : r, 0);
+		if (o < Math.abs(n) && this.checkPropagate(e, n)) {
+			let r = Math.sign(n) * (Math.abs(n) - o);
+			return o + this.computeAvailableShrink(n > 0 ? e + 2 : e - 2, r);
 		}
-		return Math.min(i, Math.abs(t));
+		return Math.min(o, Math.abs(n));
 	}
-	computePixelFlex(e = this.props.orientation ?? "horizontal") {
+	computePixelFlex(e = ((e) => (e = this.props.orientation) == null ? "horizontal" : e)()) {
 		if (!this.ref.current) return console.warn("Unable to locate ReflexContainer dom node"), 0;
 		switch (e) {
 			case "horizontal": return this.ref.current.offsetHeight === 0 ? (console.warn("Found ReflexContainer with height=0, this will cause invalid behavior..."), console.warn(this.ref.current), 0) : 1 / this.ref.current.offsetHeight;
@@ -316,73 +351,74 @@ var ReflexSplitter = class n extends React.Component {
 			default: return this.ref.current.offsetWidth === 0 ? (console.warn("Found ReflexContainer with width=0, this will cause invalid behavior..."), console.warn(this.ref.current), 0) : 1 / this.ref.current.offsetWidth;
 		}
 	}
-	addOffset(e, t, n) {
-		let r = this.getSize(e), i = e.props.index, a = Math.max(r + t, 0), o = n[i].flex, s = o > 0 ? o * a / r : this.computePixelFlex() * a;
-		n[i] = {
-			...n[i],
-			flex: !isFinite(s) || isNaN(s) ? 0 : s
-		};
+	addOffset(e, n, r) {
+		let i = this.getSize(e), a = e.props.index, o = Math.max(i + n, 0), s = r[a].flex, c = s > 0 ? s * o / i : this.computePixelFlex() * o;
+		r[a] = _objectSpread2(_objectSpread2({}, r[a]), {}, { flex: !isFinite(c) || isNaN(c) ? 0 : c });
 	}
-	dispatchStretch(e, t, n) {
-		let r = t < 0 ? e + 1 : e - 1;
-		if (r < 0 || r > this.children.length - 1) return [];
-		let i = this.children[r], a = this.getSize(i), o = Math.min(i.props.maxSize, a + Math.abs(t)) - a;
-		if (this.addOffset(i, o, n), o < Math.abs(t)) {
-			let r = e - Math.sign(t) * 2, a = Math.sign(t) * (Math.abs(t) - o);
-			return [i, ...this.dispatchStretch(r, a, n)];
+	dispatchStretch(e, n, r) {
+		let i = n < 0 ? e + 1 : e - 1;
+		if (i < 0 || i > this.children.length - 1) return [];
+		let a = this.children[i], o = this.getSize(a), s = Math.min(a.props.maxSize, o + Math.abs(n)) - o;
+		if (this.addOffset(a, s, r), s < Math.abs(n)) {
+			let i = e - Math.sign(n) * 2, o = Math.sign(n) * (Math.abs(n) - s);
+			return [a, ...this.dispatchStretch(i, o, r)];
 		}
-		return [i];
+		return [a];
 	}
-	dispatchShrink(e, t, n) {
-		let r = t > 0 ? e + 1 : e - 1;
-		if (r < 0 || r > this.children.length - 1) return [];
-		let i = this.children[r], a = this.getSize(i), o = Math.max(i.props.minSize, a - Math.abs(t)) - a;
-		if (this.addOffset(i, o, n), Math.abs(o) < Math.abs(t)) {
-			let r = e + Math.sign(t) * 2, a = Math.sign(t) * (Math.abs(t) + o);
-			return [i, ...this.dispatchShrink(r, a, n)];
+	dispatchShrink(e, n, r) {
+		let i = n > 0 ? e + 1 : e - 1;
+		if (i < 0 || i > this.children.length - 1) return [];
+		let a = this.children[i], o = this.getSize(a), s = Math.max(a.props.minSize, o - Math.abs(n)) - o;
+		if (this.addOffset(a, s, r), Math.abs(s) < Math.abs(n)) {
+			let i = e + Math.sign(n) * 2, o = Math.sign(n) * (Math.abs(n) + s);
+			return [a, ...this.dispatchShrink(i, o, r)];
 		}
-		return [i];
+		return [a];
 	}
-	dispatchOffset(e, t, n) {
-		return [...this.dispatchStretch(e, t, n), ...this.dispatchShrink(e, t, n)];
+	dispatchOffset(e, n, r) {
+		return [...this.dispatchStretch(e, n, r), ...this.dispatchShrink(e, n, r)];
 	}
 	cloneFlexData(e) {
-		return e.map((e) => ({ ...e }));
+		return e.map((e) => _objectSpread2({}, e));
 	}
-	emitElementsEvent(e, t) {
+	emitElementsEvent(e, n) {
 		this.toArray(e).forEach((e) => {
-			let n = e.props[t];
-			n && n({
-				domElement: this.getChildRef(e)?.current ?? null,
-				component: e
-			});
+			let r = e.props[n];
+			if (r) {
+				var i;
+				let n = this.getChildRef(e);
+				r({
+					domElement: (i = n == null ? void 0 : n.current) == null ? null : i,
+					component: e
+				});
+			}
 		});
 	}
-	computeFlexData(t = this.getValidChildren(), n = this.props) {
-		let r = this.computePixelFlex(n.orientation), i = (e) => e.reduce((e, t) => !ReflexSplitter.isA(t) && t.constrained ? e - t.flex : e, 1), a = (e) => e.reduce((e, t) => !ReflexSplitter.isA(t) && !t.constrained ? e + 1 : e, 0), o = t.map((e) => {
-			let t = e.props;
+	computeFlexData(n = this.getValidChildren(), r = this.props) {
+		let i = this.computePixelFlex(r.orientation), a = (e) => e.reduce((e, n) => !ReflexSplitter.isA(n) && n.constrained ? e - n.flex : e, 1), o = (e) => e.reduce((e, n) => !ReflexSplitter.isA(n) && !n.constrained ? e + 1 : e, 0), s = n.map((e) => {
+			let n = e.props;
 			return {
-				maxFlex: (t.maxSize || Number.MAX_VALUE) * r,
-				sizeFlex: (t.size || Number.MAX_VALUE) * r,
-				minFlex: (t.minSize || 1) * r,
-				constrained: t.flex !== void 0,
-				flex: t.flex || 0,
+				maxFlex: (n.maxSize || Number.MAX_VALUE) * i,
+				sizeFlex: (n.size || Number.MAX_VALUE) * i,
+				minFlex: (n.minSize || 1) * i,
+				constrained: n.flex !== void 0,
+				flex: n.flex || 0,
 				type: e.type
 			};
-		}), s = (e, t = 0) => {
-			let n = !1, r = a(e), o = i(e), c = e.map((e) => {
+		}), c = (e, n = 0) => {
+			var r;
+			let i = !1, s = o(e), l = a(e), u = e.map((e) => {
 				if (ReflexSplitter.isA(e)) return e;
-				let t = e.constrained ? e.flex : o / r, i = Math.min(e.sizeFlex, Math.min(e.maxFlex, Math.max(e.minFlex, t))), a = e.constrained || i !== t;
-				return n ||= a, {
-					...e,
-					flex: i,
+				let n = e.constrained ? e.flex : l / s, r = Math.min(e.sizeFlex, Math.min(e.maxFlex, Math.max(e.minFlex, n))), a = e.constrained || r !== n;
+				return i = i || a, _objectSpread2(_objectSpread2({}, e), {}, {
+					flex: r,
 					constrained: a
-				};
+				});
 			});
-			return n && t < (this.props.maxRecDepth ?? 100) ? s(c, t + 1) : c;
+			return i && n < ((r = this.props.maxRecDepth) == null ? 100 : r) ? c(u, n + 1) : u;
 		};
-		return s(o).map((t) => ({
-			flex: ReflexSplitter.isA(t) ? 0 : t.flex,
+		return c(s).map((n) => ({
+			flex: ReflexSplitter.isA(n) ? 0 : n.flex,
 			ref: React.createRef()
 		}));
 	}
@@ -390,50 +426,76 @@ var ReflexSplitter = class n extends React.Component {
 		return e ? Array.isArray(e) ? e : [e] : [];
 	}
 	render() {
-		let n = [
+		var r, i;
+		let a = [
 			this.state.resizing ? "reflex-resizing" : "",
-			...(this.props.className ?? "").split(" "),
+			...((r = this.props.className) == null ? "" : r).split(" "),
 			this.props.orientation,
 			"reflex-container"
 		].join(" ").trim();
-		return this.children = React.Children.map(this.getValidChildren(), (n, r) => {
-			if (r > this.state.flexData.length - 1) return /* @__PURE__ */ jsx("div", {});
-			let i = this.state.flexData[r], a = {
-				...n.props,
-				maxSize: n.props.maxSize || Number.MAX_VALUE,
-				orientation: this.props.orientation ?? "horizontal",
-				minSize: n.props.minSize || 1,
+		return this.children = (i = React.Children.map(this.getValidChildren(), (r, i) => {
+			var a;
+			if (i > this.state.flexData.length - 1) return /* @__PURE__ */ jsx("div", {});
+			let o = this.state.flexData[i], s = _objectSpread2(_objectSpread2({}, r.props), {}, {
+				maxSize: r.props.maxSize || Number.MAX_VALUE,
+				orientation: (a = this.props.orientation) == null ? "horizontal" : a,
+				minSize: r.props.minSize || 1,
 				events: this.events,
-				flex: i.flex,
-				ref: i.ref,
-				index: r
-			};
-			return React.cloneElement(n, a);
-		}) ?? [], /* @__PURE__ */ jsx("div", {
-			...getDataProps(this.props),
+				flex: o.flex,
+				ref: o.ref,
+				index: i
+			});
+			return React.cloneElement(r, s);
+		})) == null ? [] : i, /* @__PURE__ */ jsx("div", _objectSpread2(_objectSpread2({}, getDataProps(this.props)), {}, {
 			style: this.props.style,
-			className: n,
+			className: a,
 			ref: this.ref,
 			children: this.children
-		});
+		}));
 	}
-}, ReflexHandle = class n extends React.Component {
-	ref = React.createRef();
-	document;
-	static defaultProps = {
-		document: typeof document > "u" ? null : document,
-		onStartResize: null,
-		onStopResize: null,
-		propagate: !1,
-		onResize: null,
-		className: "",
-		style: {}
-	};
+};
+_defineProperty(ReflexContainer, "defaultProps", {
+	orientation: "horizontal",
+	windowResizeAware: !1,
+	maxRecDepth: 100,
+	className: "",
+	style: {}
+});
+var ReflexHandle = class r extends React.Component {
 	static isA(e) {
-		return !e || typeof e != "object" || !("type" in e) ? !1 : process.env.NODE_ENV === "development" ? e.type === (/* @__PURE__ */ jsx(n, {})).type : e.type === n;
+		return !e || typeof e != "object" || !("type" in e) ? !1 : process.env.NODE_ENV === "development" ? e.type === (/* @__PURE__ */ jsx(r, {})).type : e.type === r;
 	}
-	constructor(e) {
-		super(e), this.state = { active: !1 }, this.document = e.document ?? null;
+	constructor(n) {
+		var r;
+		super(n), _defineProperty(this, "ref", React.createRef()), _defineProperty(this, "document", void 0), _defineProperty(this, "onMouseMove", (e) => {
+			if (this.state.active) {
+				let n = this.ref.current;
+				this.internalProps.events.emit("resize", {
+					index: this.internalProps.index,
+					domElement: n,
+					event: e
+				}), this.props.onResize && this.props.onResize({
+					component: this,
+					domElement: n
+				}), e.stopPropagation(), e.preventDefault();
+			}
+		}), _defineProperty(this, "onMouseDown", (e) => {
+			this.setState({ active: !0 }), !(this.props.onStartResize && this.props.onStartResize({
+				domElement: this.ref.current,
+				component: this
+			})) && this.internalProps.events.emit("startResize", {
+				index: this.internalProps.index,
+				event: e
+			});
+		}), _defineProperty(this, "onMouseUp", (e) => {
+			this.state.active && (this.setState({ active: !1 }), this.props.onStopResize && this.props.onStopResize({
+				domElement: this.ref.current,
+				component: this
+			}), this.internalProps.events.emit("stopResize", {
+				index: this.internalProps.index,
+				event: e
+			}));
+		}), this.state = { active: !1 }, this.document = (r = n.document) == null ? null : r;
 	}
 	get internalProps() {
 		return this.props;
@@ -447,139 +509,118 @@ var ReflexSplitter = class n extends React.Component {
 			event: null
 		}));
 	}
-	onMouseMove = (e) => {
-		if (this.state.active) {
-			let t = this.ref.current;
-			this.internalProps.events.emit("resize", {
-				index: this.internalProps.index,
-				domElement: t,
-				event: e
-			}), this.props.onResize && this.props.onResize({
-				component: this,
-				domElement: t
-			}), e.stopPropagation(), e.preventDefault();
-		}
-	};
-	onMouseDown = (e) => {
-		this.setState({ active: !0 }), !(this.props.onStartResize && this.props.onStartResize({
-			domElement: this.ref.current,
-			component: this
-		})) && this.internalProps.events.emit("startResize", {
-			index: this.internalProps.index,
-			event: e
-		});
-	};
-	onMouseUp = (e) => {
-		this.state.active && (this.setState({ active: !1 }), this.props.onStopResize && this.props.onStopResize({
-			domElement: this.ref.current,
-			component: this
-		}), this.internalProps.events.emit("stopResize", {
-			index: this.internalProps.index,
-			event: e
-		}));
-	};
 	render() {
-		let e = [
-			...(this.props.className ?? "").split(" "),
+		var e;
+		let r = [
+			...((e = this.props.className) == null ? "" : e).split(" "),
 			this.state.active ? "active" : "",
 			"reflex-handle"
 		].join(" ").trim();
-		return /* @__PURE__ */ jsx("div", {
-			...getDataProps(this.props),
+		return /* @__PURE__ */ jsx("div", _objectSpread2(_objectSpread2({}, getDataProps(this.props)), {}, {
 			onTouchStart: this.onMouseDown,
 			onMouseDown: this.onMouseDown,
 			style: this.props.style,
-			className: e,
+			className: r,
 			id: this.props.id,
 			ref: this.ref,
 			children: this.props.children
-		});
+		}));
 	}
-}, import_lodash = /* @__PURE__ */ __toESM((/* @__PURE__ */ __commonJSMin(((e, t) => {
-	var n = "Expected a function", r = NaN, i = "[object Symbol]", a = /^\s+|\s+$/g, o = /^[-+]0x[0-9a-f]+$/i, s = /^0b[01]+$/i, c = /^0o[0-7]+$/i, l = parseInt, u = typeof global == "object" && global && global.Object === Object && global, d = typeof self == "object" && self && self.Object === Object && self, f = u || d || Function("return this")(), p = Object.prototype.toString, m = Math.max, h = Math.min, g = function() {
-		return f.Date.now();
+};
+_defineProperty(ReflexHandle, "defaultProps", {
+	document: typeof document > "u" ? null : document,
+	onStartResize: null,
+	onStopResize: null,
+	propagate: !1,
+	onResize: null,
+	className: "",
+	style: {}
+});
+var import_lodash = /* @__PURE__ */ __toESM((/* @__PURE__ */ __commonJSMin(((e, n) => {
+	var r = "Expected a function", i = NaN, a = "[object Symbol]", o = /^\s+|\s+$/g, s = /^[-+]0x[0-9a-f]+$/i, c = /^0b[01]+$/i, l = /^0o[0-7]+$/i, u = parseInt, d = typeof global == "object" && global && global.Object === Object && global, f = typeof self == "object" && self && self.Object === Object && self, p = d || f || Function("return this")(), m = Object.prototype.toString, h = Math.max, g = Math.min, _ = function() {
+		return p.Date.now();
 	};
-	function _(e, t, r) {
-		var i, a, o, s, c, l, u = 0, d = !1, f = !1, p = !0;
-		if (typeof e != "function") throw TypeError(n);
-		t = S(t) || 0, y(r) && (d = !!r.leading, f = "maxWait" in r, o = f ? m(S(r.maxWait) || 0, t) : o, p = "trailing" in r ? !!r.trailing : p);
-		function _(t) {
-			var n = i, r = a;
-			return i = a = void 0, u = t, s = e.apply(r, n), s;
+	function v(e, n, i) {
+		var a, o, s, c, l, u, d = 0, f = !1, p = !1, m = !0;
+		if (typeof e != "function") throw TypeError(r);
+		n = C(n) || 0, b(i) && (f = !!i.leading, p = "maxWait" in i, s = p ? h(C(i.maxWait) || 0, n) : s, m = "trailing" in i ? !!i.trailing : m);
+		function v(n) {
+			var r = a, i = o;
+			return a = o = void 0, d = n, c = e.apply(i, r), c;
 		}
-		function v(e) {
-			return u = e, c = setTimeout(C, t), d ? _(e) : s;
-		}
-		function b(e) {
-			var n = e - l, r = e - u, i = t - n;
-			return f ? h(i, o - r) : i;
+		function y(e) {
+			return d = e, l = setTimeout(w, n), f ? v(e) : c;
 		}
 		function x(e) {
-			var n = e - l, r = e - u;
-			return l === void 0 || n >= t || n < 0 || f && r >= o;
+			var r = e - u, i = e - d, a = n - r;
+			return p ? g(a, s - i) : a;
 		}
-		function C() {
-			var e = g();
-			if (x(e)) return w(e);
-			c = setTimeout(C, b(e));
+		function S(e) {
+			var r = e - u, i = e - d;
+			return u === void 0 || r >= n || r < 0 || p && i >= s;
 		}
-		function w(e) {
-			return c = void 0, p && i ? _(e) : (i = a = void 0, s);
+		function w() {
+			var e = _();
+			if (S(e)) return T(e);
+			l = setTimeout(w, x(e));
 		}
-		function T() {
-			c !== void 0 && clearTimeout(c), u = 0, i = l = a = c = void 0;
+		function T(e) {
+			return l = void 0, m && a ? v(e) : (a = o = void 0, c);
 		}
 		function E() {
-			return c === void 0 ? s : w(g());
+			l !== void 0 && clearTimeout(l), d = 0, a = u = o = l = void 0;
 		}
 		function D() {
-			var e = g(), n = x(e);
-			if (i = arguments, a = this, l = e, n) {
-				if (c === void 0) return v(l);
-				if (f) return c = setTimeout(C, t), _(l);
-			}
-			return c === void 0 && (c = setTimeout(C, t)), s;
+			return l === void 0 ? c : T(_());
 		}
-		return D.cancel = T, D.flush = E, D;
+		function O() {
+			var e = _(), r = S(e);
+			if (a = arguments, o = this, u = e, r) {
+				if (l === void 0) return y(u);
+				if (p) return l = setTimeout(w, n), v(u);
+			}
+			return l === void 0 && (l = setTimeout(w, n)), c;
+		}
+		return O.cancel = E, O.flush = D, O;
 	}
-	function v(e, t, r) {
-		var i = !0, a = !0;
-		if (typeof e != "function") throw TypeError(n);
-		return y(r) && (i = "leading" in r ? !!r.leading : i, a = "trailing" in r ? !!r.trailing : a), _(e, t, {
-			leading: i,
-			maxWait: t,
-			trailing: a
+	function y(e, n, i) {
+		var a = !0, o = !0;
+		if (typeof e != "function") throw TypeError(r);
+		return b(i) && (a = "leading" in i ? !!i.leading : a, o = "trailing" in i ? !!i.trailing : o), v(e, n, {
+			leading: a,
+			maxWait: n,
+			trailing: o
 		});
 	}
-	function y(e) {
-		var t = typeof e;
-		return !!e && (t == "object" || t == "function");
-	}
 	function b(e) {
-		return !!e && typeof e == "object";
+		var n = typeof e;
+		return !!e && (n == "object" || n == "function");
 	}
 	function x(e) {
-		return typeof e == "symbol" || b(e) && p.call(e) == i;
+		return !!e && typeof e == "object";
 	}
 	function S(e) {
+		return typeof e == "symbol" || x(e) && m.call(e) == a;
+	}
+	function C(e) {
 		if (typeof e == "number") return e;
-		if (x(e)) return r;
-		if (y(e)) {
-			var t = typeof e.valueOf == "function" ? e.valueOf() : e;
-			e = y(t) ? t + "" : t;
+		if (S(e)) return i;
+		if (b(e)) {
+			var n = typeof e.valueOf == "function" ? e.valueOf() : e;
+			e = b(n) ? n + "" : n;
 		}
 		if (typeof e != "string") return e === 0 ? e : +e;
-		e = e.replace(a, "");
-		var n = s.test(e);
-		return n || c.test(e) ? l(e.slice(2), n ? 2 : 8) : o.test(e) ? r : +e;
+		e = e.replace(o, "");
+		var r = c.test(e);
+		return r || l.test(e) ? u(e.slice(2), r ? 2 : 8) : s.test(e) ? i : +e;
 	}
-	t.exports = v;
+	n.exports = y;
 })))(), 1), toArray = (e) => e ? Array.isArray(e) ? e : [e] : [], SizeAwareReflexElement = class extends React.Component {
-	measureRef = React.createRef();
-	resizeObserver;
-	setDimensions;
-	constructor(e) {
-		super(e), this.setDimensions = (0, import_lodash.default)((e) => {
+	constructor(n) {
+		super(n), _defineProperty(this, "measureRef", React.createRef()), _defineProperty(this, "resizeObserver", void 0), _defineProperty(this, "setDimensions", void 0), _defineProperty(this, "onResize", ({ height: e, width: n }) => {
+			let { resizeHeight: r, resizeWidth: i } = this.props;
+			this.setDimensions(_objectSpread2(_objectSpread2({}, r && { height: e }), i && { width: n }));
+		}), this.setDimensions = (0, import_lodash.default)((e) => {
 			this.setState(e);
 		}, this.props.propagateDimensionsRate / 1e3), this.state = {
 			height: "100%",
@@ -592,26 +633,15 @@ var ReflexSplitter = class n extends React.Component {
 		}), this.measureRef.current && this.resizeObserver.observe(this.measureRef.current);
 	}
 	componentWillUnmount() {
-		this.resizeObserver?.disconnect();
+		var e;
+		(e = this.resizeObserver) == null || e.disconnect();
 	}
-	onResize = ({ height: e, width: t }) => {
-		let { resizeHeight: n, resizeWidth: r } = this.props;
-		this.setDimensions({
-			...n && { height: e },
-			...r && { width: t }
-		});
-	};
 	renderChildren() {
-		let { propagateDimensions: t } = this.props, n = toArray(this.props.children).filter((e) => !!e);
-		return React.Children.map(n, (n) => this.props.withHandle || ReflexHandle.isA(n) ? React.cloneElement(n, {
-			dimensions: t && this.state,
-			...n.props,
+		let { propagateDimensions: n } = this.props, r = toArray(this.props.children).filter((e) => !!e);
+		return React.Children.map(r, (r) => this.props.withHandle || ReflexHandle.isA(r) ? React.cloneElement(r, _objectSpread2(_objectSpread2({ dimensions: n && this.state }, r.props), {}, {
 			index: this.props.index - 1,
 			events: this.props.events
-		}) : t ? React.cloneElement(n, {
-			...n.props,
-			dimensions: this.state
-		}) : n);
+		})) : n ? React.cloneElement(r, _objectSpread2(_objectSpread2({}, r.props), {}, { dimensions: this.state })) : r);
 	}
 	render() {
 		return /* @__PURE__ */ jsx("div", {
@@ -624,62 +654,56 @@ var ReflexSplitter = class n extends React.Component {
 		});
 	}
 }, ReflexElement = class extends React.Component {
-	static defaultProps = {
-		propagateDimensionsRate: 100,
-		propagateDimensions: !1,
-		resizeHeight: !0,
-		resizeWidth: !0,
-		direction: [1],
-		className: ""
-	};
 	constructor(e) {
 		super(e), this.state = { size: e.size };
 	}
-	static getDerivedStateFromProps(e, t) {
-		return e.size === t.size ? null : {
-			...t,
-			size: e.size
-		};
+	static getDerivedStateFromProps(e, n) {
+		return e.size === n.size ? null : _objectSpread2(_objectSpread2({}, n), {}, { size: e.size });
 	}
-	async componentDidUpdate(e, t) {
-		if (t.size !== this.state.size) {
-			let e = this.props.direction, t = Array.isArray(e) ? e : e === void 0 ? [] : [e];
-			for (let e of t) await this.props.events.emit("element.size", {
-				index: this.props.index,
-				size: this.props.size,
+	async componentDidUpdate(e, n) {
+		var r = this;
+		if (n.size !== r.state.size) {
+			let e = r.props.direction, n = Array.isArray(e) ? e : e === void 0 ? [] : [e];
+			for (let e of n) await r.props.events.emit("element.size", {
+				index: r.props.index,
+				size: r.props.size,
 				direction: e
 			});
 		}
 	}
 	renderChildren() {
-		let t = toArray(this.props.children).filter((e) => !!e);
-		return React.Children.map(t, (t) => this.props.withHandle || ReflexHandle.isA(t) ? React.cloneElement(t, {
-			...t.props,
+		let n = toArray(this.props.children).filter((e) => !!e);
+		return React.Children.map(n, (n) => this.props.withHandle || ReflexHandle.isA(n) ? React.cloneElement(n, _objectSpread2(_objectSpread2({}, n.props), {}, {
 			index: this.props.index - 1,
 			events: this.props.events
-		}) : t);
+		})) : n);
 	}
 	render() {
-		let e = [
-			...(this.props.className ?? "").split(" "),
+		var e;
+		let r = [
+			...((e = this.props.className) == null ? "" : e).split(" "),
 			this.props.orientation,
 			"reflex-element"
-		].join(" ").trim(), n = {
-			...this.props.style,
+		].join(" ").trim(), i = _objectSpread2(_objectSpread2({}, this.props.style), {}, {
 			flexGrow: this.props.flex,
 			flexShrink: 1,
 			flexBasis: "0%"
-		};
-		return /* @__PURE__ */ jsx("div", {
-			...getDataProps(this.props),
-			ref: this.props.innerRef,
-			className: e,
-			style: n,
-			children: this.props.propagateDimensions ? /* @__PURE__ */ jsx(SizeAwareReflexElement, { ...this.props }) : this.renderChildren()
 		});
+		return /* @__PURE__ */ jsx("div", _objectSpread2(_objectSpread2({}, getDataProps(this.props)), {}, {
+			ref: this.props.innerRef,
+			className: r,
+			style: i,
+			children: this.props.propagateDimensions ? /* @__PURE__ */ jsx(SizeAwareReflexElement, _objectSpread2({}, this.props)) : this.renderChildren()
+		}));
 	}
-}, ReflexElement_default = React.forwardRef((e, n) => /* @__PURE__ */ jsx(ReflexElement, {
-	innerRef: n,
-	...e
-}));
+};
+_defineProperty(ReflexElement, "defaultProps", {
+	propagateDimensionsRate: 100,
+	propagateDimensions: !1,
+	resizeHeight: !0,
+	resizeWidth: !0,
+	direction: [1],
+	className: ""
+});
+var ReflexElement_default = React.forwardRef((e, r) => /* @__PURE__ */ jsx(ReflexElement, _objectSpread2({ innerRef: r }, e)));
 export { ReflexContainer, ReflexElement_default as ReflexElement, ReflexHandle, ReflexSplitter };

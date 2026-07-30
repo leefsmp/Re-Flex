@@ -4,7 +4,7 @@
   "main": "dist/react-reflex.cjs",
   "module": "dist/react-reflex.js",
   "types": "./dist/index.d.ts",
-  "version": "6.0.0",
+  "version": "6.0.2",
   "type": "module",
   "license": "MIT",
   "scripts": {
@@ -15,9 +15,9 @@
     "prepublish": "npm run build",
     "lint": "eslint ."
   },
-  "dependencies": {
-    "react": "^19.2.0",
-    "react-dom": "^19.2.0"
+  "peerDependencies": {
+    "react": ">=16.8.0",
+    "react-dom": ">=16.8.0"
   },
   "devDependencies": {
     "@eslint/js": "^9.39.1",
@@ -33,6 +33,8 @@
     "globals": "^16.5.0",
     "lodash.throttle": "^4.1.1",
     "prop-types": "^15.8.1",
+    "react": "^19.2.0",
+    "react-dom": "^19.2.0",
     "sass": "^1.96.0",
     "typescript": "~5.9.3",
     "typescript-eslint": "^8.46.4",

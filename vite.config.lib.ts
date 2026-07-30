@@ -29,6 +29,11 @@ export default defineConfig({
     },
   },
   build: {
+    // Downlevel modern syntax (class fields, etc.) so the
+    // published output doesn't require consumers' own
+    // toolchains (e.g. webpack + babel-loader configured to
+    // skip node_modules) to understand bleeding-edge syntax
+    target: 'es2017',
     lib: {
       entry: resolve(__dirname, 'src/libts/index.ts'),
       formats: ['es', 'cjs', 'umd'],
