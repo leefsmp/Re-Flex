@@ -9,7 +9,7 @@ It intends to address in a simple way the needs of advanced React Web applicatio
 Here is a basic demo:
 
 ```js
-import ReactDOM from 'react-dom'
+import ReactDOM from 'react-dom/client'
 import React from 'react'
 
 import {
@@ -52,9 +52,9 @@ class ReflexDemo extends React.Component {
   }
 }
 
-ReactDOM.render(
-  <ReflexDemo/>,
-  document.getElementById('reflex-demo'))
+ReactDOM
+  .createRoot(document.getElementById('reflex-demo'))
+  .render(<ReflexDemo/>)
 ```
 
 ## Installation
@@ -81,20 +81,20 @@ import {
 You can also use the UMD build
 ```html
 <link rel="stylesheet" href="path-to-react-reflex/styles.css">
-<script src="path-to-react-reflex/dist/umd/react-reflex.min.js"></script>
+<script src="path-to-react-reflex/dist/react-reflex.umd.cjs"></script>
 ```
 
 ## React Support
 
-React >= 0.13.x
+React >= 19
+
+## TypeScript
+
+Re-F|ex is written in TypeScript (see `src/libts`) and ships accurate, auto-generated type declarations with every published version — no separate `@types` package needed.
 
 ## Browser Support
 
-Re-F|ex is responsive, mobile friendly and has been tested on the following browsers:
-
-![IE](https://cloud.githubusercontent.com/assets/398893/3528325/20373e76-078e-11e4-8e3a-1cb86cf506f0.png) | ![Chrome](https://cloud.githubusercontent.com/assets/398893/3528328/23bc7bc4-078e-11e4-8752-ba2809bf5cce.png) | ![Firefox](https://cloud.githubusercontent.com/assets/398893/3528329/26283ab0-078e-11e4-84d4-db2cf1009953.png) | ![Opera](https://cloud.githubusercontent.com/assets/398893/3528330/27ec9fa8-078e-11e4-95cb-709fd11dac16.png) | ![Safari](https://cloud.githubusercontent.com/assets/398893/3528331/29df8618-078e-11e4-8e3e-ed8ac738693f.png) | ![Edge](https://raw.githubusercontent.com/alrra/browser-logos/master/src/edge/edge_48x48.png)
---- | --- | --- | --- | --- | --- |
-IE 11+ ✔ | Latest ✔ | Latest ✔ | Latest ✔ | Latest ✔ | Latest ✔ |
+Re-F|ex is responsive and mobile friendly. It targets modern evergreen browsers (Chrome, Firefox, Safari, Edge); Internet Explorer is not supported.
 
 ## Documentation & Samples
 
@@ -145,19 +145,19 @@ Re-F|ex is the most powerful resizeable React layout component out there ... Don
 
   * `size`: Allows to control the size in pixel of an element. The main use-case is to allow to perform animations programmatically on an element (shrinking/expanding). See [Controlled elements demo](https://leefsmp.github.io/Re-Flex/index.html#demo6) for more details. 
   Type: `number`.
-  Default value: `true`. 
+  Default value: `undefined` (unconstrained). 
 
   * `minSize`: Creates a constraint on the minimum size in pixel to which the element can be resized to by the user.
   Type: `number`.
-  Default value: `true`. 
+  Default value: `1`. 
 
   * `maxSize`: Creates a constraint on the maximum size in pixel to which the element can be resized to by the user.
   Type: `number`.
-  Default value: `true`. 
+  Default value: `undefined` (unconstrained). 
 
   * `flex`: Specifiy the initial `flex` of an element. By default all element will get evenly displayed inside a layout, unless some of them have `minSize`, `maxSize` or `size` specified.
   Type: `number`.
-  Default value: `true`.
+  Default value: `undefined` (evenly distributed).
 
   * `direction`: Allows to control in which direction(s) the element will shrink/expand when its `size` property is modified. See [Controlled elements demo](https://leefsmp.github.io/Re-Flex/index.html#demo6) for more details. 
   Type: `-1, 1 or [-1, 1]`.
@@ -213,6 +213,13 @@ Re-F|ex is the most powerful resizeable React layout component out there ... Don
 
 ## Development
 
-* Build the lib: `npm run build` | `npm run build-dev` (dev mode non-minified with source-map)
-* Build the demo: `npm run build-demo` | `npm run build-demo-dev` (dev mode non-minified with source-map + webpack watch)
+* Library source: `src/libts` (TypeScript)
+* Build the lib: `npm run build-lib`
+* Build the demo: `npm run build-demo`
+* Build everything (lib, demo, styles): `npm run build`
+* Lint: `npm run lint`
+
+## License
+
+MIT © [Philippe Leefsma](https://github.com/leefsmp) — see [LICENSE](./LICENSE).
 

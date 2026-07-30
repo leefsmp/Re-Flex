@@ -7,7 +7,6 @@
 import ReflexHandle from './ReflexHandle'
 import {getDataProps} from './utilities'
 import throttle from 'lodash.throttle'
-import Measure from 'react-measure'
 import PropTypes from 'prop-types'
 import React from 'react'
 
@@ -16,6 +15,8 @@ const toArray = (obj) => {
 }
 
 class SizeAwareReflexElement extends React.Component {
+
+  measureRef = React.createRef()
 
   constructor (props) {
 
@@ -30,12 +31,24 @@ class SizeAwareReflexElement extends React.Component {
       width: "100%"
     }
   }
-  
-  onResize = (rect) => {
+
+  componentDidMount () {
+
+    this.resizeObserver = new ResizeObserver((entries) => {
+      this.onResize(entries[0].contentRect)
+    })
+
+    this.resizeObserver.observe(this.measureRef.current)
+  }
+
+  componentWillUnmount () {
+
+    this.resizeObserver.disconnect()
+  }
+
+  onResize = ({height, width}) => {
 
     const { resizeHeight, resizeWidth } = this.props
-
-    const {height, width} = rect.bounds
 
     this.setDimensions({
       ...(resizeHeight && {height}),
@@ -76,19 +89,11 @@ class SizeAwareReflexElement extends React.Component {
   render () {
 
     return (
-      <Measure bounds onResize={this.onResize}>
-      {
-        ({measureRef}) => {
-            return (
-              <div ref={measureRef} className="reflex-size-aware">
-                <div style={this.state}>
-                  { this.renderChildren() }
-                </div>
-              </div>
-            )
-          }
-      }
-      </Measure>
+      <div ref={this.measureRef} className="reflex-size-aware">
+        <div style={this.state}>
+          { this.renderChildren() }
+        </div>
+      </div>
     )
   }
 }
@@ -130,7 +135,7 @@ class ReflexElement extends React.Component {
     return null
   }
 
-  async componentDidUpdate (prevProps, prevState, snapshot) {
+  async componentDidUpdate (prevProps, prevState) {
 
     if (prevState.size !== this.state.size) {
 
@@ -196,8 +201,10 @@ class ReflexElement extends React.Component {
   }
 }
 
-export default React.forwardRef((props, ref) => {
+const ForwardedReflexElement = React.forwardRef((props, ref) => {
   return (
     <ReflexElement innerRef={ref} {...props}/>
   )
 })
+
+export default ForwardedReflexElement

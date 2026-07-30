@@ -6,31 +6,75 @@
 ///////////////////////////////////////////////////////////
 import ReflexSplitter from './ReflexSplitter'
 import ReflexEvents from './ReflexEvents'
-import {getDataProps, getPointerPosition} from './utilities'
-import PropTypes from 'prop-types'
+import { getDataProps, getPointerPosition } from './utilities'
 import React from 'react'
+import type {
+  Orientation,
+  FlexDataEntry,
+  ReflexChildElement,
+  ReflexInternalProps,
+  ReflexRawChildElement
+} from './types'
 
-export default class ReflexContainer extends React.Component {
+export interface ReflexContainerProps {
+  orientation?: Orientation
+  windowResizeAware?: boolean
+  maxRecDepth?: number
+  className?: string
+  style?: React.CSSProperties
+  children?: React.ReactNode
+  [key: `data-${string}`]: unknown
+}
+
+interface ReflexContainerState {
+  flexData: FlexDataEntry[]
+  windowResizeAware?: boolean
+  resizing?: boolean
+}
+
+interface StartResizeEventData {
+  index: number
+  event: React.MouseEvent | React.TouchEvent
+}
+
+interface ResizeEventData {
+  index: number
+  domElement: Element | null
+  event: MouseEvent | TouchEvent
+}
+
+interface ElementSizeEventData {
+  index: number
+  size?: number
+  direction: 1 | -1
+}
+
+// Intermediate shape used while computing initial flex
+// values; every child (element or splitter) is mapped to
+// one of these, and splitters are just passed through
+// unchanged by the recursive constraint solver
+interface FlexDataInitEntry {
+  maxFlex: number
+  sizeFlex: number
+  minFlex: number
+  constrained: boolean
+  flex: number
+  // only ever compared via ReflexSplitter.isA(), never rendered
+  type: unknown
+}
+
+export default class ReflexContainer
+  extends React.Component<ReflexContainerProps, ReflexContainerState> {
 
   /////////////////////////////////////////////////////////
   // orientation: Orientation of the layout container
-  //              valid values are ['horizontal', 'vertical'] 
+  //              valid values are ['horizontal', 'vertical']
   // maxRecDepth: Maximun recursion depth to solve initial flex
   //              of layout elements based on user provided values
-  // className: Space separated classnames to apply custom styles 
-  //            to the layout container  
+  // className: Space separated classnames to apply custom styles
+  //            to the layout container
   // style: allows passing inline style to the container
   /////////////////////////////////////////////////////////
-  static propTypes = {
-    windowResizeAware: PropTypes.bool,
-    orientation: PropTypes.oneOf([
-      'horizontal', 'vertical'
-    ]),
-    maxRecDepth: PropTypes.number,
-    className: PropTypes.string,
-    style: PropTypes.object
-  }
-
   static defaultProps = {
     orientation: 'horizontal',
     windowResizeAware: false,
@@ -39,7 +83,13 @@ export default class ReflexContainer extends React.Component {
     style: {}
   }
 
-  constructor (props) {
+  events: ReflexEvents
+  children: ReflexChildElement[]
+  elements: ReflexChildElement[] | null = null
+  previousPos = 0
+  ref: React.RefObject<HTMLDivElement | null>
+
+  constructor (props: ReflexContainerProps) {
     super (props)
     this.events = new ReflexEvents()
     this.children = []
@@ -48,12 +98,12 @@ export default class ReflexContainer extends React.Component {
     }
     this.ref = React.createRef()
   }
-  
+
   componentDidMount () {
 
     const flexData = this.computeFlexData()
 
-    const {windowResizeAware} = this.props
+    const { windowResizeAware } = this.props
 
     if (windowResizeAware) {
       window.addEventListener(
@@ -86,18 +136,20 @@ export default class ReflexContainer extends React.Component {
       'resize', this.onWindowResize)
   }
 
-  getValidChildren (props = this.props) {
-    return this.toArray(props.children).filter((child) => {
+  getValidChildren (props: ReflexContainerProps = this.props): ReflexRawChildElement[] {
+    return this.toArray(
+      props.children as ReflexRawChildElement | ReflexRawChildElement[]
+    ).filter((child) => {
       return !!child
     })
   }
 
-  componentDidUpdate (prevProps) {
+  componentDidUpdate (prevProps: ReflexContainerProps) {
 
     const children = this.getValidChildren(this.props)
 
     if ((children.length !== this.state.flexData.length) ||
-        (prevProps.orientation !== this.props.orientation) || 
+        (prevProps.orientation !== this.props.orientation) ||
         this.flexHasChanged(prevProps)) {
 
       const flexData = this.computeFlexData(
@@ -120,32 +172,6 @@ export default class ReflexContainer extends React.Component {
     }
   }
 
-  // UNSAFE_componentWillReceiveProps(props) {
-
-  //   const children = this.getValidChildren(props)
-
-  //   if (children.length !== this.state.flexData.length || 
-  //     props.orientation !== this.props.orientation || 
-  //     this.flexHasChanged(props)) 
-  //   {
-  //     const flexData = this.computeFlexData(
-  //       children, props)
-
-  //     this.setState({
-  //       flexData
-  //     });
-  //   }
-
-  //   if (props.windowResizeAware !== this.state.windowResizeAware) {
-  //     !props.windowResizeAware
-  //       ? window.removeEventListener('resize', this.onWindowResize)
-  //       : window.addEventListener('resize', this.onWindowResize)
-  //     this.setState({
-  //       windowResizeAware: props.windowResizeAware
-  //     })
-  //   }
-  // } 
-
   /////////////////////////////////////////////////////////
   // attempts to preserve current flex on window resize
   //
@@ -163,7 +189,7 @@ export default class ReflexContainer extends React.Component {
   // to one or several children
   //
   /////////////////////////////////////////////////////////
-  flexHasChanged (prevProps) {
+  flexHasChanged (prevProps: ReflexContainerProps): boolean {
 
     const prevChildrenFlex =
       this.getValidChildren(prevProps).map((child) => {
@@ -181,14 +207,24 @@ export default class ReflexContainer extends React.Component {
   }
 
   /////////////////////////////////////////////////////////
+  // Returns the ref stashed on a cloned child, whichever
+  // shape it comes in (props.ref, or a legacy element.ref)
+  //
+  /////////////////////////////////////////////////////////
+  getChildRef (element?: ReflexChildElement | null): React.RefObject<unknown> | undefined {
+    const legacyRef = element as unknown as { ref?: React.RefObject<unknown> } | null | undefined
+    return element?.props.ref ?? legacyRef?.ref
+  }
+
+  /////////////////////////////////////////////////////////
   // Returns size of a ReflexElement
   //
   /////////////////////////////////////////////////////////
-  getSize (element) { 
+  getSize (element?: ReflexChildElement | null): number {
 
-    const ref = element?.props.ref || element?.ref
+    const ref = this.getChildRef(element)
 
-    const domElement = ref?.current
+    const domElement = ref?.current as HTMLElement | null | undefined
 
     switch (this.props.orientation) {
       case 'horizontal':
@@ -203,7 +239,7 @@ export default class ReflexContainer extends React.Component {
   // Computes offset from pointer position
   //
   /////////////////////////////////////////////////////////
-  getOffset (pos, domElement) {
+  getOffset (pos: { clientX: number; clientY: number }, domElement: Element): number {
 
     const {
       top, bottom,
@@ -224,7 +260,7 @@ export default class ReflexContainer extends React.Component {
         }
         break
       }
-      case 'vertical': 
+      case 'vertical':
       default: {
         const offset = pos.clientX - this.previousPos
         if (offset > 0) {
@@ -246,7 +282,7 @@ export default class ReflexContainer extends React.Component {
   // Handles startResize event
   //
   /////////////////////////////////////////////////////////
-  onStartResize = (data) => {
+  onStartResize = (data: StartResizeEventData) => {
 
     const pos = getPointerPosition(data.event)
 
@@ -270,7 +306,7 @@ export default class ReflexContainer extends React.Component {
     ]
 
     this.emitElementsEvent(
-      this.elements, 
+      this.elements,
       'onStartResize')
   }
 
@@ -278,12 +314,12 @@ export default class ReflexContainer extends React.Component {
   // Handles splitter resize event
   //
   /////////////////////////////////////////////////////////
-  onResize = (data) => {
+  onResize = (data: ResizeEventData) => {
 
     const pos = getPointerPosition(data.event)
 
     const offset = this.getOffset(
-      pos, data.domElement)
+      pos, data.domElement as Element)
 
     switch (this.props.orientation) {
       case 'horizontal':
@@ -331,13 +367,13 @@ export default class ReflexContainer extends React.Component {
     document.body.classList.remove('reflex-row-resize')
     document.body.classList.remove('reflex-col-resize')
 
-    const resizedRefs = this.elements ? this.elements.map(element => {
-      return element.props.ref || element.ref
-    }) : [];
+    const resizedRefs = this.elements ? this.elements.map((element) => {
+      return this.getChildRef(element)
+    }) : []
 
-    const elements = this.children.filter(child => {
+    const elements = this.children.filter((child) => {
       return !ReflexSplitter.isA(child) &&
-        resizedRefs.includes(child.props.ref || child.ref)
+        resizedRefs.includes(this.getChildRef(child))
     })
 
     this.emitElementsEvent(
@@ -352,9 +388,9 @@ export default class ReflexContainer extends React.Component {
   // Handles element size modified event
   //
   /////////////////////////////////////////////////////////
-  onElementSize = (data) => {
+  onElementSize = (data: ElementSizeEventData) => {
 
-    return new Promise((resolve) => {
+    return new Promise<void>((resolve) => {
 
       try {
 
@@ -362,7 +398,7 @@ export default class ReflexContainer extends React.Component {
 
         const size = this.getSize(this.children[idx])
 
-        const offset = data.size - size
+        const offset = (data.size as number) - size
 
         const dir = data.direction
 
@@ -409,7 +445,7 @@ export default class ReflexContainer extends React.Component {
   // Mutates the given flexData draft, not this.state
   //
   /////////////////////////////////////////////////////////
-  adjustFlex (elements, flexData) {
+  adjustFlex (elements: ReflexChildElement[], flexData: FlexDataEntry[]) {
 
     const diffFlex = elements.reduce((sum, element) => {
 
@@ -439,7 +475,7 @@ export default class ReflexContainer extends React.Component {
   // shrink, then returns the min
   //
   /////////////////////////////////////////////////////////
-  computeAvailableOffset (idx, offset) {
+  computeAvailableOffset (idx: number, offset: number): number {
 
     const stretch = this.computeAvailableStretch(
       idx, offset)
@@ -461,32 +497,13 @@ export default class ReflexContainer extends React.Component {
   // propagate=true property set
   //
   /////////////////////////////////////////////////////////
-  checkPropagate (idx, direction) {
+  checkPropagate (idx: number, direction: number): boolean {
 
-    if (direction > 0) {
+    const child = direction > 0
+      ? (idx < this.children.length - 2 ? this.children[idx + 2] : undefined)
+      : (idx > 2 ? this.children[idx - 2] : undefined)
 
-      if (idx < this.children.length - 2) {
-
-        const child = this.children[idx + 2]
-
-        const typeCheck = ReflexSplitter.isA(child)
-
-        return typeCheck && child.props.propagate
-      }
-
-    } else {
-
-      if (idx > 2) {
-
-        const child = this.children[idx - 2]
-
-        const typeCheck = ReflexSplitter.isA(child)
-
-        return typeCheck && child.props.propagate
-      }
-    }
-
-    return false
+    return !!child && ReflexSplitter.isA(child) && !!child.props.propagate
   }
 
   /////////////////////////////////////////////////////////
@@ -494,7 +511,7 @@ export default class ReflexContainer extends React.Component {
   // idx for given raw offset
   //
   /////////////////////////////////////////////////////////
-  computeAvailableStretch (idx, offset) {
+  computeAvailableStretch (idx: number, offset: number): number {
 
     const childIdx = offset < 0 ? idx + 1 : idx - 1
 
@@ -528,7 +545,7 @@ export default class ReflexContainer extends React.Component {
   // idx for given raw offset
   //
   /////////////////////////////////////////////////////////
-  computeAvailableShrink (idx, offset) {
+  computeAvailableShrink (idx: number, offset: number): number {
 
     const childIdx = offset > 0 ? idx + 1 : idx -1
 
@@ -562,7 +579,7 @@ export default class ReflexContainer extends React.Component {
   // Returns flex value for unit pixel
   //
   /////////////////////////////////////////////////////////
-  computePixelFlex (orientation = this.props.orientation) {
+  computePixelFlex (orientation: Orientation = this.props.orientation ?? 'horizontal'): number {
     if (!this.ref.current) {
       console.warn('Unable to locate ReflexContainer dom node');
       return 0.0;
@@ -602,7 +619,7 @@ export default class ReflexContainer extends React.Component {
   // Mutates the given flexData draft, not this.state
   //
   /////////////////////////////////////////////////////////
-  addOffset (element, offset, flexData) {
+  addOffset (element: ReflexChildElement, offset: number, flexData: FlexDataEntry[]) {
 
     const size = this.getSize(element)
 
@@ -629,7 +646,7 @@ export default class ReflexContainer extends React.Component {
   // Mutates the given flexData draft, not this.state
   //
   /////////////////////////////////////////////////////////
-  dispatchStretch (idx, offset, flexData) {
+  dispatchStretch (idx: number, offset: number, flexData: FlexDataEntry[]): ReflexChildElement[] {
 
     const childIdx = offset < 0 ? idx + 1 : idx - 1
 
@@ -672,7 +689,7 @@ export default class ReflexContainer extends React.Component {
   // Mutates the given flexData draft, not this.state
   //
   /////////////////////////////////////////////////////////
-  dispatchShrink (idx, offset, flexData) {
+  dispatchShrink (idx: number, offset: number, flexData: FlexDataEntry[]): ReflexChildElement[] {
 
     const childIdx = offset > 0 ? idx + 1 : idx - 1
 
@@ -713,7 +730,7 @@ export default class ReflexContainer extends React.Component {
   // Dispatch offset at splitter idx
   //
   /////////////////////////////////////////////////////////
-  dispatchOffset (idx, offset, flexData) {
+  dispatchOffset (idx: number, offset: number, flexData: FlexDataEntry[]): ReflexChildElement[] {
     return [
       ...this.dispatchStretch(idx, offset, flexData),
       ...this.dispatchShrink(idx, offset, flexData)
@@ -726,7 +743,7 @@ export default class ReflexContainer extends React.Component {
   // draft before being committed via setState
   //
   /////////////////////////////////////////////////////////
-  cloneFlexData (flexData) {
+  cloneFlexData (flexData: FlexDataEntry[]): FlexDataEntry[] {
     return flexData.map((entry) => ({ ...entry }))
   }
 
@@ -735,12 +752,16 @@ export default class ReflexContainer extends React.Component {
   // if present in the component props
   //
   /////////////////////////////////////////////////////////
-  emitElementsEvent (elements, event) {
-    this.toArray(elements).forEach(component => {
-      if (component.props[event]) {
-        const compRef = component.props.ref || component.ref
-        component.props[event]({
-          domElement: compRef?.current,
+  emitElementsEvent (
+    elements: ReflexChildElement[] | ReflexChildElement | null,
+    event: 'onStartResize' | 'onStopResize' | 'onResize'
+  ) {
+    this.toArray(elements).forEach((component) => {
+      const handler = component.props[event]
+      if (handler) {
+        const compRef = this.getChildRef(component)
+        handler({
+          domElement: (compRef?.current as Element | null | undefined) ?? null,
           component
         })
       }
@@ -754,12 +775,13 @@ export default class ReflexContainer extends React.Component {
   //
   /////////////////////////////////////////////////////////
   computeFlexData (
-    children = this.getValidChildren(), 
-    props = this.props) {
+    children: ReflexRawChildElement[] = this.getValidChildren(),
+    props: ReflexContainerProps = this.props
+  ): FlexDataEntry[] {
 
     const pixelFlex = this.computePixelFlex(props.orientation)
 
-    const computeFreeFlex = (flexData) => {
+    const computeFreeFlex = (flexData: FlexDataInitEntry[]): number => {
       return flexData.reduce((sum, entry) => {
         if (!ReflexSplitter.isA(entry)
           && entry.constrained) {
@@ -769,7 +791,7 @@ export default class ReflexContainer extends React.Component {
       }, 1.0)
     }
 
-    const computeFreeElements = (flexData) => {
+    const computeFreeElements = (flexData: FlexDataInitEntry[]): number => {
       return flexData.reduce((sum, entry) => {
         if (!ReflexSplitter.isA(entry)
           && !entry.constrained) {
@@ -779,19 +801,22 @@ export default class ReflexContainer extends React.Component {
       }, 0.0)
     }
 
-    const flexDataInit = children.map((child) => {
-      const props = child.props
+    const flexDataInit: FlexDataInitEntry[] = children.map((child) => {
+      const childProps = child.props
       return {
-        maxFlex: (props.maxSize || Number.MAX_VALUE) * pixelFlex,
-        sizeFlex: (props.size || Number.MAX_VALUE) * pixelFlex,
-        minFlex: (props.minSize || 1) * pixelFlex,
-        constrained: props.flex !== undefined,
-        flex: props.flex || 0,
+        maxFlex: (childProps.maxSize || Number.MAX_VALUE) * pixelFlex,
+        sizeFlex: (childProps.size || Number.MAX_VALUE) * pixelFlex,
+        minFlex: (childProps.minSize || 1) * pixelFlex,
+        constrained: childProps.flex !== undefined,
+        flex: childProps.flex || 0,
         type: child.type
       }
     })
 
-    const computeFlexDataRec = (flexDataIn, depth=0) => {
+    const computeFlexDataRec = (
+      flexDataIn: FlexDataInitEntry[],
+      depth = 0
+    ): FlexDataInitEntry[] => {
 
       let hasContrain = false
 
@@ -799,7 +824,7 @@ export default class ReflexContainer extends React.Component {
 
       const freeFlex = computeFreeFlex(flexDataIn)
 
-      const flexDataOut = flexDataIn.map(entry => {
+      const flexDataOut = flexDataIn.map((entry) => {
 
         if (ReflexSplitter.isA(entry)) {
           return entry
@@ -820,26 +845,26 @@ export default class ReflexContainer extends React.Component {
 
         hasContrain = hasContrain || constrained
 
-        return { 
+        return {
           ...entry,
           flex: constrainedFlex,
           constrained
         }
       })
 
-      return (hasContrain && depth < this.props.maxRecDepth)
+      return (hasContrain && depth < (this.props.maxRecDepth ?? 100))
         ? computeFlexDataRec(flexDataOut, depth+1)
         : flexDataOut
     }
 
     const flexData = computeFlexDataRec(flexDataInit)
 
-    return flexData.map(entry => {
+    return flexData.map((entry) => {
       return {
           flex: !ReflexSplitter.isA(entry)
-            ? entry.flex 
+            ? entry.flex
             : 0.0,
-          ref: React.createRef()
+          ref: React.createRef<unknown>()
        }
     })
   }
@@ -849,8 +874,11 @@ export default class ReflexContainer extends React.Component {
   // returned as an array
   //
   /////////////////////////////////////////////////////////
-  toArray (obj) {
-    return obj ? (Array.isArray(obj) ? obj : [obj]) : []
+  toArray<T> (obj: T | T[] | null | undefined): T[] {
+    if (!obj) {
+      return []
+    }
+    return Array.isArray(obj) ? obj : [obj]
   }
 
   /////////////////////////////////////////////////////////
@@ -863,33 +891,34 @@ export default class ReflexContainer extends React.Component {
 
     const className = [
       this.state.resizing ? 'reflex-resizing':'',
-      ...this.props.className.split(' '),
+      ...(this.props.className ?? '').split(' '),
       this.props.orientation,
       'reflex-container'
     ].join(' ').trim()
 
-    this.children = React.Children.map(
+    this.children = (React.Children.map(
       this.getValidChildren(), (child, index) => {
 
         if (index > this.state.flexData.length - 1) {
           return <div/>
         }
 
-        const flexData = this.state.flexData[index]
+        const flexDataEntry = this.state.flexData[index]
 
-        const newProps = {
+        const newProps: Partial<ReflexInternalProps> = {
           ...child.props,
           maxSize: child.props.maxSize || Number.MAX_VALUE,
-          orientation: this.props.orientation,
+          orientation: this.props.orientation ?? 'horizontal',
           minSize: child.props.minSize || 1,
           events: this.events,
-          flex: flexData.flex,
-          ref: flexData.ref,
+          flex: flexDataEntry.flex,
+          ref: flexDataEntry.ref,
           index
         }
 
         return React.cloneElement(child, newProps)
-      })
+      }
+    ) ?? []) as ReflexChildElement[]
 
     return (
       <div
@@ -902,5 +931,3 @@ export default class ReflexContainer extends React.Component {
     )
   }
 }
-
-

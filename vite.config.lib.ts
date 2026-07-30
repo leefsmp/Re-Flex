@@ -30,7 +30,7 @@ export default defineConfig({
   },
   build: {
     lib: {
-      entry: resolve(__dirname, 'src/lib/index.js'),
+      entry: resolve(__dirname, 'src/libts/index.ts'),
       formats: ['es', 'cjs', 'umd'],
       name: 'react-reflex'
     },

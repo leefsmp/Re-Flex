@@ -4,22 +4,21 @@
 // December 2016
 //
 ///////////////////////////////////////////////////////////
+type ReflexEventHandler = (...args: unknown[]) => unknown
+
 class ReflexEvents {
 
-  constructor () {
-
-    this._events = {}
-  }
+  private _events: Record<string, ReflexEventHandler[]> = {}
 
   /////////////////////////////////////////////////////////
   // Supports multiple events space-separated
   //
   /////////////////////////////////////////////////////////
-  on (events, fct) {
+  on (events: string, fct: ReflexEventHandler): this {
 
     events.split(' ').forEach((event) => {
 
-      this._events[event] = this._events[event]	|| []
+      this._events[event] = this._events[event] || []
       this._events[event].push(fct)
     })
 
@@ -30,18 +29,19 @@ class ReflexEvents {
   // Supports multiple events space-separated
   //
   /////////////////////////////////////////////////////////
-  off (events, fct) {
+  off (events?: string, fct?: ReflexEventHandler): this {
 
-    if (events == undefined) {
+    if (events === undefined) {
 
       this._events = {}
-      return
+      return this
     }
 
     events.split(' ').forEach((event) => {
 
-      if (event in this._events === false)
-        return;
+      if (event in this._events === false) {
+        return
+      }
 
       if (fct) {
 
@@ -60,20 +60,21 @@ class ReflexEvents {
     return this
   }
 
-  emit (event /* , args... */) {
+  emit (event: string, ...args: unknown[]): unknown {
 
-    if(this._events[event] === undefined)
-      return;
+    const handlers = this._events[event]
 
-    var tmpArray = this._events[event].slice()
+    if (handlers === undefined) {
+      return undefined
+    }
 
-    for(var i = 0; i < tmpArray.length; ++i) {
+    const snapshot = handlers.slice()
 
-      var result	= tmpArray[i].apply(this,
-        Array.prototype.slice.call(arguments, 1))
+    for (const handler of snapshot) {
 
-      if(result !== undefined) {
+      const result = handler.apply(this, args)
 
+      if (result !== undefined) {
         return result
       }
     }

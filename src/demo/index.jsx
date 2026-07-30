@@ -6,7 +6,7 @@ import {
   ReflexSplitter,
   ReflexElement,
   ReflexHandle
-} from '../../src/lib'
+} from '../../src/libts'
 
 import '../../styles.css'
 import './demo.scss'
